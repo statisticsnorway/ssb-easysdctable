@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<meta name="author" content="Øyvind Langsrud" />
+
+
+<title>easySdcTable Vignette</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+
+
+<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">‘easySdcTable’ Vignette</h1>
+<h4 class="author"><em>Øyvind Langsrud</em></h4>
+
+
+
+<div id="introduction-and-background" class="section level2">
+<h2>Introduction and background</h2>
+<p>Below is given an introductory demonstration of the function ProtectTable() which enables an easy interface to the statistical disclosure control package ‘sdcTable’ (<a href="https://CRAN.R-project.org/package=sdcTable" class="uri">https://CRAN.R-project.org/package=sdcTable</a>). To see the input and output to functions in sdcTable consult the function ProtectTable1() which is an underlying function of ProtectTable(). Note that ‘easySdcTable’ is not as general as ‘sdcTable’.</p>
+<p>This package was originally developed as a part of the modernization of the production of the key figures on municipal activities in Norway (<a href="https://www.ssb.no/en/offentlig-sektor/kostra" class="uri">https://www.ssb.no/en/offentlig-sektor/kostra</a>). The fictitious example data is generated to be similar to realistic data from Norwegian municipalities and the variable names are (unfortunately) in Norwegian.</p>
+<p>The demonstration below is based on the data from example 2 in the package and first we will use the unstacked data.</p>
+<p>Before demonstrating ProtectTable() a few word about new possibilities in this version of ‘easySdcTable’ is given.</p>
+</div>
+<div id="graphical-user-interface-and-tau-argus" class="section level2">
+<h2>Graphical user interface and <span class="math inline">\(\tau\)</span>-ARGUS</h2>
+<p>A graphical user interface based on ‘shiny’ can be started by:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">PTgui</span>()</code></pre></div>
+<p>To start the gui with example data and catch output:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">out &lt;-<span class="st"> </span><span class="kw">PTgui</span>(<span class="dt">data =</span> <span class="kw">EasyData</span>(<span class="st">&quot;z1w&quot;</span>))</code></pre></div>
+<p>To start the gui with possibility to run tau-argus:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">exeArgus &lt;-<span class="st"> &quot;C:/Tau/TauArgus4.1.4/TauArgus.exe&quot;</span>  <span class="co"># Tau-argus executable </span>
+pathArgus &lt;-<span class="st"> &quot;C:/Users/nnn/Documents&quot;</span>  <span class="co"># Folder for (temporary) tau-argus files</span>
+<span class="kw">PTgui</span>(<span class="dt">exeArgus =</span> exeArgus, <span class="dt">pathArgus =</span> pathArgus)</code></pre></div>
+<p>The interface to tau-argus make use of new functionality in ‘sdcTable’. See the documentation of ProtectTable() for more information.</p>
+</div>
+<div id="unstacked-data" class="section level2">
+<h2>Unstacked data</h2>
+<div id="the-input-data" class="section level4">
+<h4>The input data</h4>
+<p>The function EasyData() in ‘easySdcTable’ returns example data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">z2w &lt;-<span class="st"> </span><span class="kw">EasyData</span>(<span class="st">&quot;z2w&quot;</span>)
+<span class="kw">print</span>(z2w, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code> region fylke kostragr annet arbeid soshjelp trygd
+      A     1      300    11     11       55    36
+      B     4      300     7      1       29    18
+      C     5      300     5      8       35    25
+      D     5      300    13      2       17    13
+      E     6      300     9     14       63    52
+      F     6      300    12      9       24    22
+      G     8      300     6      4       22     8
+      H     8      300     9      3       38    15
+      I     1      400     3      0        9     2
+      J    10      400     9      0       32    20
+      K    10      400     4      2       18    11</code></pre>
+<p>By unstacked data we mean that counts (cell frequencies) are in more than a single column.</p>
+</div>
+<div id="running-protecttable" class="section level4">
+<h4>Running ProtectTable</h4>
+<p>In this case we have counts in columns four to seven. Using the dimensional variable in the first column we can run ProtectTable by:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ex2w &lt;-<span class="st"> </span><span class="kw">ProtectTable</span>(z2w, <span class="dv">1</span>, <span class="dv">4</span>:<span class="dv">7</span>)</code></pre></div>
+</div>
+<div id="the-data-with-computed-totals" class="section level4">
+<h4>The data with computed totals</h4>
+<p>The output element <em>freq</em> contains the data with computed totals.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(ex2w$freq, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code> region annet arbeid soshjelp trygd Total
+      A    11     11       55    36   113
+      B     7      1       29    18    55
+      C     5      8       35    25    73
+      D    13      2       17    13    45
+      E     9     14       63    52   138
+      F    12      9       24    22    67
+      G     6      4       22     8    40
+      H     9      3       38    15    65
+      I     3      0        9     2    14
+      J     9      0       32    20    61
+      K     4      2       18    11    35
+  Total    88     54      342   222   706</code></pre>
+</div>
+<div id="sdcstatus" class="section level4">
+<h4>SdcStatus</h4>
+<p>In the output element <em>sdcStatus</em> the cells are coded as “u” (primary suppressed), “x” (secondary suppression), and “s” (can be published).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(ex2w$sdcStatus, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code> region annet arbeid soshjelp trygd Total
+      A     s      s        s     s     s
+      B     x      u        s     s     s
+      C     s      s        s     s     s
+      D     s      u        s     x     s
+      E     s      s        s     s     s
+      F     s      s        s     s     s
+      G     s      s        s     s     s
+      H     x      u        s     s     s
+      I     u      u        s     u     s
+      J     x      u        s     s     s
+      K     x      u        s     s     s
+  Total     s      s        s     s     s</code></pre>
+</div>
+<div id="suppressed-data" class="section level4">
+<h4>Suppressed data</h4>
+<p>The output element <em>suppressed</em> is the same as <em>freq</em> with the exception that suppressed cells (“u” and “x”) are set to missing (NA).</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(ex2w$suppressed, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code> region annet arbeid soshjelp trygd Total
+      A    11     11       55    36   113
+      B    NA     NA       29    18    55
+      C     5      8       35    25    73
+      D    13     NA       17    NA    45
+      E     9     14       63    52   138
+      F    12      9       24    22    67
+      G     6      4       22     8    40
+      H    NA     NA       38    15    65
+      I    NA     NA        9    NA    14
+      J    NA     NA       32    20    61
+      K    NA     NA       18    11    35
+  Total    88     54      342   222   706</code></pre>
+</div>
+<div id="using-named-input-and-the-hitas-method" class="section level4">
+<h4>Using named input and the HITAS method</h4>
+<p>Now we specify the variables using names instead of numbers. Furthermore we use the “HITAS” method. The default method is “SIMPLEHEURISTIC” and other possibilities are “OPT” and “HYPERCUBE”. The latter is not possible in cases with two linked tables.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ex2wHITAS &lt;-<span class="st"> </span><span class="kw">ProtectTable</span>(z2w, <span class="dt">dimVar =</span> <span class="kw">c</span>(<span class="st">&quot;region&quot;</span>), <span class="dt">freqVar =</span> <span class="kw">c</span>(<span class="st">&quot;annet&quot;</span>, <span class="st">&quot;arbeid&quot;</span>, 
+    <span class="st">&quot;soshjelp&quot;</span>, <span class="st">&quot;trygd&quot;</span>), <span class="dt">method =</span> <span class="st">&quot;HITAS&quot;</span>)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(ex2wHITAS$suppressed, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code> region annet arbeid soshjelp trygd Total
+      A    11     11       55    36   113
+      B    NA     NA       29    18    55
+      C     5      8       35    25    73
+      D    NA     NA       17    13    45
+      E     9     14       63    52   138
+      F    12      9       24    22    67
+      G     6      4       22     8    40
+      H    NA     NA       38    15    65
+      I    NA     NA        9    NA    14
+      J    NA     NA       32    20    61
+      K    NA     NA       18    NA    35
+  Total    88     54      342   222   706</code></pre>
+</div>
+<div id="more-advanced-use-of-protecttable" class="section level4">
+<h4>More advanced use of ProtectTable</h4>
+<p>Here we include the tree first variables as dimensional variables. It will be detected automatically that “fylke” and “kostragr” are hierarchically related to “region” and that they are not hierarchically related to each other. Zeros will not be suppressed and we will only primarily suppress ones and twos.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ex2wAdvanced &lt;-<span class="st"> </span><span class="kw">ProtectTable</span>(z2w, <span class="dt">dimVar =</span> <span class="kw">c</span>(<span class="st">&quot;region&quot;</span>, <span class="st">&quot;fylke&quot;</span>, <span class="st">&quot;kostragr&quot;</span>), 
+    <span class="dt">freqVar =</span> <span class="kw">c</span>(<span class="st">&quot;annet&quot;</span>, <span class="st">&quot;arbeid&quot;</span>, <span class="st">&quot;soshjelp&quot;</span>, <span class="st">&quot;trygd&quot;</span>), <span class="dt">maxN =</span> <span class="dv">2</span>, <span class="dt">protectZeros =</span> <span class="ot">FALSE</span>, 
+    <span class="dt">addName =</span> <span class="ot">TRUE</span>)</code></pre></div>
+</div>
+<div id="suppressed-data-with-totals-and-sub-totals" class="section level4">
+<h4>Suppressed data with totals and sub-totals</h4>
+<p>Now the output data will contain sub-totals of the additional variables and the secondary suppression has taken those sub-totals into account. Since addName is TRUE, sub-totals are named using “fylke” and “kostragr”.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(ex2wAdvanced$suppressed, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code>       region annet arbeid soshjelp trygd Total
+            A    NA     11       55    NA   113
+            B    NA     NA       29    18    55
+            C     5     NA       35    NA    73
+            D    13     NA       17    NA    45
+            E     9     14       63    52   138
+            F    12      9       24    22    67
+            G     6     NA       22    NA    40
+            H     9      3       38    15    65
+            I    NA      0        9    NA    14
+            J     9      0       32    20    61
+            K    NA     NA       18    NA    35
+      fylke_1    14     11       64    38   127
+      fylke_4    NA     NA       29    18    55
+      fylke_5    18     10       52    38   118
+      fylke_6    21     23       87    74   205
+      fylke_8    15      7       60    23   105
+     fylke_10    NA     NA       50    31    96
+ kostragr_300    NA     NA      283   189   596
+ kostragr_400    NA     NA       59    33   110
+        Total    88     54      342   222   706</code></pre>
+</div>
+<div id="info" class="section level4">
+<h4>Info</h4>
+<p>The output element <em>info</em> contains three parts.</p>
+<ol style="list-style-type: decimal">
+<li><p>Since we have unstacked data an extra variable, named <em>var1</em>, is created. How the categories of this variable are related to the variable names are described. Here these categories are simply the variable names. In more advanced cases it is possible that more than a single variable are created from the variable names.</p></li>
+<li><p>Secondly, it is described how the tables(s) are created from the variables. In this case the problem is solved using two linked tables. The first table involves “fylke” and the second table involves “kostragr”.</p></li>
+<li><p>The last part contains summary output for each of the two linked tables.</p></li>
+</ol>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">prmatrix</span>(ex2wAdvanced$info, <span class="dt">rowlab =</span> <span class="kw">rep</span>(<span class="st">&quot;&quot;</span>, <span class="dv">99</span>), <span class="dt">collab =</span> <span class="st">&quot;&quot;</span>, <span class="dt">quote =</span> <span class="ot">FALSE</span>)</code></pre></div>
+<pre><code>                                                                                            
+              var1                                                                          
+ annet       annet                                                                          
+ arbeid     arbeid                                                                          
+ soshjelp soshjelp                                                                          
+ trygd       trygd                                                                          
+ ==========                                                                                 
+          Variables Table1 Table2                                                           
+ 1    region, fylke      1      0                                                           
+ 2 region, kostragr      0      1                                                           
+ 3             var1      1      1                                                           
+ ==========                                                                                 
+                                                                                            
+ ######################################################                                     
+ ### Summary of the result object of class 'safeObj' ###                                    
+ ######################################################                                     
+ --&gt; The input data have been protected using algorithm SIMPLEHEURISTIC.                    
+ --&gt; The algorithm ran for 1 second.                                                        
+ --&gt; To protect 8 primary sensitive cells, 9 cells need to be additionally suppressed.      
+ --&gt; A total of 68 cells may be published.                                                  
+ --&gt; Duplicated cells: Only 85 table cells are unique, the remaining 5 cells are duplicates.
+                                                                                            
+ ###################################                                                        
+ ### Structure of protected Data ###                                                        
+ ###################################                                                        
+ Classes 'data.table' and 'data.frame':\t90 obs. of  4 variables:                            
+  $ region   : chr  &quot;Total&quot; &quot;Total&quot; &quot;Total&quot; &quot;Total&quot; ...                                     
+  $ var1     : chr  &quot;Total&quot; &quot;annet&quot; &quot;arbeid&quot; &quot;soshjelp&quot; ...                                 
+  $ Freq     : num  706 88 54 342 222 127 14 11 64 38 ...                                   
+  $ sdcStatus: chr  &quot;s&quot; &quot;s&quot; &quot;s&quot; &quot;s&quot; ...                                                     
+  - attr(*, &quot;.internal.selfref&quot;)=&lt;externalptr&gt;                                              
+ NULL                                                                                       
+ ==========                                                                                 
+                                                                                            
+ ######################################################                                     
+ ### Summary of the result object of class 'safeObj' ###                                    
+ ######################################################                                     
+ --&gt; The input data have been protected using algorithm SIMPLEHEURISTIC.                    
+ --&gt; The algorithm ran for 1 second.                                                        
+ --&gt; To protect 9 primary sensitive cells, 10 cells need to be additionally suppressed.     
+ --&gt; A total of 51 cells may be published.                                                  
+                                                                                            
+ ###################################                                                        
+ ### Structure of protected Data ###                                                        
+ ###################################                                                        
+ Classes 'data.table' and 'data.frame':\t70 obs. of  4 variables:                            
+  $ region   : chr  &quot;Total&quot; &quot;Total&quot; &quot;Total&quot; &quot;Total&quot; ...                                     
+  $ var1     : chr  &quot;Total&quot; &quot;annet&quot; &quot;arbeid&quot; &quot;soshjelp&quot; ...                                 
+  $ Freq     : num  706 88 54 342 222 596 72 52 283 189 ...                                 
+  $ sdcStatus: chr  &quot;s&quot; &quot;s&quot; &quot;s&quot; &quot;s&quot; ...                                                     
+  - attr(*, &quot;.internal.selfref&quot;)=&lt;externalptr&gt;                                              
+  - attr(*, &quot;index&quot;)= int                                                                   
+ NULL                                                                                       </code></pre>
+</div>
+</div>
+<div id="stacked-data" class="section level2">
+<h2>Stacked data</h2>
+<p>Now we will use a stacked variant of the same data. A single column (“ant”) holds cell counts and the variable “hovedint” contains the four categories “annet”, “arbeid”, “soshjelp” and “trygd”.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">z2 &lt;-<span class="st"> </span><span class="kw">EasyData</span>(<span class="st">&quot;z2&quot;</span>)
+<span class="kw">print</span>(z2)</code></pre></div>
+<pre><code>   region fylke kostragr hovedint ant
+1       A     1      300    annet  11
+2       B     4      300    annet   7
+3       C     5      300    annet   5
+4       D     5      300    annet  13
+5       E     6      300    annet   9
+6       F     6      300    annet  12
+7       G     8      300    annet   6
+8       H     8      300    annet   9
+9       I     1      400    annet   3
+10      J    10      400    annet   9
+11      K    10      400    annet   4
+12      A     1      300   arbeid  11
+13      B     4      300   arbeid   1
+14      C     5      300   arbeid   8
+15      D     5      300   arbeid   2
+16      E     6      300   arbeid  14
+17      F     6      300   arbeid   9
+18      G     8      300   arbeid   4
+19      H     8      300   arbeid   3
+20      I     1      400   arbeid   0
+21      J    10      400   arbeid   0
+22      K    10      400   arbeid   2
+23      A     1      300 soshjelp  55
+24      B     4      300 soshjelp  29
+25      C     5      300 soshjelp  35
+26      D     5      300 soshjelp  17
+27      E     6      300 soshjelp  63
+28      F     6      300 soshjelp  24
+29      G     8      300 soshjelp  22
+30      H     8      300 soshjelp  38
+31      I     1      400 soshjelp   9
+32      J    10      400 soshjelp  32
+33      K    10      400 soshjelp  18
+34      A     1      300    trygd  36
+35      B     4      300    trygd  18
+36      C     5      300    trygd  25
+37      D     5      300    trygd  13
+38      E     6      300    trygd  52
+39      F     6      300    trygd  22
+40      G     8      300    trygd   8
+41      H     8      300    trygd  15
+42      I     1      400    trygd   2
+43      J    10      400    trygd  20
+44      K    10      400    trygd  11</code></pre>
+<p>We run ProtectTable with stacked data the same way as with unstacked data.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ex2 &lt;-<span class="st"> </span><span class="kw">ProtectTable</span>(z2, <span class="dt">dimVar =</span> <span class="kw">c</span>(<span class="st">&quot;region&quot;</span>, <span class="st">&quot;hovedint&quot;</span>, <span class="st">&quot;kostragr&quot;</span>), <span class="dt">freqVar =</span> <span class="st">&quot;ant&quot;</span>)</code></pre></div>
+<p>Instead of three output elements we now have the single element <em>data</em>:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(ex2$data)</code></pre></div>
+<pre><code>   region hovedint freq sdcStatus suppressed
+1       A    annet   11         s         11
+2       B    annet    7         x         NA
+3       C    annet    5         s          5
+4       D    annet   13         s         13
+5       E    annet    9         s          9
+6       F    annet   12         s         12
+7       G    annet    6         s          6
+8       H    annet    9         x         NA
+9       I    annet    3         u         NA
+10      J    annet    9         x         NA
+11      K    annet    4         x         NA
+12      A   arbeid   11         s         11
+13      B   arbeid    1         u         NA
+14      C   arbeid    8         s          8
+15      D   arbeid    2         u         NA
+16      E   arbeid   14         s         14
+17      F   arbeid    9         s          9
+18      G   arbeid    4         x         NA
+19      H   arbeid    3         u         NA
+20      I   arbeid    0         u         NA
+21      J   arbeid    0         u         NA
+22      K   arbeid    2         u         NA
+23      A soshjelp   55         s         55
+24      B soshjelp   29         s         29
+25      C soshjelp   35         s         35
+26      D soshjelp   17         s         17
+27      E soshjelp   63         s         63
+28      F soshjelp   24         s         24
+29      G soshjelp   22         s         22
+30      H soshjelp   38         s         38
+31      I soshjelp    9         s          9
+32      J soshjelp   32         s         32
+33      K soshjelp   18         s         18
+34      A    trygd   36         s         36
+35      B    trygd   18         s         18
+36      C    trygd   25         s         25
+37      D    trygd   13         x         NA
+38      E    trygd   52         s         52
+39      F    trygd   22         s         22
+40      G    trygd    8         x         NA
+41      H    trygd   15         s         15
+42      I    trygd    2         u         NA
+43      J    trygd   20         s         20
+44      K    trygd   11         x         NA
+45      A    Total  113         s        113
+46      B    Total   55         s         55
+47      C    Total   73         s         73
+48      D    Total   45         s         45
+49      E    Total  138         s        138
+50      F    Total   67         s         67
+51      G    Total   40         s         40
+52      H    Total   65         s         65
+53      I    Total   14         s         14
+54      J    Total   61         s         61
+55      K    Total   35         s         35
+56    300    annet   72         x         NA
+57    300   arbeid   52         x         NA
+58    300 soshjelp  283         s        283
+59    300    trygd  189         s        189
+60    300    Total  596         s        596
+61    400    annet   16         x         NA
+62    400   arbeid    2         u         NA
+63    400 soshjelp   59         s         59
+64    400    trygd   33         s         33
+65    400    Total  110         s        110
+66  Total    annet   88         s         88
+67  Total   arbeid   54         s         54
+68  Total soshjelp  342         s        342
+69  Total    trygd  222         s        222
+70  Total    Total  706         s        706</code></pre>
+<p>Unlike above addName is FALSE (default) and therefore the sub-totals “300” and “400” are written without “kostragr”.</p>
+</div>
+<div id="assuming-micro-data" class="section level2">
+<h2>Assuming micro data</h2>
+<p>Below no columns holds cell counts (no freqVar input) and therefore it is assumed that each cell count is one. For this data set this is not realistic, but in other cases rows are replicated.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">ex2micro &lt;-<span class="st"> </span><span class="kw">ProtectTable</span>(z2, <span class="dt">dimVar =</span> <span class="kw">c</span>(<span class="st">&quot;region&quot;</span>, <span class="st">&quot;hovedint&quot;</span>, <span class="st">&quot;kostragr&quot;</span>))</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">print</span>(ex2micro$data)</code></pre></div>
+<pre><code>   region hovedint freq sdcStatus suppressed
+1       A    annet    1         u         NA
+2       B    annet    1         u         NA
+3       C    annet    1         u         NA
+4       D    annet    1         u         NA
+5       E    annet    1         u         NA
+6       F    annet    1         u         NA
+7       G    annet    1         u         NA
+8       H    annet    1         u         NA
+9       I    annet    1         u         NA
+10      J    annet    1         u         NA
+11      K    annet    1         u         NA
+12      A   arbeid    1         u         NA
+13      B   arbeid    1         u         NA
+14      C   arbeid    1         u         NA
+15      D   arbeid    1         u         NA
+16      E   arbeid    1         u         NA
+17      F   arbeid    1         u         NA
+18      G   arbeid    1         u         NA
+19      H   arbeid    1         u         NA
+20      I   arbeid    1         u         NA
+21      J   arbeid    1         u         NA
+22      K   arbeid    1         u         NA
+23      A soshjelp    1         u         NA
+24      B soshjelp    1         u         NA
+25      C soshjelp    1         u         NA
+26      D soshjelp    1         u         NA
+27      E soshjelp    1         u         NA
+28      F soshjelp    1         u         NA
+29      G soshjelp    1         u         NA
+30      H soshjelp    1         u         NA
+31      I soshjelp    1         u         NA
+32      J soshjelp    1         u         NA
+33      K soshjelp    1         u         NA
+34      A    trygd    1         u         NA
+35      B    trygd    1         u         NA
+36      C    trygd    1         u         NA
+37      D    trygd    1         u         NA
+38      E    trygd    1         u         NA
+39      F    trygd    1         u         NA
+40      G    trygd    1         u         NA
+41      H    trygd    1         u         NA
+42      I    trygd    1         u         NA
+43      J    trygd    1         u         NA
+44      K    trygd    1         u         NA
+45      A    Total    4         s          4
+46      B    Total    4         s          4
+47      C    Total    4         s          4
+48      D    Total    4         s          4
+49      E    Total    4         s          4
+50      F    Total    4         s          4
+51      G    Total    4         s          4
+52      H    Total    4         s          4
+53      I    Total    4         s          4
+54      J    Total    4         s          4
+55      K    Total    4         s          4
+56    300    annet    8         x         NA
+57    300   arbeid    8         x         NA
+58    300 soshjelp    8         x         NA
+59    300    trygd    8         x         NA
+60    300    Total   32         s         32
+61    400    annet    3         u         NA
+62    400   arbeid    3         u         NA
+63    400 soshjelp    3         u         NA
+64    400    trygd    3         u         NA
+65    400    Total   12         s         12
+66  Total    annet   11         s         11
+67  Total   arbeid   11         s         11
+68  Total soshjelp   11         s         11
+69  Total    trygd   11         s         11
+70  Total    Total   44         s         44</code></pre>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

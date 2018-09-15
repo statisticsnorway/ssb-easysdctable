@@ -1,0 +1,171 @@
+---
+title: "'easySdcTable' Vignette"
+author: "Øyvind Langsrud"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{easySdcTable Vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+## Introduction and background
+
+Below is given an introductory demonstration of the function ProtectTable() which enables an easy interface to the statistical disclosure control package 'sdcTable' (https://CRAN.R-project.org/package=sdcTable). To see the input and output to functions in sdcTable consult the function ProtectTable1() which is an underlying function of ProtectTable(). Note that 'easySdcTable' is not as general as 'sdcTable'.
+
+This package was originally developed as a part of the modernization of the production of the key figures on municipal activities in Norway (https://www.ssb.no/en/offentlig-sektor/kostra). The fictitious example data is generated to be similar to realistic data from Norwegian municipalities and the variable names are (unfortunately) in Norwegian.
+
+
+```{r include = FALSE}
+library(knitr)
+library(easySdcTable)
+```
+
+The demonstration below is based on the data from example 2 in the package and first we will use the unstacked data.
+
+Before demonstrating ProtectTable() a few word about new possibilities in this version of 'easySdcTable' is given.
+
+## Graphical user interface and $\tau$-ARGUS
+
+A graphical user interface based on 'shiny' can be started by: 
+```{r eval=FALSE, tidy = TRUE}
+PTgui()
+```
+To start the gui with example data and catch output:
+```{r eval=FALSE, tidy = TRUE}
+out <- PTgui(data=EasyData("z1w"))
+```
+To start the gui with possibility to run tau-argus:
+```{r eval=FALSE, tidy = TRUE}
+exeArgus <- "C:/Tau/TauArgus4.1.4/TauArgus.exe" # Tau-argus executable 
+pathArgus <- "C:/Users/nnn/Documents" # Folder for (temporary) tau-argus files
+PTgui(exeArgus=exeArgus, pathArgus=pathArgus) 
+```
+The interface to tau-argus make use of new functionality in ‘sdcTable’. See the documentation of ProtectTable() for more information.
+
+
+## Unstacked data
+
+
+#### The input data
+
+The function EasyData() in ‘easySdcTable’ returns example data.
+
+```{r comment=NA, tidy = TRUE}
+z2w <- EasyData("z2w") 
+print(z2w, row.names=FALSE)
+```
+
+By unstacked data we mean that counts (cell frequencies) are in more than a single column.  
+
+
+#### Running ProtectTable 
+
+In this case we have counts in columns four to seven. Using the dimensional variable in the first column we can run ProtectTable by:
+
+```{r comment=NA, results='hide', tidy = TRUE}
+ex2w <- ProtectTable(z2w,1,4:7) 
+```
+
+#### The data with computed totals
+
+The output element *freq* contains the data with computed totals. 
+
+```{r comment=NA, tidy = TRUE}
+print(ex2w$freq, row.names=FALSE)
+```
+
+#### SdcStatus
+
+In the output element *sdcStatus*  the cells are coded as "u" (primary suppressed), "x" (secondary suppression), and "s" (can be published).
+
+```{r comment=NA, tidy = TRUE}
+print(ex2w$sdcStatus, row.names=FALSE)
+```
+
+
+#### Suppressed data
+
+The output element *suppressed* is the same as *freq* with the exception that suppressed cells ("u" and "x") are set to missing (NA).
+
+```{r comment=NA, tidy = TRUE}
+print(ex2w$suppressed, row.names=FALSE)
+```
+
+
+#### Using named input and the HITAS method
+
+Now we specify the variables using names instead of numbers. Furthermore we use the "HITAS" method. The default method is "SIMPLEHEURISTIC" and other possibilities are "OPT" and "HYPERCUBE". The latter is not possible in cases with two linked tables.
+
+```{r comment=NA, results='hide', tidy = TRUE}
+ex2wHITAS <- ProtectTable(z2w,dimVar = c("region"),freqVar = c("annet", "arbeid", "soshjelp", "trygd"), method="HITAS")  
+```
+
+```{r comment=NA, tidy = TRUE}
+print(ex2wHITAS$suppressed, row.names=FALSE)
+```
+
+#### More advanced use of ProtectTable
+
+Here we include the tree first variables as dimensional variables. It will be detected automatically that "fylke" and "kostragr" are hierarchically related to "region" and that they are not hierarchically related to each other.
+Zeros will not be suppressed and we will only primarily suppress ones and twos.
+
+
+```{r comment=NA, results='hide', tidy = TRUE}
+ex2wAdvanced <- ProtectTable(z2w,dimVar = c("region", "fylke","kostragr"),freqVar = c("annet", "arbeid", "soshjelp", "trygd"), maxN=2, protectZeros=FALSE, addName=TRUE)  
+```
+#### Suppressed data with totals and sub-totals
+
+Now the output data will contain sub-totals of the additional variables and the secondary suppression has taken those  sub-totals into account. Since addName is TRUE, sub-totals are named using "fylke" and "kostragr".
+
+```{r comment=NA, tidy = TRUE}
+print(ex2wAdvanced$suppressed, row.names=FALSE)
+```
+
+#### Info
+
+The output element *info* contains three parts. 
+
+1. Since we have unstacked data an extra variable, named *var1*, is created. How the categories of this variable are related to the variable names are described. Here these  categories are simply the variable names. In more advanced cases it is possible that more than a single variable are created from the variable names.
+
+2. Secondly, it is described how the tables(s) are created from the variables. In this case the problem is solved using two linked tables. The first table involves "fylke" and the second table involves "kostragr".
+
+3. The last part contains summary output for each of the two linked tables. 
+
+
+```{r comment=NA, tidy = TRUE}
+prmatrix(ex2wAdvanced$info,rowlab=rep("",99),collab="",quote=FALSE)
+```
+
+## Stacked data
+
+Now we will use a stacked variant of the same data. A single column ("ant") holds cell counts and the variable "hovedint" contains the four categories "annet", "arbeid", "soshjelp" and "trygd".
+
+```{r comment=NA, tidy = TRUE}
+z2 <- EasyData("z2") 
+print(z2)
+```
+We run ProtectTable with stacked data the same way as with unstacked data.
+
+```{r comment=NA, results='hide', tidy = TRUE}
+ex2 <- ProtectTable(z2,dimVar = c("region", "hovedint", "kostragr"), freqVar = "ant") 
+```
+Instead of three output elements we now have the single element *data*:
+
+```{r comment=NA, tidy = TRUE}
+print(ex2$data)
+```
+Unlike above addName is FALSE (default) and therefore the sub-totals "300" and "400" are written without "kostragr".
+
+## Assuming micro data
+
+Below no columns holds cell counts (no freqVar input) and therefore it is assumed that each cell count is one. 
+For this data set this is not realistic, but in other cases rows are replicated. 
+
+```{r comment=NA, results='hide', tidy = TRUE}
+ex2micro <- ProtectTable(z2,dimVar = c("region", "hovedint", "kostragr")) 
+```
+
+```{r comment=NA, tidy = TRUE}
+print(ex2micro$data)
+```
