@@ -42,7 +42,7 @@ PTgui()
 out <- PTguiNO(data=EasyData("z1w"))   
 
 # Tau-argus executable 
-exeArgus <- "C:/TauArgus/TauWindows4.1.4_updated/TauArgus4.1.4/TauArgus.exe"
+exeArgus <- "C:/TauArgus4.1.4/TauArgus.exe"
 
 # Folder for (temporary) tau-argus files
 pathArgus <- "C:/Users/nnn/Documents"

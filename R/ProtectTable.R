@@ -21,6 +21,9 @@
 #' @param addName When TRUE the variable name is added to the level names, except for variables with most levels.
 #' @param sep A character string to separate when addName apply and when creating variable names.
 #' @param removeZeros When TRUE, rows with zero count will be removed from the data within the algorithm.
+#' @param dimList By default, hierarchies will be automatically found from data (see \code{\link{FindDimLists}}). 
+#'   With non-NULL dimList, these will be changed. 
+#'   In practice this is done by the function \code{\link{ReplaceDimList}}. 
 #' @param groupVarInd Possible manual specification of list defining the hierarchical 
 #'         variable groups. When NULL (default) this information will be found automatically 
 #'         by \code{\link{FindTableGroup}}.
@@ -148,22 +151,27 @@
 #'                split="_",namesAsInput=FALSE,orderAsInput=FALSE) # Alternative ouput format
 #'                
 #'  # ====  Examples Tau-Argus ====              
-#'  exe  <- "C:/Users/oyl/R/TauArgus/TauWindows4.1.4_updated/TauArgus4.1.4/TauArgus.exe"
-#'  path <- "C:/Users/oyl/Documents/work/tull"
+#'  exeArgus <- "C:/TauArgus4.1.4/TauArgus.exe"
+#'  pathArgus <- "C:/Users/nnn/Documents"
 #'  z1 = EasyData("z1") 
-#'  ProtectTable(z1,1:2,3,method=list(exe=exe, path=path, typ="tabular", method="OPT")) 
-#'  ProtectTable(z1,1:2,3,method=list(exe=exe, path=path, typ="tabular", method="MOD")) 
-#'  ProtectTable(z1,1:2,3,method=list(exe=exe, path=path, typ="tabular", method="GH"))
-#'  z1$ant[17] = 0 
+#'  ProtectTable(z1,1:2,3,method=list(exe=exeArgus, path=pathArgus, typ="tabular", method="OPT")) 
+#'  ProtectTable(z1,1:2,3,method=list(exe=exeArgus, path=pathArgus, typ="tabular", method="MOD")) 
+#'  ProtectTable(z1,1:2,3,method=list(exe=exeArgus, path=pathArgus, typ="tabular", method="GH"))
 #'   ProtectTable(z1,1:2,3,maxN=-1,
-#'    method=list(path=path, exe=exe, method="OPT",primSuppRules= list(
-#'    list(type="freq", n=4, rg=20),
-#'    list(type="zero", rg=1)
-#'    )))
+#'    method=list(path=pathArgus, exe=exeArgus, method="OPT",
+#'          primSuppRules= list(list(type="freq", n=4, rg=20))))
 #'  z3w <- EasyData("z3")
 #'  ProtectTable(z3,c(1:2,4,5),7,maxN=-1,
-#'    method=list(path=path, exe=exe, method="OPT",primSuppRules=list(list(type="freq", n=4, rg=20))))
+#'    method=list(path=pathArgus, exe=exeArgus, method="OPT",
+#'          primSuppRules=list(list(type="freq", n=4, rg=20))))
 #'                }
+#'                
+#' # ==== Examples with parameter dimList  ====
+#' z2 <- EasyData("z2")
+#' dList <- FindDimLists(z2[-5])
+#' ProtectTable(z2[, c(1, 4, 5)], 1:2, 3, dimList = dList[c(1, 3)])
+#' ProtectTable(z2[, c(1, 4, 5)], 1:2, 3, dimList = dList[2])
+#' ProtectTable(z2[, c(1, 4, 5)], 1:2, 3, dimList = DimList2Hrc(dList[c(2, 3)]))              
 ProtectTable  <-  function(data,
                          dimVar=1:NCOL(data),
                          freqVar=NULL,
@@ -175,6 +183,7 @@ ProtectTable  <-  function(data,
                          addName=FALSE,
                          sep="_",
                          removeZeros=FALSE,
+                         dimList = NULL,
                          groupVarInd=NULL,
                          ind1=NULL,
                          ind2=NULL, 
@@ -244,8 +253,10 @@ ProtectTable  <-  function(data,
       
       IncProgress()
       pt <- ProtectTable1(data = data, dimVarInd = dimVarInd, freqVarInd = freqVarInd, 
-                          protectZeros = protectZeros, maxN = maxN, method = method, findLinked = findLinked, 
-                          total = total, addName = addName, sep = sep, removeZeros = removeZeros, groupVarInd = groupVarInd, 
+                          protectZeros = protectZeros, maxN = maxN, method = method, findLinked = findLinked,
+                          total = total, addName = addName, sep = sep, removeZeros = removeZeros, 
+                          dimList = dimList,
+                          groupVarInd = groupVarInd, 
                           ind1 = ind1, ind2 = ind2, dimDataReturn = TRUE, IncProgress = IncProgress, ...)
       
       if(infoAsFrame){
@@ -293,14 +304,21 @@ ProtectTable  <-  function(data,
       
       nDim <- length(gVC)
       
-      sortedLists <- vector("list", nDim)
-      names(sortedLists) <- names(gVC)
-      for (i in seq_len(nDim)) {
-        if (numericOrder) 
-          sortedLists[[i]] <- SortedFromData(pt$common$dimData, ind = gVC[[i]], 
-                                             total = total, xNumeric = data[, dimVarInd, drop = FALSE]) else sortedLists[[i]] <- SortedFromData(pt$common$dimData, ind = gVC[[i]], 
-                                                                                                                                                total = total)
-      }
+      try( {    # Include in try as extra safety. Sorting can be omitted"
+        sortedLists <- vector("list", nDim)
+        names(sortedLists) <- names(gVC)
+        for (i in seq_len(nDim)) {
+          if(is.null(dimList)){
+            if (numericOrder) 
+              sortedLists[[i]] <- SortedFromData(pt$common$dimData, ind = gVC[[i]], 
+                                                 total = total, xNumeric = data[, dimVarInd, drop = FALSE]) 
+            else 
+              sortedLists[[i]] <- SortedFromData(pt$common$dimData, ind = gVC[[i]], total = total)
+          } else{
+            sortedLists[[i]] <- SortedFromDimList(pt$table1$dimList[names(gVC)[i]][[1]],pt$table2$dimList[names(gVC)[i]][[1]])
+          }
+        }
+      }, silent = TRUE)
       
       
       if (is.null(pt[[2]][[1]])) {
@@ -324,8 +342,7 @@ ProtectTable  <-  function(data,
         if (dim(t1)[2] != dim(t2)[2]) 
           stop("Output from linked tables: Something is wrong!")
         
-        b <- merge(t1, t2, all = TRUE, by = seq_len(dim(t1)[2] - 2), suffixes = c("", 
-                                                                                  ".y"))
+        b <- merge(t1, t2, all = TRUE, by = seq_len(dim(t1)[2] - 2), suffixes = c("", ".y"))
         ######## MERK
         if (sum(abs(b$Freq - b$Freq.y), na.rm = TRUE) > 0) 
           stop("Output from protectLinkedTables: Something is wrong!")
@@ -347,18 +364,27 @@ ProtectTable  <-  function(data,
         
       }
       
-      if (sortByReversedColumns) 
-        fd <- finalData[, rev(seq_len(nDim)), drop = FALSE] else fd <- finalData[, seq_len(nDim), drop = FALSE]
-      for (i in seq_len(nDim)) {
-        fd[, names(sortedLists)[i]] <- as.integer(factor(fd[, names(sortedLists)[i]], 
+      
+      okSortTry = FALSE
+      try( {    # Include in try as extra safety. Sorting can be omitted"
+        
+        if (sortByReversedColumns) 
+          fd <- finalData[, rev(seq_len(nDim)), drop = FALSE] else fd <- finalData[, seq_len(nDim), drop = FALSE]
+        for (i in seq_len(nDim)) {
+          fd[, names(sortedLists)[i]] <- as.integer(factor(fd[, names(sortedLists)[i]], 
                                                          levels = sortedLists[[i]]))
-      }
+        }
       
-      if (sum(is.na(fd))) 
-        stop("Something went wrong when sorting output")
+        if (sum(is.na(fd))) 
+          stop("Something went wrong when sorting output")
       
       
-      finalData <- finalData[SortRows(fd, index.return = TRUE), , drop = FALSE]
+        finalData <- finalData[SortRows(fd, index.return = TRUE), , drop = FALSE]
+        okSortTry = TRUE
+      }, silent = TRUE)
+      
+      if(!okSortTry)
+        warning("Something went wrong when sorting output. Output is not sorted.")
       
       rownames(finalData) <- NULL
       
@@ -627,11 +653,9 @@ SortedFromDimList <- function(dimList1, dimList2 = NULL) {
   if (!is.null(dimList2)) {
     dimList <- rbind(dimList1, dimList2)
     return(unique(dimList[order(c(-5 * as.integer(factor(dimList1$levels)), -4 * 
-                                    as.integer(factor(dimList2$levels))), c(dimList1$codes, dimList2$codes)), 
-                          ])[, 2])
+                                    as.integer(factor(dimList2$levels))), c(dimList1$codes, dimList2$codes)), ])[, 2])
   }
-  return(unique(dimList1[order(c(-5 * as.integer(factor(dimList1$levels))), c(dimList1$codes)), 
-                         ])[, 2])
+  return(unique(dimList1[order(c(-5 * as.integer(factor(dimList1$levels))), c(dimList1$codes)), ])[, 2])
 }
 
 uniqueIndex <- function(x, ordered = FALSE) {

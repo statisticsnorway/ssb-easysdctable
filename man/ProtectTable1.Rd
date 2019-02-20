@@ -8,8 +8,9 @@
 ProtectTable1(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL,
   protectZeros = TRUE, maxN = 3, method = "SIMPLEHEURISTIC",
   findLinked = TRUE, total = "Total", addName = FALSE, sep = ".",
-  removeZeros = FALSE, groupVarInd = NULL, ind1 = NULL, ind2 = NULL,
-  dimDataReturn = FALSE, IncProgress = IncDefault, ...)
+  removeZeros = FALSE, dimList = NULL, groupVarInd = NULL,
+  ind1 = NULL, ind2 = NULL, dimDataReturn = FALSE,
+  IncProgress = IncDefault, ...)
 }
 \arguments{
 \item{data}{Matrix or data frame}
@@ -34,6 +35,8 @@ Alternatively a list defining parameters for running tau-argus (see \code{\link{
 \item{sep}{A character string to separate when addName apply.}
 
 \item{removeZeros}{When TRUE, rows with zero count will be removed from the data.}
+
+\item{dimList}{See \code{\link{ProtectTable}}.}
 
 \item{groupVarInd}{Possible manual specification if list defining the hierarchical variable groups}
 

@@ -1,9 +1,10 @@
 Package: easySdcTable 
 Type: Package
 Title: Easy Interface to the Statistical Disclosure Control Package 'sdcTable'
-Version: 0.3.1
-Date: 2018-01-15
-Author: Øyvind Langsrud
+Version: 0.3.2
+Date: 2019-02-20
+Authors@R: person("Øyvind", "Langsrud", role = c("aut", "cre"), email = "oyl@ssb.no")
+Author: Øyvind Langsrud [aut, cre]
 Maintainer: Øyvind Langsrud <oyl@ssb.no>
 Depends: R (>= 3.0.0), sdcTable, SSBtools, shiny
 VignetteBuilder: knitr
@@ -16,5 +17,7 @@ Description: The main function, ProtectTable(), performs table suppression accor
  The function, PTgui(), starts a graphical user interface based on the shiny package.
 License: Apache License 2.0 | file LICENSE
 LazyData: TRUE
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Encoding: UTF-8
+URL: https://github.com/statisticsnorway/easySdcTable
+BugReports: https://github.com/statisticsnorway/easySdcTable/issues

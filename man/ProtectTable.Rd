@@ -8,11 +8,12 @@
 ProtectTable(data, dimVar = 1:NCOL(data), freqVar = NULL,
   protectZeros = TRUE, maxN = 3, method = "SIMPLEHEURISTIC",
   findLinked = TRUE, total = "Total", addName = FALSE, sep = "_",
-  removeZeros = FALSE, groupVarInd = NULL, ind1 = NULL, ind2 = NULL,
-  rowData = NULL, varNames = paste("var", 1:100, sep = ""), split = NULL,
-  border = sep, revBorder = FALSE, freqName = "values",
-  totalFirst = FALSE, numericOrder = TRUE, namesAsInput = TRUE,
-  orderAsInput = TRUE, sortByReversedColumns = FALSE, doUnstack = TRUE,
+  removeZeros = FALSE, dimList = NULL, groupVarInd = NULL,
+  ind1 = NULL, ind2 = NULL, rowData = NULL, varNames = paste("var",
+  1:100, sep = ""), split = NULL, border = sep, revBorder = FALSE,
+  freqName = "values", totalFirst = FALSE, numericOrder = TRUE,
+  namesAsInput = TRUE, orderAsInput = TRUE,
+  sortByReversedColumns = FALSE, doUnstack = TRUE,
   removeTotal = TRUE, singleOutput = NULL, suppression = NA,
   outFreq = "freq", outSdcStatus = "sdcStatus",
   outSuppressed = "suppressed", infoAsFrame = FALSE,
@@ -44,6 +45,10 @@ Experimental wrapper methods according to \code{\link{PTwrap}} is also possible 
 \item{sep}{A character string to separate when addName apply and when creating variable names.}
 
 \item{removeZeros}{When TRUE, rows with zero count will be removed from the data within the algorithm.}
+
+\item{dimList}{By default, hierarchies will be automatically found from data (see \code{\link{FindDimLists}}). 
+With non-NULL dimList, these will be changed. 
+In practice this is done by the function \code{\link{ReplaceDimList}}.}
 
 \item{groupVarInd}{Possible manual specification of list defining the hierarchical 
 variable groups. When NULL (default) this information will be found automatically 
@@ -194,22 +199,27 @@ One or two tables are identified automatically and subjected to cell suppression
                split="_",namesAsInput=FALSE,orderAsInput=FALSE) # Alternative ouput format
                
  # ====  Examples Tau-Argus ====              
- exe  <- "C:/Users/oyl/R/TauArgus/TauWindows4.1.4_updated/TauArgus4.1.4/TauArgus.exe"
- path <- "C:/Users/oyl/Documents/work/tull"
+ exeArgus <- "C:/TauArgus4.1.4/TauArgus.exe"
+ pathArgus <- "C:/Users/nnn/Documents"
  z1 = EasyData("z1") 
- ProtectTable(z1,1:2,3,method=list(exe=exe, path=path, typ="tabular", method="OPT")) 
- ProtectTable(z1,1:2,3,method=list(exe=exe, path=path, typ="tabular", method="MOD")) 
- ProtectTable(z1,1:2,3,method=list(exe=exe, path=path, typ="tabular", method="GH"))
- z1$ant[17] = 0 
+ ProtectTable(z1,1:2,3,method=list(exe=exeArgus, path=pathArgus, typ="tabular", method="OPT")) 
+ ProtectTable(z1,1:2,3,method=list(exe=exeArgus, path=pathArgus, typ="tabular", method="MOD")) 
+ ProtectTable(z1,1:2,3,method=list(exe=exeArgus, path=pathArgus, typ="tabular", method="GH"))
   ProtectTable(z1,1:2,3,maxN=-1,
-   method=list(path=path, exe=exe, method="OPT",primSuppRules= list(
-   list(type="freq", n=4, rg=20),
-   list(type="zero", rg=1)
-   )))
+   method=list(path=pathArgus, exe=exeArgus, method="OPT",
+         primSuppRules= list(list(type="freq", n=4, rg=20))))
  z3w <- EasyData("z3")
  ProtectTable(z3,c(1:2,4,5),7,maxN=-1,
-   method=list(path=path, exe=exe, method="OPT",primSuppRules=list(list(type="freq", n=4, rg=20))))
+   method=list(path=pathArgus, exe=exeArgus, method="OPT",
+         primSuppRules=list(list(type="freq", n=4, rg=20))))
                }
+               
+# ==== Examples with parameter dimList  ====
+z2 <- EasyData("z2")
+dList <- FindDimLists(z2[-5])
+ProtectTable(z2[, c(1, 4, 5)], 1:2, 3, dimList = dList[c(1, 3)])
+ProtectTable(z2[, c(1, 4, 5)], 1:2, 3, dimList = dList[2])
+ProtectTable(z2[, c(1, 4, 5)], 1:2, 3, dimList = DimList2Hrc(dList[c(2, 3)]))              
 }
 \seealso{
 ProtectTable makes a call to the function \code{\link{ProtectTable1}}.

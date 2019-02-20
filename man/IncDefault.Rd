@@ -18,3 +18,4 @@ but this results in wrong
 \examples{
  IncDefault() 
 }
+\keyword{internal}

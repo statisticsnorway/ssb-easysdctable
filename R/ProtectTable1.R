@@ -16,6 +16,7 @@
 #' @param addName When TRUE the variable name is added to the level names, except for variables with most levels.
 #' @param sep A character string to separate when addName apply.
 #' @param removeZeros When TRUE, rows with zero count will be removed from the data.
+#' @param dimList See \code{\link{ProtectTable}}.
 #' @param groupVarInd Possible manual specification if list defining the hierarchical variable groups
 #' @param ind1  Coding of table 1 as indices referring to elements of groupVarInd
 #' @param ind2  Coding of table 2 as indices referring to elements of groupVarInd
@@ -66,7 +67,9 @@
 #' as.data.frame(getInfo(b[[2]][[1]],type="finalData")) # Second table
 ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, protectZeros = TRUE, 
                           maxN = 3, method = "SIMPLEHEURISTIC", findLinked = TRUE, total = "Total", addName = FALSE, 
-                          sep = ".", removeZeros = FALSE, groupVarInd = NULL, ind1 = NULL, ind2 = NULL, 
+                          sep = ".", removeZeros = FALSE, 
+                          dimList = NULL,
+                          groupVarInd = NULL, ind1 = NULL, ind2 = NULL, 
                           dimDataReturn = FALSE, 
                           IncProgress = IncDefault,
                           ...) {
@@ -112,10 +115,18 @@ ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, pro
   dimLists <- FindDimLists(data[, dimVarInd, drop = FALSE], groupVarInd = groupVarInd, 
                            addName = addName, sep = sep, total = total, xReturn = dimDataReturn)
   
+
   if (dimDataReturn) {
     dimData <- dimLists$x
     dimLists <- dimLists$dimLists
   } else dimData <- NULL
+  
+  
+  if(!is.null(dimList)){
+    dimLists <- ReplaceDimList(dimLists, dimList, total = total)
+  }
+  
+  
   
   dimList1 <- dimLists[ind1]
   

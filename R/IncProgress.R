@@ -6,6 +6,8 @@
 #' \code{IncProgress = function(){cat("."); flush.console()}} \cr
 #' but this results in wrong 
 #' "usage line" in the documentation since ";" is not included.
+#' 
+#' @keywords internal
 #'
 #' @examples
 #'  IncDefault() 
