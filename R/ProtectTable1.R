@@ -55,16 +55,16 @@
 #'         \code{\link{FindDimLists}}, \code{\link{FindCommonCells}}
 #'
 #' @examples
-#' z  <- EasyData("sosialFiktiv")
-#'
-#' z8 <- z[z$fylke<=10 & z$kostragr==300,] # 8 regions
-#' a  <- ProtectTable1(z8,c(1,2,4,5),7)
-#' as.data.frame(getInfo(a[[1]][[1]],type="finalData")) # The table (not two linked)
-#'
-#' z36 <- z[z$fylke>=11 & z$fylke<=14 & z$kostragr<=500,] # 36 regions
-#' b <- ProtectTable1(z36,1:6,7)
-#' as.data.frame(getInfo(b[[1]][[1]],type="finalData")) # First table
-#' as.data.frame(getInfo(b[[2]][[1]],type="finalData")) # Second table
+#' \dontrun{
+#' z2 <- EasyData("z2")
+#' a <- ProtectTable1(z2, c(1, 3, 4), 5)
+#' head(as.data.frame(getInfo(a[[1]][[1]], type = "finalData"))  # The table (not two linked))
+#' 
+#' z3 <- EasyData("z3")
+#' b <- ProtectTable1(z3, 1:6, 7)
+#' head(as.data.frame(getInfo(b[[1]][[1]], type = "finalData")))  # First table
+#' head(as.data.frame(getInfo(b[[2]][[1]], type = "finalData")))  # Second table
+#' }
 ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, protectZeros = TRUE, 
                           maxN = 3, method = "SIMPLEHEURISTIC", findLinked = TRUE, total = "Total", addName = FALSE, 
                           sep = ".", removeZeros = FALSE, 

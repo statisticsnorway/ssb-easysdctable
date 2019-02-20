@@ -78,16 +78,16 @@ One or two tables are identified automatically and subjected to cell suppression
          The tables can alternatively be specified manually by groupVarInd, ind1 and ind2 (see \code{\link{FindTableGroup}}).
 }
 \examples{
-z  <- EasyData("sosialFiktiv")
+\dontrun{
+z2 <- EasyData("z2")
+a <- ProtectTable1(z2, c(1, 3, 4), 5)
+head(as.data.frame(getInfo(a[[1]][[1]], type = "finalData"))  # The table (not two linked))
 
-z8 <- z[z$fylke<=10 & z$kostragr==300,] # 8 regions
-a  <- ProtectTable1(z8,c(1,2,4,5),7)
-as.data.frame(getInfo(a[[1]][[1]],type="finalData")) # The table (not two linked)
-
-z36 <- z[z$fylke>=11 & z$fylke<=14 & z$kostragr<=500,] # 36 regions
-b <- ProtectTable1(z36,1:6,7)
-as.data.frame(getInfo(b[[1]][[1]],type="finalData")) # First table
-as.data.frame(getInfo(b[[2]][[1]],type="finalData")) # Second table
+z3 <- EasyData("z3")
+b <- ProtectTable1(z3, 1:6, 7)
+head(as.data.frame(getInfo(b[[1]][[1]], type = "finalData")))  # First table
+head(as.data.frame(getInfo(b[[2]][[1]], type = "finalData")))  # Second table
+}
 }
 \seealso{
 \code{\link{ProtectTable}}, 
