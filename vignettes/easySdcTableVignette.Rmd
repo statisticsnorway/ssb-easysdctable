@@ -169,3 +169,5 @@ ex2micro <- ProtectTable(z2,dimVar = c("region", "hovedint", "kostragr"))
 ```{r comment=NA, tidy = TRUE}
 print(ex2micro$data)
 ```
+
+.

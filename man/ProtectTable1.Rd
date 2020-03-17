@@ -5,12 +5,26 @@
 \alias{ProtectTable1}
 \title{Easy input interface to sdcTable}
 \usage{
-ProtectTable1(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL,
-  protectZeros = TRUE, maxN = 3, method = "SIMPLEHEURISTIC",
-  findLinked = TRUE, total = "Total", addName = FALSE, sep = ".",
-  removeZeros = FALSE, dimList = NULL, groupVarInd = NULL,
-  ind1 = NULL, ind2 = NULL, dimDataReturn = FALSE,
-  IncProgress = IncDefault, ...)
+ProtectTable1(
+  data,
+  dimVarInd = 1:NCOL(data),
+  freqVarInd = NULL,
+  protectZeros = TRUE,
+  maxN = 3,
+  method = "SIMPLEHEURISTIC",
+  findLinked = TRUE,
+  total = "Total",
+  addName = FALSE,
+  sep = ".",
+  removeZeros = FALSE,
+  dimList = NULL,
+  groupVarInd = NULL,
+  ind1 = NULL,
+  ind2 = NULL,
+  dimDataReturn = FALSE,
+  IncProgress = IncDefault,
+  ...
+)
 }
 \arguments{
 \item{data}{Matrix or data frame}

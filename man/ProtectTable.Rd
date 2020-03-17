@@ -5,19 +5,44 @@
 \alias{ProtectTable}
 \title{Easy interface to sdcTable: Table suppression according to a frequency rule.}
 \usage{
-ProtectTable(data, dimVar = 1:NCOL(data), freqVar = NULL,
-  protectZeros = TRUE, maxN = 3, method = "SIMPLEHEURISTIC",
-  findLinked = TRUE, total = "Total", addName = FALSE, sep = "_",
-  removeZeros = FALSE, dimList = NULL, groupVarInd = NULL,
-  ind1 = NULL, ind2 = NULL, rowData = NULL, varNames = paste("var",
-  1:100, sep = ""), split = NULL, border = sep, revBorder = FALSE,
-  freqName = "values", totalFirst = FALSE, numericOrder = TRUE,
-  namesAsInput = TRUE, orderAsInput = TRUE,
-  sortByReversedColumns = FALSE, doUnstack = TRUE,
-  removeTotal = TRUE, singleOutput = NULL, suppression = NA,
-  outFreq = "freq", outSdcStatus = "sdcStatus",
-  outSuppressed = "suppressed", infoAsFrame = FALSE,
-  IncProgress = IncDefault, ...)
+ProtectTable(
+  data,
+  dimVar = 1:NCOL(data),
+  freqVar = NULL,
+  protectZeros = TRUE,
+  maxN = 3,
+  method = "SIMPLEHEURISTIC",
+  findLinked = TRUE,
+  total = "Total",
+  addName = FALSE,
+  sep = "_",
+  removeZeros = FALSE,
+  dimList = NULL,
+  groupVarInd = NULL,
+  ind1 = NULL,
+  ind2 = NULL,
+  rowData = NULL,
+  varNames = paste("var", 1:100, sep = ""),
+  split = NULL,
+  border = sep,
+  revBorder = FALSE,
+  freqName = "values",
+  totalFirst = FALSE,
+  numericOrder = TRUE,
+  namesAsInput = TRUE,
+  orderAsInput = TRUE,
+  sortByReversedColumns = FALSE,
+  doUnstack = TRUE,
+  removeTotal = TRUE,
+  singleOutput = NULL,
+  suppression = NA,
+  outFreq = "freq",
+  outSdcStatus = "sdcStatus",
+  outSuppressed = "suppressed",
+  infoAsFrame = FALSE,
+  IncProgress = IncDefault,
+  ...
+)
 }
 \arguments{
 \item{data}{data frame}
@@ -199,8 +224,8 @@ One or two tables are identified automatically and subjected to cell suppression
                split="_",namesAsInput=FALSE,orderAsInput=FALSE) # Alternative ouput format
                
  # ====  Examples Tau-Argus ====              
- exeArgus <- "C:/TauArgus4.1.4/TauArgus.exe"
- pathArgus <- "C:/Users/nnn/Documents"
+ exeArgus <- "C:/TauArgus4.1.4/TauArgus.exe" # Change to TauArgus.exe-path in your computer
+ pathArgus <- "C:/Users/nnn/Documents"       # Change to an existing folder 
  z1 = EasyData("z1") 
  ProtectTable(z1,1:2,3,method=list(exe=exeArgus, path=pathArgus, typ="tabular", method="OPT")) 
  ProtectTable(z1,1:2,3,method=list(exe=exeArgus, path=pathArgus, typ="tabular", method="MOD")) 

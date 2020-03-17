@@ -151,8 +151,8 @@
 #'                split="_",namesAsInput=FALSE,orderAsInput=FALSE) # Alternative ouput format
 #'                
 #'  # ====  Examples Tau-Argus ====              
-#'  exeArgus <- "C:/TauArgus4.1.4/TauArgus.exe"
-#'  pathArgus <- "C:/Users/nnn/Documents"
+#'  exeArgus <- "C:/TauArgus4.1.4/TauArgus.exe" # Change to TauArgus.exe-path in your computer
+#'  pathArgus <- "C:/Users/nnn/Documents"       # Change to an existing folder 
 #'  z1 = EasyData("z1") 
 #'  ProtectTable(z1,1:2,3,method=list(exe=exeArgus, path=pathArgus, typ="tabular", method="OPT")) 
 #'  ProtectTable(z1,1:2,3,method=list(exe=exeArgus, path=pathArgus, typ="tabular", method="MOD")) 

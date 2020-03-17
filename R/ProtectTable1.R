@@ -127,7 +127,6 @@ ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, pro
   }
   
   
-  
   dimList1 <- dimLists[ind1]
   
   if(makeMicro){ 
@@ -137,13 +136,20 @@ ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, pro
   
   IncProgress()
   
+  
   problem1 <- makeProblem(data = data, dimList = dimList1, dimVarInd = match(names(dimList1), 
                                                                                colnames(data)), freqVarInd = freqVarInd)
+  
+
+  
   primary1 <- primarySupp(problem1, type = "freq", maxN = maxN, allowZeros = allowZeros)
   if(get0("doPrintDimLists",ifnotfound = FALSE)){
     print(dimList1)
     flush.console()
   }  
+  
+  
+  
   if (linked) {
     if(tauArgus) stop("tauArgus with linked tables is not implemented")
     dimList2 <- dimLists[ind2]
@@ -160,6 +166,8 @@ ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, pro
       flush.console()
     }
   } else {
+    
+    
     ind2 <- NULL
     dimList2 <- NULL
     problem2 <- NULL
@@ -167,7 +175,9 @@ ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, pro
     commonCells <- NULL
     IncProgress()
     if(!tauArgus){
+      
       secondary <- list(protectTable(object = primary1, method = method, ...), NULL)
+      
     } else {  
       ## tauArgus start here
       if(method$typ == "microdata"){
@@ -182,6 +192,7 @@ ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, pro
       }
     }
   }
+  
   
   x <- groupVarInd
   for (i in 1:length(x)) x[[i]] <- paste((colnames(data)[dimVarInd])[x[[i]]], collapse = ", ")

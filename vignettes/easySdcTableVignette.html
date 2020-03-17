@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="Øyvind Langsrud" />
 
@@ -36,7 +36,7 @@ a.sourceLine { text-indent: -1em; padding-left: 1em; }
 pre.numberSource a.sourceLine
   { position: relative; left: -4em; }
 pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
+  { content: attr(title);
     position: relative; left: -1em; text-align: right; vertical-align: baseline;
     border: none; pointer-events: all; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
@@ -95,7 +95,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
       if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
       var style = rule.style.cssText;
       // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
       // replace div.sourceCode by a pre.sourceCode rule
       sheets[i].deleteRule(j);
       sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
@@ -116,9 +116,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -287,8 +284,12 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
+
+
+
 
 </head>
 
@@ -298,7 +299,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">‘easySdcTable’ Vignette</h1>
-<h4 class="author"><em>Øyvind Langsrud</em></h4>
+<h4 class="author">Øyvind Langsrud</h4>
 
 
 
@@ -312,13 +313,13 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="graphical-user-interface-and-tau-argus" class="section level2">
 <h2>Graphical user interface and <span class="math inline">\(\tau\)</span>-ARGUS</h2>
 <p>A graphical user interface based on ‘shiny’ can be started by:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">PTgui</span>()</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">PTgui</span>()</a></code></pre></div>
 <p>To start the gui with example data and catch output:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">out &lt;-<span class="st"> </span><span class="kw">PTgui</span>(<span class="dt">data =</span> <span class="kw">EasyData</span>(<span class="st">&quot;z1w&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" title="1">out &lt;-<span class="st"> </span><span class="kw">PTgui</span>(<span class="dt">data =</span> <span class="kw">EasyData</span>(<span class="st">&quot;z1w&quot;</span>))</a></code></pre></div>
 <p>To start the gui with possibility to run tau-argus:</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">exeArgus &lt;-<span class="st"> &quot;C:/Tau/TauArgus4.1.4/TauArgus.exe&quot;</span>  <span class="co"># Tau-argus executable </span></a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">pathArgus &lt;-<span class="st"> &quot;C:/Users/nnn/Documents&quot;</span>  <span class="co"># Folder for (temporary) tau-argus files</span></a>
-<a class="sourceLine" id="cb3-3" data-line-number="3"><span class="kw">PTgui</span>(<span class="dt">exeArgus =</span> exeArgus, <span class="dt">pathArgus =</span> pathArgus)</a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" title="1">exeArgus &lt;-<span class="st"> &quot;C:/Tau/TauArgus4.1.4/TauArgus.exe&quot;</span>  <span class="co"># Tau-argus executable </span></a>
+<a class="sourceLine" id="cb3-2" title="2">pathArgus &lt;-<span class="st"> &quot;C:/Users/nnn/Documents&quot;</span>  <span class="co"># Folder for (temporary) tau-argus files</span></a>
+<a class="sourceLine" id="cb3-3" title="3"><span class="kw">PTgui</span>(<span class="dt">exeArgus =</span> exeArgus, <span class="dt">pathArgus =</span> pathArgus)</a></code></pre></div>
 <p>The interface to tau-argus make use of functionality in ‘sdcTable’. See the documentation of ProtectTable() for more information.</p>
 </div>
 <div id="unstacked-data" class="section level2">
@@ -326,8 +327,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="the-input-data" class="section level4">
 <h4>The input data</h4>
 <p>The function EasyData() in ‘easySdcTable’ returns example data.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">z2w &lt;-<span class="st"> </span><span class="kw">EasyData</span>(<span class="st">&quot;z2w&quot;</span>)</a>
-<a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw">print</span>(z2w, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" title="1">z2w &lt;-<span class="st"> </span><span class="kw">EasyData</span>(<span class="st">&quot;z2w&quot;</span>)</a>
+<a class="sourceLine" id="cb4-2" title="2"><span class="kw">print</span>(z2w, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code> region fylke kostragr annet arbeid soshjelp trygd
       A     1      300    11     11       55    36
       B     4      300     7      1       29    18
@@ -345,12 +346,12 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="running-protecttable" class="section level4">
 <h4>Running ProtectTable</h4>
 <p>In this case we have counts in columns four to seven. Using the dimensional variable in the first column we can run ProtectTable by:</p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1">ex2w &lt;-<span class="st"> </span><span class="kw">ProtectTable</span>(z2w, <span class="dv">1</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">7</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" title="1">ex2w &lt;-<span class="st"> </span><span class="kw">ProtectTable</span>(z2w, <span class="dv">1</span>, <span class="dv">4</span><span class="op">:</span><span class="dv">7</span>)</a></code></pre></div>
 </div>
 <div id="the-data-with-computed-totals" class="section level4">
 <h4>The data with computed totals</h4>
 <p>The output element <em>freq</em> contains the data with computed totals.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw">print</span>(ex2w<span class="op">$</span>freq, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" title="1"><span class="kw">print</span>(ex2w<span class="op">$</span>freq, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code> region annet arbeid soshjelp trygd Total
       A    11     11       55    36   113
       B     7      1       29    18    55
@@ -368,7 +369,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="sdcstatus" class="section level4">
 <h4>SdcStatus</h4>
 <p>In the output element <em>sdcStatus</em> the cells are coded as “u” (primary suppressed), “x” (secondary suppression), and “s” (can be published).</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw">print</span>(ex2w<span class="op">$</span>sdcStatus, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">print</span>(ex2w<span class="op">$</span>sdcStatus, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code> region annet arbeid soshjelp trygd Total
       A     s      s        s     s     s
       B     x      u        s     s     s
@@ -386,7 +387,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="suppressed-data" class="section level4">
 <h4>Suppressed data</h4>
 <p>The output element <em>suppressed</em> is the same as <em>freq</em> with the exception that suppressed cells (“u” and “x”) are set to missing (NA).</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" data-line-number="1"><span class="kw">print</span>(ex2w<span class="op">$</span>suppressed, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">print</span>(ex2w<span class="op">$</span>suppressed, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code> region annet arbeid soshjelp trygd Total
       A    11     11       55    36   113
       B    NA     NA       29    18    55
@@ -404,9 +405,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="using-named-input-and-the-hitas-method" class="section level4">
 <h4>Using named input and the HITAS method</h4>
 <p>Now we specify the variables using names instead of numbers. Furthermore we use the “HITAS” method. The default method is “SIMPLEHEURISTIC” and other possibilities are “OPT” and “HYPERCUBE”. The latter is not possible in cases with two linked tables.</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">ex2wHITAS &lt;-<span class="st"> </span><span class="kw">ProtectTable</span>(z2w, <span class="dt">dimVar =</span> <span class="kw">c</span>(<span class="st">&quot;region&quot;</span>), <span class="dt">freqVar =</span> <span class="kw">c</span>(<span class="st">&quot;annet&quot;</span>, <span class="st">&quot;arbeid&quot;</span>, </a>
-<a class="sourceLine" id="cb13-2" data-line-number="2">    <span class="st">&quot;soshjelp&quot;</span>, <span class="st">&quot;trygd&quot;</span>), <span class="dt">method =</span> <span class="st">&quot;HITAS&quot;</span>)</a></code></pre></div>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1"><span class="kw">print</span>(ex2wHITAS<span class="op">$</span>suppressed, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" title="1">ex2wHITAS &lt;-<span class="st"> </span><span class="kw">ProtectTable</span>(z2w, <span class="dt">dimVar =</span> <span class="kw">c</span>(<span class="st">&quot;region&quot;</span>), <span class="dt">freqVar =</span> <span class="kw">c</span>(<span class="st">&quot;annet&quot;</span>, <span class="st">&quot;arbeid&quot;</span>, </a>
+<a class="sourceLine" id="cb13-2" title="2">    <span class="st">&quot;soshjelp&quot;</span>, <span class="st">&quot;trygd&quot;</span>), <span class="dt">method =</span> <span class="st">&quot;HITAS&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">print</span>(ex2wHITAS<span class="op">$</span>suppressed, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code> region annet arbeid soshjelp trygd Total
       A    11     11       55    36   113
       B    NA     NA       29    18    55
@@ -424,14 +425,13 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="more-advanced-use-of-protecttable" class="section level4">
 <h4>More advanced use of ProtectTable</h4>
 <p>Here we include the tree first variables as dimensional variables. It will be detected automatically that “fylke” and “kostragr” are hierarchically related to “region” and that they are not hierarchically related to each other. Zeros will not be suppressed and we will only primarily suppress ones and twos.</p>
-<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" data-line-number="1">ex2wAdvanced &lt;-<span class="st"> </span><span class="kw">ProtectTable</span>(z2w, <span class="dt">dimVar =</span> <span class="kw">c</span>(<span class="st">&quot;region&quot;</span>, <span class="st">&quot;fylke&quot;</span>, <span class="st">&quot;kostragr&quot;</span>), </a>
-<a class="sourceLine" id="cb16-2" data-line-number="2">    <span class="dt">freqVar =</span> <span class="kw">c</span>(<span class="st">&quot;annet&quot;</span>, <span class="st">&quot;arbeid&quot;</span>, <span class="st">&quot;soshjelp&quot;</span>, <span class="st">&quot;trygd&quot;</span>), <span class="dt">maxN =</span> <span class="dv">2</span>, <span class="dt">protectZeros =</span> <span class="ot">FALSE</span>, </a>
-<a class="sourceLine" id="cb16-3" data-line-number="3">    <span class="dt">addName =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb16-1" title="1">ex2wAdvanced &lt;-<span class="st"> </span><span class="kw">ProtectTable</span>(z2w, <span class="dt">dimVar =</span> <span class="kw">c</span>(<span class="st">&quot;region&quot;</span>, <span class="st">&quot;fylke&quot;</span>, <span class="st">&quot;kostragr&quot;</span>), <span class="dt">freqVar =</span> <span class="kw">c</span>(<span class="st">&quot;annet&quot;</span>, </a>
+<a class="sourceLine" id="cb16-2" title="2">    <span class="st">&quot;arbeid&quot;</span>, <span class="st">&quot;soshjelp&quot;</span>, <span class="st">&quot;trygd&quot;</span>), <span class="dt">maxN =</span> <span class="dv">2</span>, <span class="dt">protectZeros =</span> <span class="ot">FALSE</span>, <span class="dt">addName =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
 </div>
 <div id="suppressed-data-with-totals-and-sub-totals" class="section level4">
 <h4>Suppressed data with totals and sub-totals</h4>
 <p>Now the output data will contain sub-totals of the additional variables and the secondary suppression has taken those sub-totals into account. Since addName is TRUE, sub-totals are named using “fylke” and “kostragr”.</p>
-<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" data-line-number="1"><span class="kw">print</span>(ex2wAdvanced<span class="op">$</span>suppressed, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb17-1" title="1"><span class="kw">print</span>(ex2wAdvanced<span class="op">$</span>suppressed, <span class="dt">row.names =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code>       region annet arbeid soshjelp trygd Total
             A    NA     11       55    NA   113
             B    NA     NA       29    18    55
@@ -440,9 +440,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
             E     9     14       63    52   138
             F    12      9       24    22    67
             G     6     NA       22    NA    40
-            H     9      3       38    15    65
+            H     9     NA       38    NA    65
             I    NA      0        9    NA    14
-            J     9      0       32    20    61
+            J    NA      0       32    NA    61
             K    NA     NA       18    NA    35
       fylke_1    14     11       64    38   127
       fylke_4    NA     NA       29    18    55
@@ -462,7 +462,7 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <li><p>Secondly, it is described how the tables(s) are created from the variables. In this case the problem is solved using two linked tables. The first table involves “fylke” and the second table involves “kostragr”.</p></li>
 <li><p>The last part contains summary output for each of the two linked tables.</p></li>
 </ol>
-<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" data-line-number="1"><span class="kw">prmatrix</span>(ex2wAdvanced<span class="op">$</span>info, <span class="dt">rowlab =</span> <span class="kw">rep</span>(<span class="st">&quot;&quot;</span>, <span class="dv">99</span>), <span class="dt">collab =</span> <span class="st">&quot;&quot;</span>, <span class="dt">quote =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb19-1" title="1"><span class="kw">prmatrix</span>(ex2wAdvanced<span class="op">$</span>info, <span class="dt">rowlab =</span> <span class="kw">rep</span>(<span class="st">&quot;&quot;</span>, <span class="dv">99</span>), <span class="dt">collab =</span> <span class="st">&quot;&quot;</span>, <span class="dt">quote =</span> <span class="ot">FALSE</span>)</a></code></pre></div>
 <pre><code>                                                                                            
               var1                                                                          
  annet       annet                                                                          
@@ -477,18 +477,18 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
  ==========                                                                                 
                                                                                             
  ######################################################                                     
- ### Summary of the result object of class 'safeObj' ###                                    
+ ### Summary of the result object of class &#39;safeObj&#39; ###                                    
  ######################################################                                     
  --&gt; The input data have been protected using algorithm SIMPLEHEURISTIC.                    
  --&gt; The algorithm ran for 1 second.                                                        
- --&gt; To protect 8 primary sensitive cells, 9 cells need to be additionally suppressed.      
- --&gt; A total of 68 cells may be published.                                                  
+ --&gt; To protect 8 primary sensitive cells, 13 cells need to be additionally suppressed.     
+ --&gt; A total of 64 cells may be published.                                                  
  --&gt; Duplicated cells: Only 85 table cells are unique, the remaining 5 cells are duplicates.
                                                                                             
  ###################################                                                        
  ### Structure of protected Data ###                                                        
  ###################################                                                        
- Classes 'data.table' and 'data.frame':\t90 obs. of  4 variables:                            
+ Classes &#39;data.table&#39; and &#39;data.frame&#39;:\t90 obs. of  4 variables:                            
   $ region   : chr  &quot;Total&quot; &quot;Total&quot; &quot;Total&quot; &quot;Total&quot; ...                                     
   $ var1     : chr  &quot;Total&quot; &quot;annet&quot; &quot;arbeid&quot; &quot;soshjelp&quot; ...                                 
   $ Freq     : num  706 88 54 342 222 127 14 11 64 38 ...                                   
@@ -498,17 +498,17 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
  ==========                                                                                 
                                                                                             
  ######################################################                                     
- ### Summary of the result object of class 'safeObj' ###                                    
+ ### Summary of the result object of class &#39;safeObj&#39; ###                                    
  ######################################################                                     
  --&gt; The input data have been protected using algorithm SIMPLEHEURISTIC.                    
  --&gt; The algorithm ran for 1 second.                                                        
- --&gt; To protect 9 primary sensitive cells, 10 cells need to be additionally suppressed.     
- --&gt; A total of 51 cells may be published.                                                  
+ --&gt; To protect 13 primary sensitive cells, 10 cells need to be additionally suppressed.    
+ --&gt; A total of 47 cells may be published.                                                  
                                                                                             
  ###################################                                                        
  ### Structure of protected Data ###                                                        
  ###################################                                                        
- Classes 'data.table' and 'data.frame':\t70 obs. of  4 variables:                            
+ Classes &#39;data.table&#39; and &#39;data.frame&#39;:\t70 obs. of  4 variables:                            
   $ region   : chr  &quot;Total&quot; &quot;Total&quot; &quot;Total&quot; &quot;Total&quot; ...                                     
   $ var1     : chr  &quot;Total&quot; &quot;annet&quot; &quot;arbeid&quot; &quot;soshjelp&quot; ...                                 
   $ Freq     : num  706 88 54 342 222 596 72 52 283 189 ...                                 
@@ -521,8 +521,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="stacked-data" class="section level2">
 <h2>Stacked data</h2>
 <p>Now we will use a stacked variant of the same data. A single column (“ant”) holds cell counts and the variable “hovedint” contains the four categories “annet”, “arbeid”, “soshjelp” and “trygd”.</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" data-line-number="1">z2 &lt;-<span class="st"> </span><span class="kw">EasyData</span>(<span class="st">&quot;z2&quot;</span>)</a>
-<a class="sourceLine" id="cb21-2" data-line-number="2"><span class="kw">print</span>(z2)</a></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb21-1" title="1">z2 &lt;-<span class="st"> </span><span class="kw">EasyData</span>(<span class="st">&quot;z2&quot;</span>)</a>
+<a class="sourceLine" id="cb21-2" title="2"><span class="kw">print</span>(z2)</a></code></pre></div>
 <pre><code>   region fylke kostragr hovedint ant
 1       A     1      300    annet  11
 2       B     4      300    annet   7
@@ -569,9 +569,9 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 43      J    10      400    trygd  20
 44      K    10      400    trygd  11</code></pre>
 <p>We run ProtectTable with stacked data the same way as with unstacked data.</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" data-line-number="1">ex2 &lt;-<span class="st"> </span><span class="kw">ProtectTable</span>(z2, <span class="dt">dimVar =</span> <span class="kw">c</span>(<span class="st">&quot;region&quot;</span>, <span class="st">&quot;hovedint&quot;</span>, <span class="st">&quot;kostragr&quot;</span>), <span class="dt">freqVar =</span> <span class="st">&quot;ant&quot;</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb23-1" title="1">ex2 &lt;-<span class="st"> </span><span class="kw">ProtectTable</span>(z2, <span class="dt">dimVar =</span> <span class="kw">c</span>(<span class="st">&quot;region&quot;</span>, <span class="st">&quot;hovedint&quot;</span>, <span class="st">&quot;kostragr&quot;</span>), <span class="dt">freqVar =</span> <span class="st">&quot;ant&quot;</span>)</a></code></pre></div>
 <p>Instead of three output elements we now have the single element <em>data</em>:</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" data-line-number="1"><span class="kw">print</span>(ex2<span class="op">$</span>data)</a></code></pre></div>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb24-1" title="1"><span class="kw">print</span>(ex2<span class="op">$</span>data)</a></code></pre></div>
 <pre><code>   region hovedint freq sdcStatus suppressed
 1       A    annet   11         s         11
 2       B    annet    7         x         NA
@@ -648,8 +648,8 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 <div id="assuming-micro-data" class="section level2">
 <h2>Assuming micro data</h2>
 <p>Below no columns holds cell counts (no freqVar input) and therefore it is assumed that each cell count is one. For this data set this is not realistic, but in other cases rows are replicated.</p>
-<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" data-line-number="1">ex2micro &lt;-<span class="st"> </span><span class="kw">ProtectTable</span>(z2, <span class="dt">dimVar =</span> <span class="kw">c</span>(<span class="st">&quot;region&quot;</span>, <span class="st">&quot;hovedint&quot;</span>, <span class="st">&quot;kostragr&quot;</span>))</a></code></pre></div>
-<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" data-line-number="1"><span class="kw">print</span>(ex2micro<span class="op">$</span>data)</a></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb26-1" title="1">ex2micro &lt;-<span class="st"> </span><span class="kw">ProtectTable</span>(z2, <span class="dt">dimVar =</span> <span class="kw">c</span>(<span class="st">&quot;region&quot;</span>, <span class="st">&quot;hovedint&quot;</span>, <span class="st">&quot;kostragr&quot;</span>))</a></code></pre></div>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb27-1" title="1"><span class="kw">print</span>(ex2micro<span class="op">$</span>data)</a></code></pre></div>
 <pre><code>   region hovedint freq sdcStatus suppressed
 1       A    annet    1         u         NA
 2       B    annet    1         u         NA
@@ -721,8 +721,12 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 68  Total soshjelp   11         s         11
 69  Total    trygd   11         s         11
 70  Total    Total   44         s         44</code></pre>
+<p>.</p>
 </div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

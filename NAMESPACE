@@ -3,6 +3,8 @@
 export(EasyData)
 export(IncDefault)
 export(PTgui)
+export(PTguiApp)
+export(PTguiAppNO)
 export(PTguiNO)
 export(PTwrap)
 export(ProtectTable)

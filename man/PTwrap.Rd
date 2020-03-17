@@ -5,9 +5,16 @@
 \alias{PTwrap}
 \title{Wrapper to ProtectTable() with additional methods (experimental)}
 \usage{
-PTwrap(..., maxN = 3, method, exeArgus = "C:/Tau/TauArgus.exe",
-  pathArgus = getwd(), solverArgus = "FREE", methodArgus = "OPT",
-  rgArgus = 0)
+PTwrap(
+  ...,
+  maxN = 3,
+  method,
+  exeArgus = "C:/Tau/TauArgus.exe",
+  pathArgus = getwd(),
+  solverArgus = "FREE",
+  methodArgus = "OPT",
+  rgArgus = 0
+)
 }
 \arguments{
 \item{...}{Parameters to ProtectTable}

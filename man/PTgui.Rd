@@ -3,14 +3,44 @@
 \encoding{UTF8}
 \name{PTgui}
 \alias{PTgui}
+\alias{PTguiApp}
 \alias{PTguiNO}
+\alias{PTguiAppNO}
 \title{Table suppression - Shiny Gui}
 \usage{
-PTgui(data = NULL, language = "English", exeArgus = NULL,
-  pathArgus = getwd(), maxNchoices = c(1:10, 12, 15, 20), ...)
+PTgui(
+  data = NULL,
+  language = "English",
+  exeArgus = NULL,
+  pathArgus = getwd(),
+  maxNchoices = c(1:10, 12, 15, 20),
+  ...
+)
 
-PTguiNO(data = NULL, language = "Norwegian", exeArgus = NULL,
-  pathArgus = getwd(), maxNchoices = c(1:10, 12, 15, 20), ...)
+PTguiApp(
+  language = "English",
+  exeArgus = NULL,
+  pathArgus = "",
+  maxNchoices = c(1:10, 12, 15, 20),
+  ...
+)
+
+PTguiNO(
+  data = NULL,
+  language = "Norwegian",
+  exeArgus = NULL,
+  pathArgus = getwd(),
+  maxNchoices = c(1:10, 12, 15, 20),
+  ...
+)
+
+PTguiAppNO(
+  language = "Norwegian",
+  exeArgus = NULL,
+  pathArgus = "",
+  maxNchoices = c(1:10, 12, 15, 20),
+  ...
+)
 }
 \arguments{
 \item{data}{NULL or a data.frame}
@@ -30,7 +60,10 @@ Output from \code{\link{ProtectTable}}. The output is returned invisibly
  (via \code{\link{invisible}}) which means that it is not automatically printed to the console.
 }
 \description{
-Table suppression - Shiny Gui
+Run \code{PTgui} from the R console or use \code{PTguiApp} to make a server application
+}
+\note{
+\code{PTguiApp()}: New for server
 }
 \examples{
   \dontrun{
@@ -41,10 +74,10 @@ PTgui()
 # Start Norwegian gui with example data and catch output
 out <- PTguiNO(data=EasyData("z1w"))   
 
-# Tau-argus executable 
-exeArgus <- "C:/TauArgus4.1.4/TauArgus.exe"
+# Note: Change to TauArgus.exe-path in your computer
+exeArgus <- "C:/TauArgus4.2.0b2/TauArgus.exe"
 
-# Folder for (temporary) tau-argus files
+# Note: Change to an existing folder 
 pathArgus <- "C:/Users/nnn/Documents"
     
 # Start the gui with possibility to run tau-argus.       
