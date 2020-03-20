@@ -16,7 +16,7 @@ PTxyz(data, dimVar, freqVar, ...)
 \item{...}{Further parameters sent to \code{\link{ProtectTable}}}
 }
 \value{
-List of three matrices ready as input to \code{\link{SuppressDec}}
+List of three matrices ready as input to \code{SuppressDec}
 \item{x}{Sparse dummy matrix where the dimensions match z and y.}
 \item{z}{Frequencies to be published with suppressed as NA.}
 \item{y}{Inner cell frequencies.}

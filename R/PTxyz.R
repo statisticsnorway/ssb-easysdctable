@@ -10,7 +10,7 @@
 #' @param freqVar Variable(s) holding counts (name or number).
 #' @param ... Further parameters sent to \code{\link{ProtectTable}} 
 #'
-#' @return List of three matrices ready as input to \code{\link{SuppressDec}}
+#' @return List of three matrices ready as input to \code{SuppressDec}
 #' \item{x}{Sparse dummy matrix where the dimensions match z and y.}
 #' \item{z}{Frequencies to be published with suppressed as NA.}
 #' \item{y}{Inner cell frequencies.}

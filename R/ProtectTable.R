@@ -11,11 +11,16 @@
 #' @param freqVar Variable(s) holding counts or NULL in the case of micro data (name or number).
 #' @param protectZeros When TRUE empty cells (count=0) is considered sensitive (i.e. same as allowZeros in  \code{\link{primarySuppression}}).
 #' @param maxN All cells having counts <= maxN are set as primary suppressed.
-#' @param method Parameter "method" in \code{\link{protectTable}} or \code{\link{protectLinkedTables}}.
-#'        Default is "SIMPLEHEURISTIC". Other allowed values are
-#'        "OPT", "HITAS" and "HYPERCUBE". The latter is not possible in cases with two linked tables.
-#'        Alternatively this parameter can be a named list specifying parameters for running tau-argus (see details).
-#'        Experimental wrapper methods according to \code{\link{PTwrap}} is also possible (see details).
+#' @param method Parameter `method` in \code{\link{protectTable}}, \code{\link{protectLinkedTables}}
+#'        or wrapper methods via \code{\link{PTwrap}}:
+#' * **`"SIMPLEHEURISTIC"`:** This method is default in protectable.
+#' * **`"OPT"`, `"HITAS"`, `"HYPERCUBE"`:** Other methods in protectable. `"HYPERCUBE"` is not possible in cases with two linked tables.
+#' * **`"SimpleSingle"` (default):**  `"SIMPLEHEURISTIC"` with `detectSingletons=TRUE` when `protectZeros=FALSE` and
+#'                            `"SIMPLEHEURISTIC"` with `threshold=1` (can be overridden by input) when `protectZeros=TRUE`. 
+#' * **`"Simple"`:** `"SIMPLEHEURISTIC"` with `detectSingletons=FALSE`.      
+#' 
+#' Alternatively this parameter can be a named list specifying parameters for running tau-argus (see details).                     
+#'        See \code{\link{PTwrap}} for other (experimental) wrapper methods (see details).
 #' @param findLinked When TRUE, the function may find two linked tables and run protectLinkedTables.
 #' @param total String used to name totals.
 #' @param addName When TRUE the variable name is added to the level names, except for variables with most levels.
@@ -72,26 +77,28 @@
 #'          This is taken directly from the output from sdcTable. In cases with two linked tables "u" or "x" 
 #'          for common cells are based on output from the first table.
 #'          
-#'          \strong{To run tau-argus} specify "method" as a named list containing the
-#'          parameter "exe" for \code{\link{runArgusBatchFile}} and other parameters for 
+#'  * **To run tau-argus** specify `method` as a named list containing the
+#'          parameter `exe` for \code{\link{runArgusBatchFile}} and other parameters for 
 #'          \code{\link{createArgusInput}}.  
-#'          
-#'          One may specify:  
+#'    * One may specify:  
 #'          \code{method = list(exe="C:/Tau/TauArgus.exe", typ="tabular", path= getwd(),} 
 #'          \code{solver= "FREE", method= "OPT")}
-#'           
 #'          However these values of "exe", "path" and "solver" and "method" are set by default so in this case 
 #'          using "\code{method = list(typ="tabular", method= "OPT")}" is equivalent.
+#'    * If \code{typ="microdata"} is specified. Necessary transformation to microdata will be made. 
 #'          
-#'          If \code{typ="microdata"} is specified. Necessary transformation to microdata will be made. 
-#'          
-#'          \strong{Wrapper methods (experimental):}
+#'  * **Wrapper methods (partly experimental):**
 #'          In the function \code{\link{PTwrap}} several additional methods are defined. 
 #'          If input to ProtectTable() is one of these methods ProtectTable() will 
 #'          be run via PTwrap(). So making explicit call to PTwrap() is not needed.
-#'               
+#'         
+#'  * **Singleton and zeros:** The parameter detectSingletons was included in protecttable to handle the so-called 
+#'  singleton problem that appers  when `protectZeros=FALSE`. 
+#'  Not all problems were solved and the parameter threshold has been introduced later. The value of threshold 
+#'  needed depends on the number of singletons in one group. It seems that `threshold=3` is equivalent to `detectSingletons=TRUE`. 
+#'  When `protectZeros=TRUE` the related “zero problem” occurs. This problem is solved by `threshold=1`.  
 #'          
-#'          NOTE: The use of numVarInd, weightInd and sampWeightInd in sdcTable is not implemented. This also limit possible 
+#'  * **NOTE:** The use of numVarInd, weightInd and sampWeightInd in sdcTable is not implemented. This also limit possible 
 #'          input to  tau-argus.
 #'
 #' @return When singleOutput=TRUE output is a list of two elements.
@@ -120,34 +127,34 @@
 #'  # --- Unstacked input data ---
 #'  z1w = EasyData("z1w") 
 #'  ProtectTable(z1w,1,2:5)
-#'  ProtectTable(z1w,1,2:5,varName="hovedint") 
-#'  ProtectTable(z1w,1,2:5,method="HITAS")
-#'  ProtectTable(z1w,1,2:5,totalFirst = TRUE)
+#'  ProtectTable(z1w,1,2:5, varName="hovedint") 
+#'  ProtectTable(z1w,1,2:5, method="HITAS")
+#'  ProtectTable(z1w,1,2:5, totalFirst = TRUE, method ="Simple")
 #'  
 #'  # ==== Example 2 , 11 regions ====
 #'  z2 <- EasyData("z2") 
 #'  ProtectTable(z2,c(1,3,4),5) # With region-variable kostragr
 #'  # --- Unstacked input data ---
 #'  z2w <- EasyData("z2w") 
-#'  ProtectTable(z2w,1:2,4:7) # With region-variable fylke
-#'  ProtectTable(z2w,1:3,4:7) # Two linked tables
+#'  ProtectTable(z2w,1:2,4:7, method ="Simple") # With region-variable fylke
+#'  ProtectTable(z2w,1:3,4:7, method = "SIMPLEHEURISTIC") # Two linked tables
 #'  
 #'  \dontrun{
 #'  # ==== Example 3 , 36 regions ====
 #'  z3 <- EasyData("z3")   
 #'  ProtectTable(z3,c(1,4,5),7) # Three dimensions. No subtotals    
-#'  ProtectTable(z3,1:6,7)      # Two linked tables  
+#'  ProtectTable(z3,1:6,7, method = "SIMPLEHEURISTIC")      # Two linked tables  
 #'  # --- Unstacked input data with coded column names 
 #'  z3w <- EasyData("z3w")
-#'  ProtectTable(z3w,1:3,4:15,varName="g12") # coding not used when single varName
-#'  ProtectTable(z3w,1:3,4:15,varName=c("hovedint","mnd"))  # Two variables found automatically 
-#'  ProtectTable(z3w,1:3,4:15,varName=c("hovedint","mnd"),
-#'                removeTotal=FALSE) # Keep "Total" in variable names 
+#'  ProtectTable(z3w,1:3,4:15, varName="g12", method ="Simple") # coding not used when single varName
+#'  ProtectTable(z3w,1:3,4:15, varName=c("hovedint","mnd"))  # Two variables found automatically 
+#'  ProtectTable(z3w,1:3,4:15, varName=c("hovedint","mnd"),
+#'                method ="Simple", removeTotal=FALSE) # Keep "Total" in variable names 
 #'  # --- Unstacked input data with three level column name coding  
 #'  ProtectTable(z3wb,1:3,4:15,varName=c("hovedint","mnd","mnd2")) # Two variables found automatically
 #'  ProtectTable(z3wb,1:3,4:15,varName=c("hovedint","mnd","mnd2"), 
-#'                split="_")  # Three variables when splitting
-#'  ProtectTable(z3wb,1:3,4:15,varName=c("hovedint","mnd","mnd2"), 
+#'                method ="Simple", split="_")  # Three variables when splitting
+#'  ProtectTable(z3wb,1:3,4:15,varName=c("hovedint","mnd","mnd2"), method = "SIMPLEHEURISTIC",
 #'                split="_",namesAsInput=FALSE,orderAsInput=FALSE) # Alternative ouput format
 #'                
 #'  # ====  Examples Tau-Argus ====              
@@ -169,15 +176,15 @@
 #' # ==== Examples with parameter dimList  ====
 #' z2 <- EasyData("z2")
 #' dList <- FindDimLists(z2[-5])
-#' ProtectTable(z2[, c(1, 4, 5)], 1:2, 3, dimList = dList[c(1, 3)])
-#' ProtectTable(z2[, c(1, 4, 5)], 1:2, 3, dimList = dList[2])
-#' ProtectTable(z2[, c(1, 4, 5)], 1:2, 3, dimList = DimList2Hrc(dList[c(2, 3)]))              
+#' ProtectTable(z2[, c(1, 4, 5)], 1:2, 3, method = "Simple", dimList = dList[c(1, 3)])
+#' ProtectTable(z2[, c(1, 4, 5)], 1:2, 3, method = "SIMPLEHEURISTIC", dimList = dList[2])
+#' ProtectTable(z2[, c(1, 4, 5)], 1:2, 3, method = "Simple", dimList = DimList2Hrc(dList[c(2, 3)]))              
 ProtectTable  <-  function(data,
                          dimVar=1:NCOL(data),
                          freqVar=NULL,
                          protectZeros=TRUE,
                          maxN=3,
-                         method="SIMPLEHEURISTIC",
+                         method="SimpleSingle",
                          findLinked=TRUE,
                          total="Total",
                          addName=FALSE,

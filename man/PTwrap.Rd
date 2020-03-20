@@ -3,12 +3,12 @@
 \encoding{UTF8}
 \name{PTwrap}
 \alias{PTwrap}
-\title{Wrapper to ProtectTable() with additional methods (experimental)}
+\title{Wrapper to ProtectTable() with additional methods (partly experimental)}
 \usage{
 PTwrap(
   ...,
   maxN = 3,
-  method,
+  method = "SimpleSingle",
   exeArgus = "C:/Tau/TauArgus.exe",
   pathArgus = getwd(),
   solverArgus = "FREE",
@@ -45,7 +45,10 @@ The wrapper methods are:
 
  \strong{Simple:}  "SIMPLEHEURISTIC" with detectSingletons=FALSE
  
- \strong{SimpleSingle:}  "SIMPLEHEURISTIC" with detectSingletons=TRUE
+ \strong{SimpleSingle:} "SIMPLEHEURISTIC" with detectSingletons=TRUE when protectZeros=FALSE and
+                           "SIMPLEHEURISTIC" with threshold=1 (can be overridden by input) when protectZeros=TRUE 
+ 
+ \strong{SimpleSingleOld:} "SIMPLEHEURISTIC" with detectSingletons=TRUE
  
  \strong{TauArgus:} Tau-argus will be run according to the settings of the other input parameters.
  

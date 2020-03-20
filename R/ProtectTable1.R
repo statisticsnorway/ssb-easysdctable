@@ -53,6 +53,8 @@
 #' @seealso \code{\link{ProtectTable}}, 
 #'         \code{\link{HierarchicalGroups}}, \code{\link{FactorLevCorr}},
 #'         \code{\link{FindDimLists}}, \code{\link{FindCommonCells}}
+#'         
+#' @noMd         
 #'
 #' @examples
 #' \dontrun{

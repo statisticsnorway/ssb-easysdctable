@@ -1,4 +1,4 @@
-#'  Wrapper to ProtectTable() with additional methods (experimental) 
+#'  Wrapper to ProtectTable() with additional methods (partly experimental) 
 #'
 #'  Additional values of "method" is possible. Each new method (wrapper method) will make a call 
 #'  to ProtectTable() using a specific parameter setting. 
@@ -18,7 +18,10 @@
 #' 
 #'  \strong{Simple:}  "SIMPLEHEURISTIC" with detectSingletons=FALSE
 #'  
-#'  \strong{SimpleSingle:}  "SIMPLEHEURISTIC" with detectSingletons=TRUE
+#'  \strong{SimpleSingle:} "SIMPLEHEURISTIC" with detectSingletons=TRUE when protectZeros=FALSE and
+#'                            "SIMPLEHEURISTIC" with threshold=1 (can be overridden by input) when protectZeros=TRUE 
+#'  
+#'  \strong{SimpleSingleOld:} "SIMPLEHEURISTIC" with detectSingletons=TRUE
 #'  
 #'  \strong{TauArgus:} Tau-argus will be run according to the settings of the other input parameters.
 #'  
@@ -40,16 +43,20 @@
 #' @return See \code{\link{ProtectTable}}
 #'         
 #' @export
+#' 
+#' @noMd 
 #'
-PTwrap = function(..., maxN=3, method, exeArgus="C:/Tau/TauArgus.exe", 
+PTwrap = function(..., maxN=3, method="SimpleSingle", exeArgus="C:/Tau/TauArgus.exe", # Same default needed here 
                   pathArgus=getwd(), solverArgus= "FREE", methodArgus="OPT", rgArgus=0 ){
   
   if(method=="Simple") return(
     ProtectTable(..., maxN=maxN, method="SIMPLEHEURISTIC", detectSingletons=FALSE))
   
   if(method=="SimpleSingle") return(
+    ProtectTableSimpleSingle(..., maxN=maxN))
+
+  if(method=="SimpleSingleOld") return(
     ProtectTable(..., maxN=maxN, method="SIMPLEHEURISTIC", detectSingletons=TRUE))
-  
   
   if(method=="TauArgus" & rgArgus==0) return(
     ProtectTable(..., maxN=maxN, 
@@ -73,6 +80,30 @@ PTwrap = function(..., maxN=3, method, exeArgus="C:/Tau/TauArgus.exe",
   return(ProtectTable(..., maxN=maxN, method=method)) # When no new method
   
   } 
+  
+  
+  
+ProtectTableSimpleSingle <- function(..., protectZeros = TRUE, threshold = NULL, detectSingletons = NULL, maxN = maxN, method = "SIMPLEHEURISTIC") {
+  if (protectZeros) {
+    if (is.null(threshold)) {
+      threshold <- 1
+    }
+  } else {
+    if (is.null(threshold)) {
+      return(ProtectTable(..., protectZeros = protectZeros, detectSingletons = TRUE, maxN = maxN, method = method))
+    }
+  }
+  ProtectTable(..., protectZeros = protectZeros, threshold = threshold, maxN = maxN, method = method)
+}
+
+
+  
+  
+  
+  
+  
+  
+  
   
   
   

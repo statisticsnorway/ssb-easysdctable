@@ -56,8 +56,8 @@ PTguiAppNO(
 \item{...}{Further parameters sent to ProtectTable}
 }
 \value{
-Output from \code{\link{ProtectTable}}. The output is returned invisibly 
- (via \code{\link{invisible}}) which means that it is not automatically printed to the console.
+Output from \code{\link{ProtectTable}}. The output is returned invisibly
+(via \code{\link{invisible}}) which means that it is not automatically printed to the console.
 }
 \description{
 Run \code{PTgui} from the R console or use \code{PTguiApp} to make a server application
