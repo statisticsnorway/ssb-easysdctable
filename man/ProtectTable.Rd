@@ -138,20 +138,22 @@ created by unstacking (in cases with sever input freqvar variables).}
 
 \item{infoAsFrame}{When TRUE output element info is a data frame (useful in Shiny).}
 
-\item{IncProgress}{A function to report progress (incProgress in Shiny).}
+\item{IncProgress}{A function to report progress (incProgress in Shiny). Set equal to NULL to turn it off.}
 
 \item{...}{Further parameters sent to \code{\link{protectTable}} (possibly via \code{\link{protectLinkedTables}})
 such as verbose (print output while calculating) and timeLimit.
 Parameters to \code{\link{createArgusInput}} and \code{\link{PTwrap}} is also possible (see details).}
 }
 \value{
-When singleOutput=TRUE output is a list of two elements.\preformatted{    \\item\{info\}\{Information as a single column character matrix. This is information about the extra 
-                dimVar variables created when stacking, information about the identified (linked) 
-                table(s) and summary output from sdcTable.\}
-    \\item\{data\}\{A data frame where variables are named according to outFreq, 
-                outSdcStatus and outSuppressed.\}
-    When singleOutput=FALSE output element data is replaced by three elements and these are named  
-    according to outFreq, outSdcStatus and outSuppressed.
+When singleOutput=TRUE output is a list of two elements.
+\itemize{
+\item \strong{\code{info}:} Information as a single column character matrix. This is information about the extra
+dimVar variables created when stacking, information about the identified (linked)
+table(s) and summary output from sdcTable.
+\item \strong{\code{data}:} A data frame where variables are named according to outFreq,
+outSdcStatus and outSuppressed.
+When singleOutput=FALSE output element data is replaced by three elements and these are named
+according to outFreq, outSdcStatus and outSuppressed.
 }
 }
 \description{
@@ -196,34 +198,34 @@ input to  tau-argus.
 \examples{
  # ==== Example 1 , 8 regions ====
  z1 <- EasyData("z1")        
- ProtectTable(z1,1:2,3)
- ProtectTable(z1,c("region","hovedint") ,"ant") # Input by name 
+ ProtectTable(z1,1:2, 3)
+ ProtectTable(z1, c("region","hovedint"), "ant") # Input by name 
  # --- Unstacked input data ---
  z1w = EasyData("z1w") 
- ProtectTable(z1w,1,2:5)
- ProtectTable(z1w,1,2:5, varName="hovedint") 
- ProtectTable(z1w,1,2:5, method="HITAS")
- ProtectTable(z1w,1,2:5, totalFirst = TRUE, method ="Simple")
+ ProtectTable(z1w, 1, 2:5)
+ ProtectTable(z1w, 1, 2:5, varName="hovedint") 
+ ProtectTable(z1w, 1, 2:5, method="HITAS")
+ ProtectTable(z1w, 1, 2:5, totalFirst = TRUE, method ="Simple")
  
  # ==== Example 2 , 11 regions ====
  z2 <- EasyData("z2") 
- ProtectTable(z2,c(1,3,4),5) # With region-variable kostragr
+ ProtectTable(z2,c(1,3,4), 5) # With region-variable kostragr
  # --- Unstacked input data ---
  z2w <- EasyData("z2w") 
- ProtectTable(z2w,1:2,4:7, method ="Simple") # With region-variable fylke
- ProtectTable(z2w,1:3,4:7, method = "SIMPLEHEURISTIC") # Two linked tables
+ ProtectTable(z2w, 1:2, 4:7, method ="Simple") # With region-variable fylke
+ ProtectTable(z2w, 1:3, 4:7, method = "SIMPLEHEURISTIC") # Two linked tables
  
  \dontrun{
  # ==== Example 3 , 36 regions ====
  z3 <- EasyData("z3")   
- ProtectTable(z3,c(1,4,5),7) # Three dimensions. No subtotals    
- ProtectTable(z3,1:6,7, method = "SIMPLEHEURISTIC")      # Two linked tables  
+ ProtectTable(z3, c(1,4,5), 7)                             # Three dimensions. No subtotals    
+ ProtectTable(z3, 1:6, 7, method = "SIMPLEHEURISTIC")      # Two linked tables  
  # --- Unstacked input data with coded column names 
  z3w <- EasyData("z3w")
  ProtectTable(z3w,1:3,4:15, varName="g12", method ="Simple") # coding not used when single varName
- ProtectTable(z3w,1:3,4:15, varName=c("hovedint","mnd"))  # Two variables found automatically 
+ ProtectTable(z3w,1:3,4:15, varName=c("hovedint","mnd"))     # Two variables found automatically 
  ProtectTable(z3w,1:3,4:15, varName=c("hovedint","mnd"),
-               method ="Simple", removeTotal=FALSE) # Keep "Total" in variable names 
+               method ="Simple", removeTotal=FALSE)          # Keep "Total" in variable names 
  # --- Unstacked input data with three level column name coding  
  ProtectTable(z3wb,1:3,4:15,varName=c("hovedint","mnd","mnd2")) # Two variables found automatically
  ProtectTable(z3wb,1:3,4:15,varName=c("hovedint","mnd","mnd2"), 
@@ -250,9 +252,10 @@ input to  tau-argus.
 # ==== Examples with parameter dimList  ====
 z2 <- EasyData("z2")
 dList <- FindDimLists(z2[-5])
-ProtectTable(z2[, c(1, 4, 5)], 1:2, 3, method ="Simple", dimList = dList[c(1, 3)])
-ProtectTable(z2[, c(1, 4, 5)], 1:2, 3, dimList = dList[2])
-ProtectTable(z2[, c(1, 4, 5)], 1:2, 3, method = "SIMPLEHEURISTIC", dimList = DimList2Hrc(dList[c(2, 3)]))              
+ProtectTable(z2[, c(1,4,5)], 1:2, 3, method = "Simple", dimList = dList[c(1,3)])
+ProtectTable(z2[, c(1,4,5)], 1:2, 3, method = "SIMPLEHEURISTIC", dimList = dList[2])
+ProtectTable(z2[, c(1,4,5)], 1:2, 3, method = "Simple", 
+             dimList = DimList2Hrc(dList[c(2,3)]))              
 }
 \seealso{
 ProtectTable makes a call to the function \code{\link{ProtectTable1}}.
