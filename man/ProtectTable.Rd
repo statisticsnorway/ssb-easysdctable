@@ -195,6 +195,9 @@ When \code{protectZeros=TRUE} the related “zero problem” occurs. This proble
 input to  tau-argus.
 }
 }
+\note{
+ProtectTable makes a call to the function \code{\link{ProtectTable1}}.
+}
 \examples{
  # ==== Example 1 , 8 regions ====
  z1 <- EasyData("z1")        
@@ -258,5 +261,5 @@ ProtectTable(z2[, c(1,4,5)], 1:2, 3, method = "Simple",
              dimList = DimList2Hrc(dList[c(2,3)]))              
 }
 \seealso{
-ProtectTable makes a call to the function \code{\link{ProtectTable1}}.
+See also the vignettes.
 }

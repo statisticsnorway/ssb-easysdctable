@@ -117,7 +117,9 @@
 #' @importFrom utils capture.output flush.console
 #' @importFrom methods hasArg
 #' 
-#' @seealso ProtectTable makes a call to the function \code{\link{ProtectTable1}}.
+#' @note ProtectTable makes a call to the function \code{\link{ProtectTable1}}.
+#' 
+#' @seealso See also the vignettes.
 #'
 #'
 #' @examples
