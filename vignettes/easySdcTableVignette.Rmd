@@ -1,9 +1,9 @@
 ---
-title: "'easySdcTable' Vignette"
+title: "Introduction to 'easySdcTable'"
 author: "Øyvind Langsrud"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{easySdcTable Vignette}
+  %\VignetteIndexEntry{Introduction to easySdcTable}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
