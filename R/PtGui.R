@@ -187,7 +187,7 @@ PTguiGen <- function(language="Norwegian", exeArgus=NULL, pathArgus="", maxNchoi
     mt["info"] <- "Info" 
     mt["method"] <- "Metode"
     mt["SIMPLEHEURISTIC"] <- "SIMPLE - Rask og (for) enkel"
-    mt["SimpleSingle"] <- "SIMPLE med detectSingletons"
+    mt["SimpleSingle"] <- "SIMPLE med threshold/detectSingletons"
     mt["HITAS"] <- "HITAS - Vanlig metode" 
     mt["OPT"] <-  "OPT - Optimal, men tidkrevende"
     mt["HYPERCUBE"] = "HYPERCUBE - ikke for koblet"
@@ -224,7 +224,7 @@ PTguiGen <- function(language="Norwegian", exeArgus=NULL, pathArgus="", maxNchoi
     mt["info"] <- "Info" 
     mt["method"] <- "Method" 
     #mt["SIMPLEHEURISTIC"] <- ""
-    mt["SimpleSingle"] <- "SIMPLEHEURISTIC with detectSingletons"
+    mt["SimpleSingle"] <- "with threshold/detectSingletons"
     #mt["HITAS"] <- "" 
     #mt["OPT"] <-  ""
     mt["HYPERCUBE"] = "HYPERCUBE (not linked)"
@@ -294,7 +294,7 @@ PTguiGen <- function(language="Norwegian", exeArgus=NULL, pathArgus="", maxNchoi
                        s(mt["HYPERCUBE"]),
                        tau
                      ), 
-                     'SIMPLEHEURISTIC'),
+                     'SimpleSingle'),
         checkboxInput('protectZeros', mt["protectZeros"], TRUE),
         radioButtons('maxN',mt["maxN"],
                      maxNchoices, # c("1"=1,"2"=2,"3"=3,"4"=4,"5"=5,"6"=6,"7"=7,"8"=8,"9"=9,"10"=10)
