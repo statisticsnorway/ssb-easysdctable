@@ -18,7 +18,7 @@ z$y1[(z$y + 1.6 * z$a) > 9.7] <- 1  # 9
 
 test_that("Simple works", {
   PTxyzTest(EasyData("z1"), c("region","hovedint") ,"ant", method = "Simple")
-  # PTxyzTest(EasyData("z3") ,1:6,7, method = "SIMPLEHEURISTIC", IncProgress = NULL) # linked tables, fails
+  # PTxyzTest(EasyData("z3") ,1:6,7, method = "SIMPLEHEURISTIC") # linked tables, fails
   PTxyzTest(z, 1:2,"y0", protectZeros = TRUE,  method = "Simple")
   PTxyzTest(z, 1:2,"y1", protectZeros = FALSE,  method = "Simple")
 })
