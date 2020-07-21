@@ -33,6 +33,36 @@ test_that("SimpleSingle works", {
   expect_true(sum(w[w$b == 1 & is.na(w$suppressed), "freq", drop = TRUE] - 1) > 0)
 })
 
+test_that("Gauss works", {
+  PTxyzTest(EasyData("z1"), c("region","hovedint") ,"ant", method = "Gauss", printInc=FALSE)
+  PTxyzTest(EasyData("z3") ,1:6,7, method = "Gauss", printInc=FALSE) 
+  PTxyzTest(z, 1:2, "y0", protectZeros = TRUE, method = "Gauss", printInc=FALSE)
+  w <- ProtectTable(z, 1:2, "y0", protectZeros = TRUE, method = "Gauss", IncProgress = NULL, printInc=FALSE)$data
+  expect_true(sum(w[w$b == 3 & is.na(w$suppressed), "freq", drop = TRUE]) > 0)
+  PTxyzTest(z, 1:2, "y1", protectZeros = FALSE, method = "Gauss", printInc=FALSE)
+  w <- ProtectTable(z, 1:2, "y1", protectZeros = FALSE, method = "Gauss", IncProgress = NULL, printInc=FALSE)$data
+  expect_true(sum(w[w$b == 1 & is.na(w$suppressed), "freq", drop = TRUE] - 1) > 0)
+})
 
 
+Gauss6 <- function(...) {
+  m <- NULL
+  singletonMethod <- c("none", "subSum", "anySum", "subSumAny", "subSpace", "subSumSpace")
+  for (i in seq_along(singletonMethod)) {
+    a <- ProtectTable(..., method = "Gauss", singletonMethod = singletonMethod[i], IncProgress = NULL, printInc = FALSE)
+    m <- cbind(m, a$data$suppressed)
+  }
+  colnames(m) <- singletonMethod
+  expect_identical(m[, "anySum"], m[, "subSumAny"])
+  expect_identical(m[, "subSpace"], m[, "subSumSpace"])
+  k <- apply(m, 2, sumIsNa)[c(1, 2, 3, 5)]
+  expect_true(min(diff(k)) > 0)
+  m
+}
 
+sumIsNa <- function(x) sum(is.na(x))
+
+test_that("Gauss ok singleton methods", {
+  m0 <- Gauss6(z, 1:2, "y0")
+  m1 <- Gauss6(z, 1:2, "y1", protectZeros = FALSE)
+})

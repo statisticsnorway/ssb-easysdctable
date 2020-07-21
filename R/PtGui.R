@@ -149,6 +149,7 @@ PTguiGen <- function(language="Norwegian", exeArgus=NULL, pathArgus="", maxNchoi
     "HITAS",
     "OPT",
     "HYPERCUBE",
+    "Gauss",
     "protectZeros",
     "maxN",
     "freqVar",
@@ -292,6 +293,7 @@ PTguiGen <- function(language="Norwegian", exeArgus=NULL, pathArgus="", maxNchoi
                        s(mt["HITAS"]), 
                        s(mt["OPT"]), 
                        s(mt["HYPERCUBE"]),
+                       s(mt["Gauss"]),
                        tau
                      ), 
                      'SimpleSingle'),
@@ -441,7 +443,8 @@ PTguiGen <- function(language="Norwegian", exeArgus=NULL, pathArgus="", maxNchoi
             pathArgus = re$pathArgus,
             infoAsFrame =TRUE,
             IncProgress = as.name("incProgress"),
-            verbose = input$verbose)
+            verbose = input$verbose,
+            printInc = input$verbose)  # printInc in GaussSuppression
         ))
         re$code = as.character(as.expression(callPT[seq_len(length(callPT)-5)]))
         re$b = try(withProgress(eval(callPT), #singleOutput=FALSE),

@@ -12,12 +12,15 @@
 #' @param protectZeros When TRUE empty cells (count=0) is considered sensitive (i.e. same as allowZeros in  \code{\link{primarySuppression}}).
 #' @param maxN All cells having counts <= maxN are set as primary suppressed.
 #' @param method Parameter `method` in \code{\link{protectTable}}, \code{\link{protectLinkedTables}}
-#'        or wrapper methods via \code{\link{PTwrap}}:
+#'        or wrapper methods via \code{\link{PTwrap}}. 
+#'        `Gauss` is an additional method that is not available in sdcTable.
 #' * **`"SIMPLEHEURISTIC"`:** This method is default in protectable.
 #' * **`"OPT"`, `"HITAS"`, `"HYPERCUBE"`:** Other methods in protectable. `"HYPERCUBE"` is not possible in cases with two linked tables.
 #' * **`"SimpleSingle"` (default):**  `"SIMPLEHEURISTIC"` with `detectSingletons=TRUE` when `protectZeros=FALSE` and
 #'                            `"SIMPLEHEURISTIC"` with `threshold=1` (can be overridden by input) when `protectZeros=TRUE`. 
-#' * **`"Simple"`:** `"SIMPLEHEURISTIC"` with `detectSingletons=FALSE`.      
+#' * **`"Simple"`:** `"SIMPLEHEURISTIC"` with `detectSingletons=FALSE`.  
+#' * **`"Gauss"`:** \code{\link{GaussSuppression}} is called with parameters `x`, `candidates`, `primary` and `singleton` automatically generated.
+#'                Other parameters (`singletonMethod`, `printInc`) can be specified. 
 #' 
 #' Alternatively this parameter can be a named list specifying parameters for running tau-argus (see details).                     
 #'        See \code{\link{PTwrap}} for other (experimental) wrapper methods (see details).
@@ -66,7 +69,7 @@
 #' @param IncProgress A function to report progress (incProgress in Shiny). Set equal to NULL to turn it off.
 #' @param ...  Further parameters sent to \code{\link{protectTable}} (possibly via \code{\link{protectLinkedTables}})
 #'        such as verbose (print output while calculating) and timeLimit. 
-#'        Parameters to \code{\link{createArgusInput}} and \code{\link{PTwrap}} is also possible (see details).
+#'        Parameters to  \code{\link{GaussSuppression}}, \code{\link{createArgusInput}} and \code{\link{PTwrap}} is also possible (see details).
 #' 
 #' @details One or two tables are identified automatically and subjected to cell suppression 
 #'          by \code{\link{protectTable}} (single table) or \code{\link{protectLinkedTables}} (two linked tables).
@@ -113,7 +116,7 @@
 #'         
 #' @export
 #' @importFrom sdcTable summary getInfo
-#' @importFrom SSBtools AutoSplit Stack SortRows Unstack
+#' @importFrom SSBtools AutoSplit Stack SortRows Unstack GaussSuppression
 #' @importFrom utils capture.output flush.console
 #' @importFrom methods hasArg
 #' 
@@ -126,6 +129,7 @@
 #'  # ==== Example 1 , 8 regions ====
 #'  z1 <- EasyData("z1")        
 #'  ProtectTable(z1,1:2, 3)
+#'  ProtectTable(z1,1:2, 3, method="Gauss")$data
 #'  ProtectTable(z1, c("region","hovedint"), "ant") # Input by name 
 #'  # --- Unstacked input data ---
 #'  z1w = EasyData("z1w") 
@@ -236,6 +240,16 @@ ProtectTable  <-  function(data,
       sysCall[[1]] <- as.name("PTwrap")
       parentFrame = parent.frame()
       return(eval(sysCall, envir=parentFrame))
+    }
+  
+  if(!tauArgus) 
+    doGaussSuppression <- grepl("Gauss",method)
+  else
+    doGaussSuppression <- FALSE 
+    
+  if(doGaussSuppression){
+    if(!(method %in% c("Gauss","GaussBasic", "GaussNoSingleton")))
+      stop(paste(method, "is not a valid method"))
   }
   
   if (is.character(dimVar)) 
@@ -272,12 +286,28 @@ ProtectTable  <-  function(data,
       }
       
       IncProgress()
-      pt <- ProtectTable1(data = data, dimVarInd = dimVarInd, freqVarInd = freqVarInd, 
-                          protectZeros = protectZeros, maxN = maxN, method = method, findLinked = findLinked,
-                          total = total, addName = addName, sep = sep, removeZeros = removeZeros, 
-                          dimList = dimList,
-                          groupVarInd = groupVarInd, 
-                          ind1 = ind1, ind2 = ind2, dimDataReturn = TRUE, IncProgress = IncProgress, ...)
+      
+     
+      if (doGaussSuppression) {
+        ProtectTable1parameterRemove <- function(threshold = NULL, detectSingletons = NULL, ...) {
+          ProtectTable1(...)
+        }
+        
+        pt <- ProtectTable1parameterRemove(data = data, dimVarInd = dimVarInd, freqVarInd = freqVarInd, protectZeros = FALSE, maxN = 0, method = "SIMPLEHEURISTIC", 
+                                           findLinked = findLinked, total = total, addName = addName, sep = sep, removeZeros = removeZeros, dimList = dimList, groupVarInd = groupVarInd, 
+                                           ind1 = ind1, ind2 = ind2, dimDataReturn = TRUE, IncProgress = IncProgress, ...)
+        
+        dimLists <- ProtectTable1dimList(data = data, dimVarInd = dimVarInd, freqVarInd = freqVarInd, protectZeros = FALSE, maxN = 0, method = "SIMPLEHEURISTIC", 
+                                         findLinked = findLinked, total = total, addName = addName, sep = sep, removeZeros = removeZeros, dimList = dimList, groupVarInd = groupVarInd, 
+                                         ind1 = ind1, ind2 = ind2, dimDataReturn = FALSE, IncProgress = IncProgress, ...)
+      } else {
+        
+        pt <- ProtectTable1(data = data, dimVarInd = dimVarInd, freqVarInd = freqVarInd, protectZeros = protectZeros, maxN = maxN, method = method, 
+                            findLinked = findLinked, total = total, addName = addName, sep = sep, removeZeros = removeZeros, dimList = dimList, groupVarInd = groupVarInd, 
+                            ind1 = ind1, ind2 = ind2, dimDataReturn = TRUE, IncProgress = IncProgress, ...)
+        
+      }
+      
       
       if(infoAsFrame){
           i00 <- as.data.frame(rbind(
@@ -424,8 +454,134 @@ ProtectTable  <-  function(data,
       
       attributes(finalData)$index <- NULL  # avoid attribute
       
+  
+      if (doGaussSuppression) {
+        
+        #  Code copied from PTxyz
+        ptA <- finalData[, !(names(finalData) %in% c("Freq", "sdcStatus", "supp6547524")), drop = FALSE]
+        
+        #xxx <- CrossTable2ModelMatrix(data[, c(freqVarInd, dimVarInd), drop = FALSE], ptA, dimLists)
+        #xxx <- CrossTable2ModelMatrix(data[, dimVarInd, drop = FALSE], ptA, dimLists)
+        xxx <- CrossTable2ModelMatrix(data, ptA, dimLists)
+        
+        rownames(xxx) <- apply(data[, names(data) %in% names(ptA), drop = FALSE], 1, paste, collapse = "_")
+        colnames(xxx) <- apply(ptA, 1, paste, collapse = ":")
+        
+        if(is.null(freqVarInd)){
+          yyy <- matrix(1, nrow=NROW(data), ncol=1)
+        } else {
+          yyy <- as.matrix(data[, freqVarInd, drop = FALSE])
+        }
+        
+        zzz <- as.matrix(Matrix::crossprod(xxx, yyy))
+        
+        GetCandidates <- function(candidates = NULL, ...) {
+          candidates
+        }
+        
+        candidates <- GetCandidates(...)
+        
+        if(is.null(candidates)){
+          
+          tie <- as.matrix(Matrix::crossprod(xxx, xxx %*% zzz))
+          tie <- tie/max(tie)
+          
+          zzzOrd <- (zzz + 0.99 * tie)[, 1, drop = TRUE]
+          if (!protectZeros) {
+            zzzOrd[zzz == 0] <- 0.01 + max(zzzOrd) + zzzOrd[zzz == 0]
+          }
+          
+          candidates <- order(zzzOrd, decreasing = TRUE)
+          candidatesManually <- FALSE
+        } else {
+          warning('candidates specified manually. You may try: hidden="output" ')
+          candidatesManually <- TRUE
+        }
+        
+        primary <- (zzz <= maxN)[, 1, drop = TRUE]
+        
+        if (!protectZeros) 
+          primary[zzz == 0] <- FALSE
+        
+        if (protectZeros) {
+          singleton <- (yyy == 0)[, 1, drop = TRUE]
+        } else {
+          singleton <- (yyy == 1)[, 1, drop = TRUE]
+        }
+        
+        GetHidden <- function(hidden = NULL, ...) {
+          hidden
+        }
+        
+        hidden <- GetHidden(...)
+        
+        
+        GetForced <- function(forced = NULL, ...) {
+          forced
+        }
+        
+        forced <- GetForced(...)
+        
+        if (is.character(hidden)) {
+          input <- data[, c(dimVarInd, freqVarInd), drop = FALSE]
+          if (hidden == "input") 
+            return(input)
+          output <- finalData[, !(names(finalData) %in% c("sdcStatus", "supp6547524")), drop = FALSE]
+          if (hidden == "output") 
+            return(output)
+          if (hidden == "inputoutput") 
+            return(list(input = input, output = output))
+          stop(paste(hidden, "is not a valid as hidden"))
+        }
+        if(candidatesManually){
+          if (method == "Gauss") 
+            secondary <- GaussSuppression(x = xxx, primary = primary, singleton = singleton, ...)
+          
+          if (method == "GaussNoSingleton") 
+            secondary <- GaussSuppression(x = xxx, primary = primary, ...)
+        } else {
+          if (method == "Gauss") 
+            secondary <- GaussSuppression(x = xxx, candidates = candidates, primary = primary, singleton = singleton, ...)
+          
+          if (method == "GaussNoSingleton") 
+            secondary <- GaussSuppression(x = xxx, candidates = candidates, primary = primary, ...)
+        }
+        
+        
+        if (method == "GaussBasic") {
+          GetPrimary <- function(primary = integer(0), ...) {
+            primary
+          }
+          primary <- GetPrimary(...)
+          secondary <- GaussSuppression(x = xxx, ...)
+        }
+        
+        
+        if (length(hidden)) {
+          finalData$sdcStatus[hidden] <- "h"
+          finalData$supp6547524[hidden] <- suppression
+        }
+        
+        finalData$sdcStatus[primary] <- "u"
+        finalData$sdcStatus[secondary] <- "x"
+        finalData$sdcStatus[forced] <- "z"
+        
+        
+        if (length(forced)) {
+          finalData$sdcStatus[forced] <- "z"
+        }
+        
+        
+        finalData$supp6547524[primary] <- suppression
+        finalData$supp6547524[secondary] <- suppression
+        
+      }
+      
+      
       if(get0("doReturnExtraFinalData",ifnotfound = FALSE))
         extraFinalData <- list(inputData=data[,c(freqVarInd, dimVarInd),drop=FALSE],finalData=finalData)
+      
+      
       
       if (stacked & doUnstack) {
         if (is.null(singleOutput)) 

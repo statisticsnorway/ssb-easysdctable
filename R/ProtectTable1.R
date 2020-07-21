@@ -182,6 +182,8 @@ ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, pro
       
     } else {  
       ## tauArgus start here
+      optionsUseFancyQuotes <- options("useFancyQuotes") 
+      options(useFancyQuotes=FALSE)  # In .onAttach() in sdcTable
       if(method$typ == "microdata"){
         batchF <- eval(as.call(c(as.name("createArgusInput"),obj=as.name("problem1"),method, ...)))
         if(get0("waitForAKeyPress",ifnotfound = FALSE)) invisible(readline(prompt="Press [enter] to continue"))
@@ -192,6 +194,7 @@ ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, pro
         if(get0("waitForAKeyPress",ifnotfound = FALSE)) invisible(readline(prompt="Press [enter] to continue"))
         secondary <- list(runArgusBatchFile(obj=primary1, batchF = batchF, exe = exeTauArgus), NULL)
       }
+      options(optionsUseFancyQuotes)
     }
   }
   

@@ -56,13 +56,16 @@ ProtectTable(
 \item{maxN}{All cells having counts <= maxN are set as primary suppressed.}
 
 \item{method}{Parameter \code{method} in \code{\link{protectTable}}, \code{\link{protectLinkedTables}}
-or wrapper methods via \code{\link{PTwrap}}:
+or wrapper methods via \code{\link{PTwrap}}.
+\code{Gauss} is an additional method that is not available in sdcTable.
 \itemize{
 \item \strong{\code{"SIMPLEHEURISTIC"}:} This method is default in protectable.
 \item \strong{\code{"OPT"}, \code{"HITAS"}, \code{"HYPERCUBE"}:} Other methods in protectable. \code{"HYPERCUBE"} is not possible in cases with two linked tables.
 \item \strong{\code{"SimpleSingle"} (default):}  \code{"SIMPLEHEURISTIC"} with \code{detectSingletons=TRUE} when \code{protectZeros=FALSE} and
 \code{"SIMPLEHEURISTIC"} with \code{threshold=1} (can be overridden by input) when \code{protectZeros=TRUE}.
 \item \strong{\code{"Simple"}:} \code{"SIMPLEHEURISTIC"} with \code{detectSingletons=FALSE}.
+\item \strong{\code{"Gauss"}:} \code{\link{GaussSuppression}} is called with parameters \code{x}, \code{candidates}, \code{primary} and \code{singleton} automatically generated.
+Other parameters (\code{singletonMethod}, \code{printInc}) can be specified.
 }
 
 Alternatively this parameter can be a named list specifying parameters for running tau-argus (see details).
@@ -142,7 +145,7 @@ created by unstacking (in cases with sever input freqvar variables).}
 
 \item{...}{Further parameters sent to \code{\link{protectTable}} (possibly via \code{\link{protectLinkedTables}})
 such as verbose (print output while calculating) and timeLimit.
-Parameters to \code{\link{createArgusInput}} and \code{\link{PTwrap}} is also possible (see details).}
+Parameters to  \code{\link{GaussSuppression}}, \code{\link{createArgusInput}} and \code{\link{PTwrap}} is also possible (see details).}
 }
 \value{
 When singleOutput=TRUE output is a list of two elements.
@@ -202,6 +205,7 @@ ProtectTable makes a call to the function \code{\link{ProtectTable1}}.
  # ==== Example 1 , 8 regions ====
  z1 <- EasyData("z1")        
  ProtectTable(z1,1:2, 3)
+ ProtectTable(z1,1:2, 3, method="Gauss")$data
  ProtectTable(z1, c("region","hovedint"), "ant") # Input by name 
  # --- Unstacked input data ---
  z1w = EasyData("z1w") 

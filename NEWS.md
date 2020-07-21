@@ -1,3 +1,12 @@
+
+## easySdcTable	X.X.X
+
+* New method, "Gauss", available 
+  - An additional method that is not available in sdcTable
+  - Secondary suppression by Gaussian elimination
+* Tau-argus problem fixed. 
+  - Version 0.5.0 resulted in wrong tau-argus input when the useFancyQuotes option was TRUE.  
+
 ## easySdcTable	0.5.0
 
 * Method "SimpleSingle" re-defined and made default. 
