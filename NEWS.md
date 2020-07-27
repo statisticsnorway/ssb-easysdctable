@@ -1,5 +1,5 @@
 
-## easySdcTable	X.X.X
+## easySdcTable	0.6.0
 
 * New method, "Gauss", available 
   - An additional method that is not available in sdcTable
