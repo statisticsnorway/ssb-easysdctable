@@ -1,7 +1,7 @@
 library(RegSDC)
 library(Matrix)
 
-PTxyzTest = function(..., rmse = 1, nRep = 2){
+PTxyzTest = function(..., rmse = pi/3, nRep = 2){
   a <- PTxyz(..., IncProgress=NULL)
   s <- Matrix::crossprod(a$x,SuppressDec(a$x, a$z, a$y, rmse = rmse, nRep = nRep))[which(is.na(a$z)), ,drop=FALSE]
   rowSumsDes <- Matrix::rowSums(RoundWhole(s))
