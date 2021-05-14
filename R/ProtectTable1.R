@@ -48,7 +48,7 @@
 #'
 #' @export
 #' @importFrom sdcTable makeProblem primarySuppression protectTable protectLinkedTables createArgusInput runArgusBatchFile
-#' @importFrom SSBtools FindTableGroup FindDimLists FindCommonCells FactorLevCorr
+#' @importFrom SSBtools FindTableGroup FindDimLists FindCommonCells FactorLevCorr MakeMicro
 #'
 #' @seealso \code{\link{ProtectTable}}, 
 #'         \code{\link{HierarchicalGroups}}, \code{\link{FactorLevCorr}},
@@ -214,11 +214,3 @@ ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, pro
                             nLevels = nLevels, dimData = dimData)))
 }
 
-# Make micro data from data with freq. 
-MakeMicro <- function(x,freqInd){
-  rows <- rep(seq_len(NROW(x)),x[,freqInd])
-  x <- x[rows, ,drop=FALSE]
-  x[,freqInd] <- 1
-  row.names(x) <- NULL
-  x
-}

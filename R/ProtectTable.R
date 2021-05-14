@@ -227,6 +227,18 @@ ProtectTable  <-  function(data,
   if (hasArg("allowZeros"))
     stop('Use "protectZeros" instead of "allowZeros"')
   
+  if (hasArg("protectzeros"))
+    stop('Misspelled parameter "protectzeros" found. Use "protectZeros".')
+  
+  if (hasArg("dimvar"))
+    stop('Misspelled parameter "dimvar" found. Use "dimVar".')
+  
+  if (hasArg("freqvar"))
+    stop('Misspelled parameter "freqvar" found. Use "freqVar".')
+  
+  if (hasArg("maxn"))
+    stop('Misspelled parameter "maxn" found. Use "maxN".')
+  
   
   is_null_IncProgress <- is.null(IncProgress) 
   if (is_null_IncProgress){

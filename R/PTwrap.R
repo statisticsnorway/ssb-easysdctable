@@ -69,13 +69,13 @@ PTwrap = function(..., maxN=3, method="SimpleSingle", exeArgus="C:/Tau/TauArgus.
   
   if(method=="TauArgusOPT")
     return(PTwrap(..., maxN=maxN, method="TauArgus", exeArgus=exeArgus, pathArgus=pathArgus, solverArgus=solverArgus,
-                  methodArgus="OPT"))
+                  methodArgus="OPT", rgArgus=rgArgus))
   if(method=="TauArgusMOD")
     return(PTwrap(..., maxN=maxN, method="TauArgus", exeArgus=exeArgus, pathArgus=pathArgus, solverArgus=solverArgus,
-                  methodArgus="MOD"))
+                  methodArgus="MOD", rgArgus=rgArgus))
   if(method=="TauArgusGH")
     return(PTwrap(..., maxN=maxN, method="TauArgus", exeArgus=exeArgus, pathArgus=pathArgus, solverArgus=solverArgus,
-                  methodArgus="GH"))
+                  methodArgus="GH", rgArgus=rgArgus))
   
   return(ProtectTable(..., maxN=maxN, method=method)) # When no new method
   
