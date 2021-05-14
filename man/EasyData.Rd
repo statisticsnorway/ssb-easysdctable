@@ -18,6 +18,9 @@ The dataset
 \description{
 Function that returns a dataset
 }
+\note{
+The function returns the same datasets as \code{\link{SSBtoolsData}}.
+}
 \examples{
  z  <- EasyData("sosialFiktiv")
 
