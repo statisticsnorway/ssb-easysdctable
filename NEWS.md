@@ -1,4 +1,4 @@
-## easySdcTable	X.X.X
+## easySdcTable	0.7.0
 
 * No changes in functionality. Only technical changes and minor improvements. 
 
