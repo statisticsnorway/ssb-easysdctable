@@ -1,3 +1,7 @@
+## easySdcTable	0.7.0
+
+* No changes in functionality. Only technical changes and minor improvements. 
+
 
 ## easySdcTable	0.6.0
 
