@@ -22,6 +22,7 @@
 #' @param ind2  Coding of table 2 as indices referring to elements of groupVarInd
 #' @param dimDataReturn When TRUE a data frame containing the dimVarInd variables is retuned
 #' @param IncProgress A function to report progress (incProgress in Shiny).
+#' @param verbose verbose 
 #' @param ... Further parameters sent to protectTable, protectLinkedTables or createArgusInput.
 #'
 #' @details One or two tables are identified automatically and subjected to cell suppression methods in package sdcTable.
@@ -74,6 +75,7 @@ ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, pro
                           groupVarInd = NULL, ind1 = NULL, ind2 = NULL, 
                           dimDataReturn = FALSE, 
                           IncProgress = IncDefault,
+                          verbose = FALSE, 
                           ...) {
   tauArgus <- is.list(method)
   makeMicro = FALSE
@@ -161,7 +163,7 @@ ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, pro
     commonCells <- FindCommonCells(dimList1, dimList2)
     IncProgress()
     secondary <- protectLinkedTables(objectA = primary1, objectB = primary2, 
-                                     commonCells = commonCells, method = methodLinked, ...)
+                                     commonCells = commonCells, method = methodLinked, verbose = verbose,  ...)
     if(get0("doPrintDimLists",ifnotfound = FALSE)){
       print(dimList2)
       print(commonCells)
@@ -178,21 +180,21 @@ ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, pro
     IncProgress()
     if(!tauArgus){
       
-      secondary <- list(protectTable(object = primary1, method = method, ...), NULL)
+      secondary <- list(protectTable(object = primary1, method = method, verbose = verbose, ...), NULL)
       
     } else {  
       ## tauArgus start here
       optionsUseFancyQuotes <- options("useFancyQuotes") 
       options(useFancyQuotes=FALSE)  # In .onAttach() in sdcTable
       if(method$typ == "microdata"){
-        batchF <- eval(as.call(c(as.name("createArgusInput"),obj=as.name("problem1"),method, ...)))
+        batchF <- eval(as.call(c(as.name("createArgusInput"),obj=as.name("problem1"),method, verbose = verbose, ...)))
         if(get0("waitForAKeyPress",ifnotfound = FALSE)) invisible(readline(prompt="Press [enter] to continue"))
-        secondary <- list(runArgusBatchFile(obj=problem1, batchF = batchF, exe = exeTauArgus), NULL)
+        secondary <- list(runArgusBatchFile(obj=problem1, batchF = batchF, exe = exeTauArgus, verbose = verbose), NULL)
       }
       else{  # Same as above with primary1 instead of problem1
-        batchF <- eval(as.call(c(as.name("createArgusInput"),obj=as.name("primary1"),method, ...)))
+        batchF <- eval(as.call(c(as.name("createArgusInput"),obj=as.name("primary1"),method, verbose = verbose, ...)))
         if(get0("waitForAKeyPress",ifnotfound = FALSE)) invisible(readline(prompt="Press [enter] to continue"))
-        secondary <- list(runArgusBatchFile(obj=primary1, batchF = batchF, exe = exeTauArgus), NULL)
+        secondary <- list(runArgusBatchFile(obj=primary1, batchF = batchF, exe = exeTauArgus, verbose = verbose), NULL)
       }
       options(optionsUseFancyQuotes)
     }

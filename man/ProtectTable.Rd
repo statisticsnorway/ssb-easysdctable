@@ -41,6 +41,7 @@ ProtectTable(
   outSuppressed = "suppressed",
   infoAsFrame = FALSE,
   IncProgress = IncDefault,
+  verbose = FALSE,
   ...
 )
 }
@@ -143,6 +144,8 @@ created by unstacking (in cases with sever input freqvar variables).}
 
 \item{IncProgress}{A function to report progress (incProgress in Shiny). Set equal to NULL to turn it off.}
 
+\item{verbose}{verbose}
+
 \item{...}{Further parameters sent to \code{\link{protectTable}} (possibly via \code{\link{protectLinkedTables}})
 such as verbose (print output while calculating) and timeLimit.
 Parameters to  \code{\link{GaussSuppression}}, \code{\link{createArgusInput}} and \code{\link{PTwrap}} is also possible (see details).}
@@ -233,7 +236,8 @@ ProtectTable makes a call to the function \code{\link{ProtectTable1}}.
  ProtectTable(z3w,1:3,4:15, varName=c("hovedint","mnd"))     # Two variables found automatically 
  ProtectTable(z3w,1:3,4:15, varName=c("hovedint","mnd"),
                method ="Simple", removeTotal=FALSE)          # Keep "Total" in variable names 
- # --- Unstacked input data with three level column name coding  
+ # --- Unstacked input data with three level column name coding
+ z3wb <- EasyData("z3wb")  
  ProtectTable(z3wb,1:3,4:15,varName=c("hovedint","mnd","mnd2")) # Two variables found automatically
  ProtectTable(z3wb,1:3,4:15,varName=c("hovedint","mnd","mnd2"), 
                method ="Simple", split="_")  # Three variables when splitting

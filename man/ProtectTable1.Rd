@@ -23,6 +23,7 @@ ProtectTable1(
   ind2 = NULL,
   dimDataReturn = FALSE,
   IncProgress = IncDefault,
+  verbose = FALSE,
   ...
 )
 }
@@ -61,6 +62,8 @@ Alternatively a list defining parameters for running tau-argus (see \code{\link{
 \item{dimDataReturn}{When TRUE a data frame containing the dimVarInd variables is retuned}
 
 \item{IncProgress}{A function to report progress (incProgress in Shiny).}
+
+\item{verbose}{verbose}
 
 \item{...}{Further parameters sent to protectTable, protectLinkedTables or createArgusInput.}
 }

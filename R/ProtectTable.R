@@ -67,6 +67,7 @@
 #' @param outSuppressed String used to name output variable(s)
 #' @param infoAsFrame When TRUE output element info is a data frame (useful in Shiny).
 #' @param IncProgress A function to report progress (incProgress in Shiny). Set equal to NULL to turn it off.
+#' @param verbose verbose 
 #' @param ...  Further parameters sent to \code{\link{protectTable}} (possibly via \code{\link{protectLinkedTables}})
 #'        such as verbose (print output while calculating) and timeLimit. 
 #'        Parameters to  \code{\link{GaussSuppression}}, \code{\link{createArgusInput}} and \code{\link{PTwrap}} is also possible (see details).
@@ -157,7 +158,8 @@
 #'  ProtectTable(z3w,1:3,4:15, varName=c("hovedint","mnd"))     # Two variables found automatically 
 #'  ProtectTable(z3w,1:3,4:15, varName=c("hovedint","mnd"),
 #'                method ="Simple", removeTotal=FALSE)          # Keep "Total" in variable names 
-#'  # --- Unstacked input data with three level column name coding  
+#'  # --- Unstacked input data with three level column name coding
+#'  z3wb <- EasyData("z3wb")  
 #'  ProtectTable(z3wb,1:3,4:15,varName=c("hovedint","mnd","mnd2")) # Two variables found automatically
 #'  ProtectTable(z3wb,1:3,4:15,varName=c("hovedint","mnd","mnd2"), 
 #'                method ="Simple", split="_")  # Three variables when splitting
@@ -222,6 +224,7 @@ ProtectTable  <-  function(data,
                          outSuppressed="suppressed",
                          infoAsFrame = FALSE,
                          IncProgress = IncDefault,
+                         verbose = FALSE,
                          ...) {
   
   if (hasArg("allowZeros"))
@@ -307,16 +310,16 @@ ProtectTable  <-  function(data,
         
         pt <- ProtectTable1parameterRemove(data = data, dimVarInd = dimVarInd, freqVarInd = freqVarInd, protectZeros = FALSE, maxN = 0, method = "SIMPLEHEURISTIC", 
                                            findLinked = findLinked, total = total, addName = addName, sep = sep, removeZeros = removeZeros, dimList = dimList, groupVarInd = groupVarInd, 
-                                           ind1 = ind1, ind2 = ind2, dimDataReturn = TRUE, IncProgress = IncProgress, ...)
+                                           ind1 = ind1, ind2 = ind2, dimDataReturn = TRUE, IncProgress = IncProgress, verbose = verbose, ...)
         
         dimLists <- ProtectTable1dimList(data = data, dimVarInd = dimVarInd, freqVarInd = freqVarInd, protectZeros = FALSE, maxN = 0, method = "SIMPLEHEURISTIC", 
                                          findLinked = findLinked, total = total, addName = addName, sep = sep, removeZeros = removeZeros, dimList = dimList, groupVarInd = groupVarInd, 
-                                         ind1 = ind1, ind2 = ind2, dimDataReturn = FALSE, IncProgress = IncProgress, ...)
+                                         ind1 = ind1, ind2 = ind2, dimDataReturn = FALSE, IncProgress = IncProgress, verbose = verbose, ...)
       } else {
         
         pt <- ProtectTable1(data = data, dimVarInd = dimVarInd, freqVarInd = freqVarInd, protectZeros = protectZeros, maxN = maxN, method = method, 
                             findLinked = findLinked, total = total, addName = addName, sep = sep, removeZeros = removeZeros, dimList = dimList, groupVarInd = groupVarInd, 
-                            ind1 = ind1, ind2 = ind2, dimDataReturn = TRUE, IncProgress = IncProgress, ...)
+                            ind1 = ind1, ind2 = ind2, dimDataReturn = TRUE, IncProgress = IncProgress, verbose = verbose, ...)
         
       }
       
