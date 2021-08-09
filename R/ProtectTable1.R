@@ -48,7 +48,7 @@
 #'         \item{dimData}{Data frame containing the dimVarInd variables when dimDataReturn=TRUE. Otherwise NULL.}
 #'
 #' @export
-#' @importFrom sdcTable makeProblem primarySuppression protectTable protectLinkedTables createArgusInput runArgusBatchFile
+#' @importFrom sdcTable makeProblem primarySuppression protectTable protect_linked_tables createArgusInput runArgusBatchFile
 #' @importFrom SSBtools FindTableGroup FindDimLists FindCommonCells FactorLevCorr MakeMicro
 #'
 #' @seealso \code{\link{ProtectTable}}, 
@@ -61,12 +61,12 @@
 #' \dontrun{
 #' z2 <- EasyData("z2")
 #' a <- ProtectTable1(z2, c(1, 3, 4), 5)
-#' head(as.data.frame(getInfo(a[[1]][[1]], type = "finalData"))  # The table (not two linked))
+#' head(as.data.frame(sdcTable::getInfo(a[[1]][[1]], type = "finalData"))) # The table (not linked)
 #' 
 #' z3 <- EasyData("z3")
 #' b <- ProtectTable1(z3, 1:6, 7)
-#' head(as.data.frame(getInfo(b[[1]][[1]], type = "finalData")))  # First table
-#' head(as.data.frame(getInfo(b[[2]][[1]], type = "finalData")))  # Second table
+#' head(as.data.frame(sdcTable::getInfo(b[[1]][[1]], type = "finalData"))) # First table
+#' head(as.data.frame(sdcTable::getInfo(b[[2]][[1]], type = "finalData"))) # Second table
 #' }
 ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, protectZeros = TRUE, 
                           maxN = 3, method = "SIMPLEHEURISTIC", findLinked = TRUE, total = "Total", addName = FALSE, 
@@ -153,7 +153,6 @@ ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, pro
   }  
   
   
-  
   if (linked) {
     if(tauArgus) stop("tauArgus with linked tables is not implemented")
     dimList2 <- dimLists[ind2]
@@ -162,8 +161,7 @@ ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, pro
     primary2 <- primarySupp(problem2, type = "freq", maxN = maxN, allowZeros = allowZeros)
     commonCells <- FindCommonCells(dimList1, dimList2)
     IncProgress()
-    secondary <- protectLinkedTables(objectA = primary1, objectB = primary2, 
-                                     commonCells = commonCells, method = methodLinked, verbose = verbose,  ...)
+    secondary <- protect_linked_tables(x = primary1, y = primary2, common_cells = commonCells, method = methodLinked, verbose = verbose, ...)
     if(get0("doPrintDimLists",ifnotfound = FALSE)){
       print(dimList2)
       print(commonCells)

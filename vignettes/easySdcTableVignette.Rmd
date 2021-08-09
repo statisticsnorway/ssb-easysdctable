@@ -63,7 +63,7 @@ By unstacked data we mean that counts (cell frequencies) are in more than a sing
 
 In this case we have counts in columns four to seven. Using the dimensional variable in the first column we can run ProtectTable by:
 
-```{r comment=NA, results='hide', tidy = TRUE}
+```{r comment=NA, results='hide', tidy = TRUE, message = FALSE}
 ex2w <- ProtectTable(z2w,1,4:7) 
 ```
 
@@ -97,7 +97,7 @@ print(ex2w$suppressed, row.names=FALSE)
 
 Now we specify the variables using names instead of numbers. Furthermore we use the "HITAS" method. The default method is "SIMPLEHEURISTIC" and other possibilities are "OPT" and "HYPERCUBE". The latter is not possible in cases with two linked tables.
 
-```{r comment=NA, results='hide', tidy = TRUE}
+```{r comment=NA, results='hide', tidy = TRUE, message = FALSE}
 ex2wHITAS <- ProtectTable(z2w,dimVar = c("region"),freqVar = c("annet", "arbeid", "soshjelp", "trygd"), method="HITAS")  
 ```
 
@@ -111,7 +111,7 @@ Here we include the tree first variables as dimensional variables. It will be de
 Zeros will not be suppressed and we will only primarily suppress ones and twos.
 
 
-```{r comment=NA, results='hide', tidy = TRUE}
+```{r comment=NA, results='hide', tidy = TRUE, message = FALSE}
 ex2wAdvanced <- ProtectTable(z2w,dimVar = c("region", "fylke","kostragr"),freqVar = c("annet", "arbeid", "soshjelp", "trygd"), maxN=2, protectZeros=FALSE, addName=TRUE)  
 ```
 #### Suppressed data with totals and sub-totals
@@ -147,7 +147,7 @@ print(z2)
 ```
 We run ProtectTable with stacked data the same way as with unstacked data.
 
-```{r comment=NA, results='hide', tidy = TRUE}
+```{r comment=NA, results='hide', tidy = TRUE, message = FALSE}
 ex2 <- ProtectTable(z2,dimVar = c("region", "hovedint", "kostragr"), freqVar = "ant") 
 ```
 Instead of three output elements we now have the single element *data*:
@@ -162,7 +162,7 @@ Unlike above addName is FALSE (default) and therefore the sub-totals "300" and "
 Below no columns holds cell counts (no freqVar input) and therefore it is assumed that each cell count is one. 
 For this data set this is not realistic, but in other cases rows are replicated. 
 
-```{r comment=NA, results='hide', tidy = TRUE}
+```{r comment=NA, results='hide', tidy = TRUE, message = FALSE}
 ex2micro <- ProtectTable(z2,dimVar = c("region", "hovedint", "kostragr")) 
 ```
 

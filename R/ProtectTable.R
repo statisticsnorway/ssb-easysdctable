@@ -243,6 +243,20 @@ ProtectTable  <-  function(data,
     stop('Misspelled parameter "maxn" found. Use "maxN".')
   
   
+  # Inspired by
+  # https://stackoverflow.com/questions/30528652/r-catch-message-return-result-efficiently
+  Sms <- function(expr) {
+    foo <- "foo"
+    zz <- textConnection("foo", "w", local = TRUE)
+    sink(zz, type = "message")
+    res <- try(eval(expr))  
+    sink(type = "message")
+    close(zz)
+    c(res,foo)
+  }
+  
+  
+  
   is_null_IncProgress <- is.null(IncProgress) 
   if (is_null_IncProgress){
     IncProgress <- function(){NULL}
@@ -336,14 +350,14 @@ ProtectTable  <-  function(data,
           i0 <- data.frame(InputName=rownames(rowData),as.data.frame(as.matrix(rowData),stringsAsFactors=FALSE),stringsAsFactors=FALSE) else i0 <- NULL
           i1 <- as.data.frame(as.matrix(pt$common$info),stringsAsFactors=FALSE)
           if(!tauArgus){
-            i2 <- as.data.frame(capture.output(sdcTable::summary(pt$table1[[1]])),stringsAsFactors=FALSE)
+            i2 <- as.data.frame(Sms(capture.output(sdcTable::summary(pt$table1[[1]])),stringsAsFactors=FALSE))
             names(i2) = "Summary1sdcTable"            
           } else {
             i2 <- as.data.frame(capture.output(print(method)),stringsAsFactors=FALSE)
             names(i2) = "TauArgus"            
           }   # i2 = NULL  
           if (!is.null(pt$table2[[1]])) {
-            i3 <- as.data.frame(capture.output(sdcTable::summary(pt$table2[[1]])),stringsAsFactors=FALSE)
+            i3 <- as.data.frame(Sms(capture.output(sdcTable::summary(pt$table2[[1]])),stringsAsFactors=FALSE))
             names(i3) = "Summary2sdcTable"
           } else i3 <- NULL
         info <- RbindAllwithNames(i00,i0,i1,i2,i3,toRight=TRUE,extra="= = =")
@@ -354,12 +368,12 @@ ProtectTable  <-  function(data,
       
         i1 <- capture.output(print(pt$common$info))
         if(!tauArgus){ 
-          i2 <- capture.output(sdcTable::summary(pt$table1[[1]])) ## Wrong in html Vignette without "sdcTable::"
+          i2 <- Sms(capture.output(sdcTable::summary(pt$table1[[1]]))) ## Wrong in html Vignette without "sdcTable::"
         } else 
           i2 <- capture.output(print(method)) ## Wrong in html Vignette without "sdcTable::"
           #i2 = NULL  
         if (!is.null(pt$table2[[1]])) 
-          i3 <- capture.output(sdcTable::summary(pt$table2[[1]])) else i3 <- NULL
+          i3 <- Sms(capture.output(sdcTable::summary(pt$table2[[1]]))) else i3 <- NULL
       
         info <- c(i0, "==========", i1, "==========", i2, "==========", i3)
         info <- as.matrix(info, ncol = 1)  # One element pr row when printed

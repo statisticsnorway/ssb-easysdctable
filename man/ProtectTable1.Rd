@@ -98,12 +98,12 @@ One or two tables are identified automatically and subjected to cell suppression
 \dontrun{
 z2 <- EasyData("z2")
 a <- ProtectTable1(z2, c(1, 3, 4), 5)
-head(as.data.frame(getInfo(a[[1]][[1]], type = "finalData"))  # The table (not two linked))
+head(as.data.frame(sdcTable::getInfo(a[[1]][[1]], type = "finalData"))) # The table (not linked)
 
 z3 <- EasyData("z3")
 b <- ProtectTable1(z3, 1:6, 7)
-head(as.data.frame(getInfo(b[[1]][[1]], type = "finalData")))  # First table
-head(as.data.frame(getInfo(b[[2]][[1]], type = "finalData")))  # Second table
+head(as.data.frame(sdcTable::getInfo(b[[1]][[1]], type = "finalData"))) # First table
+head(as.data.frame(sdcTable::getInfo(b[[2]][[1]], type = "finalData"))) # Second table
 }
 }
 \seealso{
