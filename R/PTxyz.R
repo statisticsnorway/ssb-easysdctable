@@ -60,40 +60,42 @@
 #'   a <- PTxyz(EasyData("z2"), 1:4, 5)
 #'   cbind(a$z, t(a$x) %*% cbind(a$y, SuppressDec(a$x, a$z, rmse = 1, nRep = 3)))[which(is.na(a$z)), ]
 #' }
-PTxyz = function(data, dimVar, freqVar,...){
+PTxyz <- function(data, dimVar, freqVar, ...) {
   
-  systemTime <- hasArg("systemTime") 
+  systemTime <- hasArg("systemTime")
   
-  if(length(freqVar)!=1)
+  if (length(freqVar) != 1)
     stop("Only a single freVar allowed in this implementation")
   
   # Generate dimList as in ProtectTable. So this is done twice in this implementation.
-  dimLists = ProtectTable1dimList(data, dimVar, freqVar,...)
+  dimLists <- ProtectTable1dimList(data, dimVar, freqVar, ...)
   
-  if(systemTime){
-    system_time <-  system.time({pt <- ProtectTable(data, dimVar, freqVar, ...)})
+  if (systemTime) {
+    system_time <- system.time({
+      pt <- ProtectTable(data, dimVar, freqVar, ...)
+    })
   } else {
-    pt = ProtectTable(data, dimVar, freqVar, ...) 
+    pt <- ProtectTable(data, dimVar, freqVar, ...)
   }
   
-  freqVar = names(data[1, freqVar, drop=FALSE])
+  freqVar <- names(data[1, freqVar, drop = FALSE])
   
-  varNames =  unique(names(dimLists))
-  ptA = pt$data[,!(names(pt$data) %in% c("freq", "sdcStatus", "suppressed")), drop = FALSE]
+  varNames <- unique(names(dimLists))
+  ptA <- pt$data[, !(names(pt$data) %in% c("freq", "sdcStatus", "suppressed")), drop = FALSE]
   
-  x = CrossTable2ModelMatrix(data, ptA, dimLists)
+  x <- CrossTable2ModelMatrix(data, ptA, dimLists)
   
-  rownames(x) = apply(data[, names(data) %in% names(ptA), drop = FALSE], 1,paste,collapse = "_" )
-  colnames(x) = apply(ptA, 1,paste,collapse = ":" )
-  y = as.matrix(data[,freqVar, drop=FALSE])
-  z = as.matrix(pt$data[,"suppressed", drop=FALSE])
-  rownames(z) = colnames(x)
-  rownames(y) = rownames(x)
+  rownames(x) <- apply(data[, names(data) %in% names(ptA), drop = FALSE], 1, paste, collapse = "_")
+  colnames(x) <- apply(ptA, 1, paste, collapse = ":")
+  y <- as.matrix(data[, freqVar, drop = FALSE])
+  z <- as.matrix(pt$data[, "suppressed", drop = FALSE])
+  rownames(z) <- colnames(x)
+  rownames(y) <- rownames(x)
   
-  if(systemTime){
-    return(list(x = x, y=y, z=z, system_time = system_time))
+  if (systemTime) {
+    return(list(x = x, y = y, z = z, system_time = system_time))
   }
-  list(x = x, y=y, z=z)
+  list(x = x, y = y, z = z)
 }
 
 
