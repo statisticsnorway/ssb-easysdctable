@@ -62,13 +62,19 @@
 #' }
 PTxyz = function(data, dimVar, freqVar,...){
   
+  systemTime <- hasArg("systemTime") 
+  
   if(length(freqVar)!=1)
     stop("Only a single freVar allowed in this implementation")
   
   # Generate dimList as in ProtectTable. So this is done twice in this implementation.
   dimLists = ProtectTable1dimList(data, dimVar, freqVar,...)
   
-  pt = ProtectTable(data, dimVar, freqVar, ...) 
+  if(systemTime){
+    system_time <-  system.time({pt <- ProtectTable(data, dimVar, freqVar, ...)})
+  } else {
+    pt = ProtectTable(data, dimVar, freqVar, ...) 
+  }
   
   freqVar = names(data[1, freqVar, drop=FALSE])
   
@@ -83,6 +89,10 @@ PTxyz = function(data, dimVar, freqVar,...){
   z = as.matrix(pt$data[,"suppressed", drop=FALSE])
   rownames(z) = colnames(x)
   rownames(y) = rownames(x)
+  
+  if(systemTime){
+    return(list(x = x, y=y, z=z, system_time = system_time))
+  }
   list(x = x, y=y, z=z)
 }
 
