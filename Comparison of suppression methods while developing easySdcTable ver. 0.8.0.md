@@ -63,15 +63,15 @@ Data | linked | protectZeros | maxN |  Gauss | SIMPLEHEURISTIC | SimpleSingle | 
 **z3** | **no** | **FALSE** | **10** | 452 | *Error* | *Error* | 450 (1) | *Error* |  
 **z3** | **no** | **TRUE** | **2** | 350 | *Error* | 593 | 336 | 593 |  
 **z3** | **no** | **TRUE** | **10** | 553 | 554 | 631 | 554 | 631 |  
-**z3** | **yes** | **FALSE** | **2** | 397 | 340 (15) | *Error* | 340 (15) | *Error* |  
-**z3** | **yes** | **FALSE** | **10** | 502 | 494 (3) | *Error* | 494 (3) | *Error* |  
-**z3** | **yes** | **TRUE** | **2** | 397 | 383 | 701 | 383 | 701 |  
-**z3** | **yes** | **TRUE** | **10** | 603 | 603 | 736 | 603 | 736 |  
-**sosialFiktiv** | **no** | **FALSE** | **2** | 2057 | *Error* | *Error* | 1973 (24) | *Error* |  
+**z3** | **yes** | **FALSE** | **2** | 397 | 340 (21) | *Error* | 340 (21) | *Error* |  
+**z3** | **yes** | **FALSE** | **10** | 502 | 494 (5) | *Error* | 494 (5) | *Error* |  
+**z3** | **yes** | **TRUE** | **2** | 397 | 383 (4) | 701 | 383 (4) | 701 |  
+**z3** | **yes** | **TRUE** | **10** | 603 | 603 (1) | 736 | 603 (1) | 736 |  
+**sosialFiktiv** | **no** | **FALSE** | **2** | 2057 | *Error* | *Error* | 1973 (27) | *Error* |  
 **sosialFiktiv** | **no** | **FALSE** | **10** | 3805 | *Error* | *Error* | 3795 (5) | *Error* |  
 **sosialFiktiv** | **no** | **TRUE** | **2** | 2241 | *Error* | *Error* | 2238 | 6460 |  
 **sosialFiktiv** | **no** | **TRUE** | **10** | 4289 | 4313 | 6783 | 4307 | 6783 |  
-**sosialFiktiv** | **yes** | **FALSE** | **2** | 2168 | 1995 (38) | *Error* | 1995 (39) | *Error* |  
-**sosialFiktiv** | **yes** | **FALSE** | **10** | 3825 | 3818 (5) | *Error* | 3818 (5) | *Error* |  
-**sosialFiktiv** | **yes** | **TRUE** | **2** | 2268 | 2275 (12) | 6768 | 2275 (12) | 6768 |  
-**sosialFiktiv** | **yes** | **TRUE** | **10** | 4309 | 4330 | 7085 | 4330 | 7085 |  
+**sosialFiktiv** | **yes** | **FALSE** | **2** | 2168 | 1995 (53) | *Error* | 1995 (53) | *Error* |  
+**sosialFiktiv** | **yes** | **FALSE** | **10** | 3825 | 3818 (8) | *Error* | 3818 (8) | *Error* |  
+**sosialFiktiv** | **yes** | **TRUE** | **2** | 2268 | 2275 (18) | 6768 | 2275 (18) | 6768 |  
+**sosialFiktiv** | **yes** | **TRUE** | **10** | 4309 | 4330 (2) | 7085 | 4330 (2) | 7085 |   
