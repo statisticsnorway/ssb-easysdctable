@@ -15,7 +15,7 @@ To reveal cells, `PTxyz` in easySdcTable is combined with `SuppressDec` in RegSD
 
 ### Computing time in seconds of ProtectTable run 
 
-Data | linked | protectZeros | maxN |  Gauss | SIMPLEHEURISTIC | SimpleSingle | SIMPLEHEURISTIC_FALSE | SimpleSingle_FALSE |
+Data | linked | protectZeros | maxN |  Gauss | SIMPLEHEURISTIC | SimpleSingle | SIMPLEHEURISTIC _FALSE | SimpleSingle _FALSE |
  ---:|   :---: |   :---: |   :---: |   ---: |   :---: |   :---: |   :---: | :---: |
 **z2** | **no** | **FALSE** | **2** | 0.4 | 0.4 | 0.4 | 0.3 | 0.3 |  
 **z2** | **no** | **FALSE** | **10** | 0.3 | 0.3 | 0.3 | 0.5 | 0.3 |  
