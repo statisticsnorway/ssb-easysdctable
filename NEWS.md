@@ -1,3 +1,12 @@
+## easySdcTable	0.8.0
+
+* Method "Gauss" made default. 
+  - Based on comparison of computing times, errors and the numbers of suppressed and revealed cells,
+this is a natural consequence after the release of sdcTable version 0.32.0 (see the github page of easySdcTable). 
+
+* Other changes caused by changes in sdcTable version 0.32.0
+
+
 ## easySdcTable	0.7.0
 
 * No changes in functionality. Only technical changes and minor improvements. 
