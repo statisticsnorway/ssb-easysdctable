@@ -13,10 +13,10 @@
 #' @param maxN All cells having counts <= maxN are set as primary suppressed.
 #' @param method Parameter `method` in \code{\link{protectTable}}, \code{\link{protect_linked_tables}}
 #'        or wrapper methods via \code{\link{PTwrap}}. 
-#'        `Gauss` is an additional method that is not available in sdcTable.
+#'        `Gauss` (default) is an additional method that is not available in sdcTable.
 #' * **`"SIMPLEHEURISTIC"`:** This method is default in protectable.
 #' * **`"OPT"`, `"HITAS"`, `"HYPERCUBE"`:** Other methods in protectable. `"HYPERCUBE"` is not possible in cases with two linked tables.
-#' * **`"SimpleSingle"` (default):**  `"SIMPLEHEURISTIC"` with `detectSingletons=TRUE` when `protectZeros=FALSE` and
+#' * **`"SimpleSingle"`:**  `"SIMPLEHEURISTIC"` with `detectSingletons=TRUE` when `protectZeros=FALSE` and
 #'                            `"SIMPLEHEURISTIC"` with `threshold=1` (can be overridden by input) when `protectZeros=TRUE`. 
 #' * **`"Simple"`:** `"SIMPLEHEURISTIC"` with `detectSingletons=FALSE`.  
 #' * **`"Gauss"`:** \code{\link{GaussSuppression}} is called with parameters `x`, `candidates`, `primary` and `singleton` automatically generated.
@@ -130,7 +130,6 @@
 #'  # ==== Example 1 , 8 regions ====
 #'  z1 <- EasyData("z1")        
 #'  ProtectTable(z1,1:2, 3)
-#'  ProtectTable(z1,1:2, 3, method="Gauss")$data
 #'  ProtectTable(z1, c("region","hovedint"), "ant") # Input by name 
 #'  # --- Unstacked input data ---
 #'  z1w = EasyData("z1w") 
@@ -144,26 +143,26 @@
 #'  ProtectTable(z2,c(1,3,4), 5) # With region-variable kostragr
 #'  # --- Unstacked input data ---
 #'  z2w <- EasyData("z2w") 
-#'  ProtectTable(z2w, 1:2, 4:7, method ="Simple") # With region-variable fylke
-#'  ProtectTable(z2w, 1:3, 4:7, method = "SIMPLEHEURISTIC") # Two linked tables
+#'  ProtectTable(z2w, 1:2, 4:7) # With region-variable fylke
+#'  ProtectTable(z2w, 1:3, 4:7) # Two linked tables
 #'  
 #'  \dontrun{
 #'  # ==== Example 3 , 36 regions ====
 #'  z3 <- EasyData("z3")   
-#'  ProtectTable(z3, c(1,4,5), 7)                             # Three dimensions. No subtotals    
-#'  ProtectTable(z3, 1:6, 7, method = "SIMPLEHEURISTIC")      # Two linked tables  
+#'  ProtectTable(z3, c(1,4,5), 7)                               # Three dimensions. No subtotals    
+#'  ProtectTable(z3, 1:6, 7)                                    # Two linked tables  
 #'  # --- Unstacked input data with coded column names 
 #'  z3w <- EasyData("z3w")
-#'  ProtectTable(z3w,1:3,4:15, varName="g12", method ="Simple") # coding not used when single varName
+#'  ProtectTable(z3w,1:3,4:15, varName="g12")                   # coding not used when single varName
 #'  ProtectTable(z3w,1:3,4:15, varName=c("hovedint","mnd"))     # Two variables found automatically 
 #'  ProtectTable(z3w,1:3,4:15, varName=c("hovedint","mnd"),
-#'                method ="Simple", removeTotal=FALSE)          # Keep "Total" in variable names 
+#'                removeTotal=FALSE)                            # Keep "Total" in variable names 
 #'  # --- Unstacked input data with three level column name coding
 #'  z3wb <- EasyData("z3wb")  
 #'  ProtectTable(z3wb,1:3,4:15,varName=c("hovedint","mnd","mnd2")) # Two variables found automatically
 #'  ProtectTable(z3wb,1:3,4:15,varName=c("hovedint","mnd","mnd2"), 
-#'                method ="Simple", split="_")  # Three variables when splitting
-#'  ProtectTable(z3wb,1:3,4:15,varName=c("hovedint","mnd","mnd2"), method = "SIMPLEHEURISTIC",
+#'              split="_")                                         # Three variables when splitting
+#'  ProtectTable(z3wb,1:3,4:15,varName=c("hovedint","mnd","mnd2"),
 #'                split="_",namesAsInput=FALSE,orderAsInput=FALSE) # Alternative ouput format
 #'                
 #'  # ====  Examples Tau-Argus ====              
@@ -185,16 +184,16 @@
 #' # ==== Examples with parameter dimList  ====
 #' z2 <- EasyData("z2")
 #' dList <- FindDimLists(z2[-5])
-#' ProtectTable(z2[, c(1,4,5)], 1:2, 3, method = "Simple", dimList = dList[c(1,3)])
-#' ProtectTable(z2[, c(1,4,5)], 1:2, 3, method = "SIMPLEHEURISTIC", dimList = dList[2])
-#' ProtectTable(z2[, c(1,4,5)], 1:2, 3, method = "Simple", 
-#'              dimList = DimList2Hrc(dList[c(2,3)]))              
+#' ProtectTable(z2[, c(1,4,5)], 1:2, 3, dimList = dList[c(1,3)])
+#' ProtectTable(z2[, c(1,4,5)], 1:2, 3, dimList = dList[2])
+#' ProtectTable(z2[, c(1,4,5)], 1:2, 3, dimList = DimList2Hrc(dList[c(2,3)]))
+#'               
 ProtectTable  <-  function(data,
                          dimVar=1:NCOL(data),
                          freqVar=NULL,
                          protectZeros=TRUE,
                          maxN=3,
-                         method="SimpleSingle",
+                         method="Gauss",
                          findLinked=TRUE,
                          total="Total",
                          addName=FALSE,
@@ -350,14 +349,14 @@ ProtectTable  <-  function(data,
           i0 <- data.frame(InputName=rownames(rowData),as.data.frame(as.matrix(rowData),stringsAsFactors=FALSE),stringsAsFactors=FALSE) else i0 <- NULL
           i1 <- as.data.frame(as.matrix(pt$common$info),stringsAsFactors=FALSE)
           if(!tauArgus){
-            i2 <- as.data.frame(Sms(capture.output(sdcTable::summary(pt$table1[[1]])),stringsAsFactors=FALSE))
+            i2 <- as.data.frame(Sms(capture.output(sdcTable::summary(pt$table1[[1]]))),stringsAsFactors=FALSE)
             names(i2) = "Summary1sdcTable"            
           } else {
             i2 <- as.data.frame(capture.output(print(method)),stringsAsFactors=FALSE)
             names(i2) = "TauArgus"            
           }   # i2 = NULL  
           if (!is.null(pt$table2[[1]])) {
-            i3 <- as.data.frame(Sms(capture.output(sdcTable::summary(pt$table2[[1]])),stringsAsFactors=FALSE))
+            i3 <- as.data.frame(Sms(capture.output(sdcTable::summary(pt$table2[[1]]))),stringsAsFactors=FALSE)
             names(i3) = "Summary2sdcTable"
           } else i3 <- NULL
         info <- RbindAllwithNames(i00,i0,i1,i2,i3,toRight=TRUE,extra="= = =")

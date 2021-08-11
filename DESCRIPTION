@@ -1,6 +1,6 @@
 Package: easySdcTable
 Type: Package
-Title: Easy Interface to the Statistical Disclosure Control Package 'sdcTable'
+Title: Easy Interface to the Statistical Disclosure Control Package 'sdcTable' extended with the 'GaussSuppression' method
 Version: 0.7.1
 Date: 2021-05-20
 Authors@R: person("Øyvind", "Langsrud", role = c("aut", "cre"), email = "oyl@ssb.no")
@@ -20,6 +20,7 @@ Description: The main function, ProtectTable(), performs table suppression accor
  protectTable(), protect_linked_tables() or runArgusBatchFile() in package 'sdcTable' is called. 
  Lists of level-hierarchy (parameter 'dimList') and other required input to these functions 
  are created automatically. 
+ The suppression method Gauss (default) is an additional method that is not available in sdcTable.
  The function, PTgui(), starts a graphical user interface based on the shiny package.
 License: Apache License 2.0 | file LICENSE
 Roxygen: list(markdown = TRUE)

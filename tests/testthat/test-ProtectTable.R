@@ -24,12 +24,12 @@ test_that("Simple works", {
 })
 
 test_that("SimpleSingle works", {
-  PTxyzTest(z, 1:2, "y0", protectZeros = TRUE)
-  w <- ProtectTable(z, 1:2, "y0", protectZeros = TRUE, IncProgress = NULL)$data
+  PTxyzTest(z, 1:2, "y0", protectZeros = TRUE, method = "SimpleSingle")
+  w <- ProtectTable(z, 1:2, "y0", protectZeros = TRUE, IncProgress = NULL, method = "SimpleSingle")$data
   expect_true(sum(w[w$b == 3 & is.na(w$suppressed), "freq", drop = TRUE]) > 0)
   
-  PTxyzTest(z, 1:2, "y1", protectZeros = FALSE)
-  w <- ProtectTable(z, 1:2, "y1", protectZeros = FALSE, IncProgress = NULL)$data
+  PTxyzTest(z, 1:2, "y1", protectZeros = FALSE, method = "SimpleSingle")
+  w <- ProtectTable(z, 1:2, "y1", protectZeros = FALSE, IncProgress = NULL, method = "SimpleSingle")$data
   expect_true(sum(w[w$b == 1 & is.na(w$suppressed), "freq", drop = TRUE] - 1) > 0)
 })
 
