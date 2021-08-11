@@ -49,7 +49,7 @@ Data | linked | protectZeros | maxN |  Gauss | SIMPLEHEURISTIC | SimpleSingle | 
 ### Number of suppressed cells (number of revealed cells in parenthesis)
 
 
-Data | linked | protectZeros | maxN |  Gauss | SIMPLEHEURISTIC | SimpleSingle | SIMPLEHEURISTIC_FALSE | SimpleSingle_FALSE |
+Data | linked | protectZeros | maxN |  Gauss | SIMPLEHEURISTIC | SimpleSingle | SIMPLEHEURISTIC _FALSE | SimpleSingle _FALSE |
  ---:|   :---: |   :---: |   :---: |   ---: |   :---: |   :---: |   :---: | :---: |
 **z2** | **no** | **FALSE** | **2** | 16 | 16 | 20 | 16 | 20 |  
 **z2** | **no** | **FALSE** | **10** | 35 | 35 | 38 | 35 | 38 |  
