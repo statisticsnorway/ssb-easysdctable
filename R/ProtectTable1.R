@@ -1,6 +1,6 @@
 #' Easy input interface to sdcTable
 #'
-#' protectTable or protectLinkedTables is run with a data set at the only required input.
+#' protectTable or protect_linked_tables is run with a data set at the only required input.
 #'
 #' @encoding UTF8
 #'
@@ -9,9 +9,9 @@
 #' @param freqVarInd Column-indices of a variable holding counts or NULL in the case of micro data.
 #' @param protectZeros When TRUE empty cells (count=0) is considered sensitive (i.e. same as allowZeros in primarySuppression).
 #' @param maxN All cells having counts <= maxN are set as primary suppressed.
-#' @param method Parameter "method" in protectTable or protectLinkedTables.
+#' @param method Parameter "method" in protectTable or protect_linked_tables.
 #'               Alternatively a list defining parameters for running tau-argus (see \code{\link{ProtectTable}}).
-#' @param findLinked When TRUE, the function may find two linked tables and run protectLinkedTables.
+#' @param findLinked When TRUE, the function may find two linked tables and run protect_linked_tables.
 #' @param total String used to name totals.
 #' @param addName When TRUE the variable name is added to the level names, except for variables with most levels.
 #' @param sep A character string to separate when addName apply.
@@ -23,7 +23,7 @@
 #' @param dimDataReturn When TRUE a data frame containing the dimVarInd variables is retuned
 #' @param IncProgress A function to report progress (incProgress in Shiny).
 #' @param verbose verbose 
-#' @param ... Further parameters sent to protectTable, protectLinkedTables or createArgusInput.
+#' @param ... Further parameters sent to protectTable, protect_linked_tables or createArgusInput.
 #'
 #' @details One or two tables are identified automatically and subjected to cell suppression methods in package sdcTable.
 #'          The tables can alternatively be specified manually by groupVarInd, ind1 and ind2 (see \code{\link{FindTableGroup}}).
@@ -31,7 +31,7 @@
 #' @return Output is a list of three elements.
 #'
 #'         \strong{table1} consists of the following elements:
-#'         \item{secondary}{Output from \code{\link{protectTable}} or first element of output from \code{\link{protectLinkedTables}} 
+#'         \item{secondary}{Output from \code{\link{protectTable}} or first element of output from \code{\link{protect_linked_tables}} 
 #'         or output from \code{\link{runArgusBatchFile}}.}
 #'         \item{primary}{Output from \code{\link{primarySuppression}}.}
 #'         \item{problem}{Output from \code{\link{makeProblem}}.}
@@ -41,7 +41,7 @@
 #'         \strong{table2} consists of elements of the same type as table1 in cases of two linked tables. Otherwise  table2 is NULL.
 #'
 #'         \strong{common} consists of the following elements:
-#'         \item{commonCells}{Input to protectLinkedTables.}
+#'         \item{commonCells}{Input to protect_linked_tables.}
 #'         \item{groupVarInd}{List defining the hierarchical variable groups}
 #'         \item{info}{A table summarizing the tables using variable names}
 #'         \item{nLevels}{The number of levels of each variable (only when groupVarInd input is NULL)}

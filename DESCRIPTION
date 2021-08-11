@@ -17,7 +17,7 @@ Suggests:
     testthat (>= 2.1.0)
 Description: The main function, ProtectTable(), performs table suppression according to a 
  frequency rule with a data set as the only required input. Within this function, 
- protectTable(), protectLinkedTables() or runArgusBatchFile() in package 'sdcTable' is called. 
+ protectTable(), protect_linked_tables() or runArgusBatchFile() in package 'sdcTable' is called. 
  Lists of level-hierarchy (parameter 'dimList') and other required input to these functions 
  are created automatically. 
  The function, PTgui(), starts a graphical user interface based on the shiny package.

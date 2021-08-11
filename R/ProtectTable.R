@@ -1,6 +1,6 @@
 #'  Easy interface to sdcTable: Table suppression according to a frequency rule. 
 #'
-#'  protectTable() or protectLinkedTables() in package 'sdcTable' is run with a data set as the only required input.
+#'  protectTable() or protect_linked_tables() in package 'sdcTable' is run with a data set as the only required input.
 #'  One (stacked) or several (unstacked) input variables can hold cell counts.
 #'  Output is on a form similar to input.
 #'
@@ -11,7 +11,7 @@
 #' @param freqVar Variable(s) holding counts or NULL in the case of micro data (name or number).
 #' @param protectZeros When TRUE empty cells (count=0) is considered sensitive (i.e. same as allowZeros in  \code{\link{primarySuppression}}).
 #' @param maxN All cells having counts <= maxN are set as primary suppressed.
-#' @param method Parameter `method` in \code{\link{protectTable}}, \code{\link{protectLinkedTables}}
+#' @param method Parameter `method` in \code{\link{protectTable}}, \code{\link{protect_linked_tables}}
 #'        or wrapper methods via \code{\link{PTwrap}}. 
 #'        `Gauss` is an additional method that is not available in sdcTable.
 #' * **`"SIMPLEHEURISTIC"`:** This method is default in protectable.
@@ -24,7 +24,7 @@
 #' 
 #' Alternatively this parameter can be a named list specifying parameters for running tau-argus (see details).                     
 #'        See \code{\link{PTwrap}} for other (experimental) wrapper methods (see details).
-#' @param findLinked When TRUE, the function may find two linked tables and run protectLinkedTables.
+#' @param findLinked When TRUE, the function may find two linked tables and run protect_linked_tables.
 #' @param total String used to name totals.
 #' @param addName When TRUE the variable name is added to the level names, except for variables with most levels.
 #' @param sep A character string to separate when addName apply and when creating variable names.
@@ -68,12 +68,12 @@
 #' @param infoAsFrame When TRUE output element info is a data frame (useful in Shiny).
 #' @param IncProgress A function to report progress (incProgress in Shiny). Set equal to NULL to turn it off.
 #' @param verbose verbose 
-#' @param ...  Further parameters sent to \code{\link{protectTable}} (possibly via \code{\link{protectLinkedTables}})
-#'        such as verbose (print output while calculating) and timeLimit. 
+#' @param ...  Further parameters sent to \code{\link{protectTable}} (possibly via \code{\link{protect_linked_tables}})
+#'        such as solve_attackerprobs and timeLimit. 
 #'        Parameters to  \code{\link{GaussSuppression}}, \code{\link{createArgusInput}} and \code{\link{PTwrap}} is also possible (see details).
 #' 
 #' @details One or two tables are identified automatically and subjected to cell suppression 
-#'          by \code{\link{protectTable}} (single table) or \code{\link{protectLinkedTables}} (two linked tables).
+#'          by \code{\link{protectTable}} (single table) or \code{\link{protect_linked_tables}} (two linked tables).
 #'          The tables can alternatively be specified manually by groupVarInd, ind1 and ind2.
 #'          The output will be on a form similiar to input depending on whether freqVar is a single variable or not.
 #'          The status of the cells are 
@@ -424,16 +424,16 @@ ProtectTable  <-  function(data,
         b <- merge(t1, t2, all = TRUE, by = seq_len(dim(t1)[2] - 2), suffixes = c("", ".y"))
         ######## MERK
         if (sum(abs(b$Freq - b$Freq.y), na.rm = TRUE) > 0) 
-          stop("Output from protectLinkedTables: Something is wrong!")
+          stop("Output from protect_linked_tables: Something is wrong!")
         
         if (sum(abs(as.integer(b$sdcStatus == "s") - as.integer(b$sdcStatus.y == 
                                                                 "s")), na.rm = TRUE) > 0) {
           b$sdcStatus[!is.na(b$sdcStatus) & b$sdcStatus.y == "s"] <- "s"
-          warning("Non-unique suppression-output form protectLinkedTables")
+          warning("Non-unique suppression-output form protect_linked_tables")
         }
         
         if (sum(!(is.na(b$Freq) == is.na(b$sdcStatus))) > 0) 
-          stop("Output from protectLinkedTables: Something is wrong!")
+          stop("Output from protect_linked_tables: Something is wrong!")
         
         nat1 <- is.na(b$Freq)
         b$sdcStatus[nat1] <- b$sdcStatus.y[nat1]

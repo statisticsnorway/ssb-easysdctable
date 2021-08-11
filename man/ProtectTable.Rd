@@ -56,7 +56,7 @@ ProtectTable(
 
 \item{maxN}{All cells having counts <= maxN are set as primary suppressed.}
 
-\item{method}{Parameter \code{method} in \code{\link{protectTable}}, \code{\link{protectLinkedTables}}
+\item{method}{Parameter \code{method} in \code{\link{protectTable}}, \code{\link{protect_linked_tables}}
 or wrapper methods via \code{\link{PTwrap}}.
 \code{Gauss} is an additional method that is not available in sdcTable.
 \itemize{
@@ -72,7 +72,7 @@ Other parameters (\code{singletonMethod}, \code{printInc}) can be specified.
 Alternatively this parameter can be a named list specifying parameters for running tau-argus (see details).
 See \code{\link{PTwrap}} for other (experimental) wrapper methods (see details).}
 
-\item{findLinked}{When TRUE, the function may find two linked tables and run protectLinkedTables.}
+\item{findLinked}{When TRUE, the function may find two linked tables and run protect_linked_tables.}
 
 \item{total}{String used to name totals.}
 
@@ -146,8 +146,8 @@ created by unstacking (in cases with sever input freqvar variables).}
 
 \item{verbose}{verbose}
 
-\item{...}{Further parameters sent to \code{\link{protectTable}} (possibly via \code{\link{protectLinkedTables}})
-such as verbose (print output while calculating) and timeLimit.
+\item{...}{Further parameters sent to \code{\link{protectTable}} (possibly via \code{\link{protect_linked_tables}})
+such as solve_attackerprobs and timeLimit.
 Parameters to  \code{\link{GaussSuppression}}, \code{\link{createArgusInput}} and \code{\link{PTwrap}} is also possible (see details).}
 }
 \value{
@@ -163,13 +163,13 @@ according to outFreq, outSdcStatus and outSuppressed.
 }
 }
 \description{
-protectTable() or protectLinkedTables() in package 'sdcTable' is run with a data set as the only required input.
+protectTable() or protect_linked_tables() in package 'sdcTable' is run with a data set as the only required input.
 One (stacked) or several (unstacked) input variables can hold cell counts.
 Output is on a form similar to input.
 }
 \details{
 One or two tables are identified automatically and subjected to cell suppression
-by \code{\link{protectTable}} (single table) or \code{\link{protectLinkedTables}} (two linked tables).
+by \code{\link{protectTable}} (single table) or \code{\link{protect_linked_tables}} (two linked tables).
 The tables can alternatively be specified manually by groupVarInd, ind1 and ind2.
 The output will be on a form similiar to input depending on whether freqVar is a single variable or not.
 The status of the cells are
