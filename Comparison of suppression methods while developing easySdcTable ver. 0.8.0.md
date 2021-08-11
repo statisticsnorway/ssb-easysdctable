@@ -8,7 +8,7 @@ When `linked` is `yes`, parameter `dimVar` is `1:4` (when `z2`) or `1:5`.
 The method `"SimpleSingle"` is  `"SIMPLEHEURISTIC"` with `detectSingletons=TRUE` when `protectZeros=FALSE` and
 `"SIMPLEHEURISTIC"` with `threshold=1` when `protectZeros=TRUE`. The end `_FALSE` means that `solve_attackerprobs=FALSE`.
 
-To reveal cells, `PTxyz` in easySdcTable is combined with `SuppressDec` in RegSDC.
+To reveal cells, `PTxyz` in easySdcTable is combined with `SuppressDec` in RegSDC. See PTxyz examples.
 
 ---
 

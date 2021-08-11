@@ -61,13 +61,16 @@ if (require(RegSDC)) { # RegSDCdata and SuppressDec
 
   # All cells with 3 replicates.
   cbind(a$z, t(a$x) \%*\% cbind(a$y, yDec))
-
-  # An example involving two linked tables.  
-  # It is demonstrated that the approach to suppression is not safe.  
-  # That is, perfect fit (whole numbers) for some suppressed cells.
-  a <- PTxyz(EasyData("z2"), 1:4, 5)
-  cbind(a$z, t(a$x) \%*\% cbind(a$y, SuppressDec(a$x, a$z, rmse = 1, nRep = 3)))[which(is.na(a$z)), ]
 }
+
+\dontrun{
+if (require(RegSDC)) {
+  # An example involving two linked tables.  
+  # It is demonstrated that the SIMPLEHEURISTIC approach to suppression is not safe.  
+  # That is, perfect fit (whole numbers) for some suppressed cells.
+  a <- PTxyz(EasyData("z3"), 1:5, 7, method = "SIMPLEHEURISTIC", protectZeros= FALSE)
+  cbind(a$z, t(a$x) \%*\% cbind(a$y, SuppressDec(a$x, a$z, rmse=pi/3, nRep=3)))[which(is.na(a$z)), ]
+}}
 }
 \author{
 Øyvind Langsrud
