@@ -63,7 +63,7 @@ Alternatively a list defining parameters for running tau-argus (see \code{\link{
 
 \item{IncProgress}{A function to report progress (incProgress in Shiny).}
 
-\item{verbose}{verbose Parameter sent to protectTable, protect_linked_tables or runArgusBatchFile.}
+\item{verbose}{Parameter sent to protectTable, protect_linked_tables or runArgusBatchFile.}
 
 \item{...}{Further parameters sent to protectTable, protect_linked_tables or createArgusInput.}
 }
