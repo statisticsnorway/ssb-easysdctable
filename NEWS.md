@@ -4,7 +4,9 @@
   - Based on comparison of computing times, errors and the numbers of suppressed and revealed cells,
 this is a natural consequence after the release of sdcTable version 0.32.0 
 (see `Comparison of suppression methods while developing easySdcTable ver. 0.8.0.md` on the github page of easySdcTable). 
-* Other changes caused by changes in sdcTable version 0.32.0
+* Internal changes caused by changes in sdcTable version 0.32.0
+  - Now `protect_linked_tables` is used insetad of `protectLinkedTables`
+  - Summary output from sdcTable is captured differently (for `info` output)
 * New tidy wrapper function, `ProtectTableData`,  which returns a single data frame. 
 
 
