@@ -25,6 +25,12 @@ The demonstration below is based on the data from example 2 in the package and f
 
 Before demonstrating ProtectTable() a few words about other possibilities.
 
+#### Note after easySdcTable version 0.8.0
+
+Method `"Gauss"` has been made default (See NEWS).
+This is an additional method that is not available in sdcTable.
+
+
 ## Graphical user interface and $\tau$-ARGUS
 
 A graphical user interface based on 'shiny' can be started by: 
@@ -112,7 +118,7 @@ Zeros will not be suppressed and we will only primarily suppress ones and twos.
 
 
 ```{r comment=NA, results='hide', tidy = TRUE, message = FALSE}
-ex2wAdvanced <- ProtectTable(z2w,dimVar = c("region", "fylke","kostragr"),freqVar = c("annet", "arbeid", "soshjelp", "trygd"), maxN=2, protectZeros=FALSE, addName=TRUE)  
+ex2wAdvanced <- ProtectTable(z2w,dimVar = c("region", "fylke","kostragr"),freqVar = c("annet", "arbeid", "soshjelp", "trygd"), maxN=2, protectZeros=FALSE, method = "SIMPLEHEURISTIC", addName=TRUE)  
 ```
 #### Suppressed data with totals and sub-totals
 
