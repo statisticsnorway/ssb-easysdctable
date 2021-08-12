@@ -22,7 +22,7 @@
 #' @param ind2  Coding of table 2 as indices referring to elements of groupVarInd
 #' @param dimDataReturn When TRUE a data frame containing the dimVarInd variables is retuned
 #' @param IncProgress A function to report progress (incProgress in Shiny).
-#' @param verbose verbose 
+#' @param verbose verbose Parameter sent to protectTable, protect_linked_tables or runArgusBatchFile. 
 #' @param ... Further parameters sent to protectTable, protect_linked_tables or createArgusInput.
 #'
 #' @details One or two tables are identified automatically and subjected to cell suppression methods in package sdcTable.
