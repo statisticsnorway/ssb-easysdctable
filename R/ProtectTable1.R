@@ -1,6 +1,6 @@
 #' Easy input interface to sdcTable
 #'
-#' protectTable or protectLinkedTables is run with a data set at the only required input.
+#' protectTable or protect_linked_tables is run with a data set at the only required input.
 #'
 #' @encoding UTF8
 #'
@@ -9,9 +9,9 @@
 #' @param freqVarInd Column-indices of a variable holding counts or NULL in the case of micro data.
 #' @param protectZeros When TRUE empty cells (count=0) is considered sensitive (i.e. same as allowZeros in primarySuppression).
 #' @param maxN All cells having counts <= maxN are set as primary suppressed.
-#' @param method Parameter "method" in protectTable or protectLinkedTables.
+#' @param method Parameter "method" in protectTable or protect_linked_tables.
 #'               Alternatively a list defining parameters for running tau-argus (see \code{\link{ProtectTable}}).
-#' @param findLinked When TRUE, the function may find two linked tables and run protectLinkedTables.
+#' @param findLinked When TRUE, the function may find two linked tables and run protect_linked_tables.
 #' @param total String used to name totals.
 #' @param addName When TRUE the variable name is added to the level names, except for variables with most levels.
 #' @param sep A character string to separate when addName apply.
@@ -22,8 +22,8 @@
 #' @param ind2  Coding of table 2 as indices referring to elements of groupVarInd
 #' @param dimDataReturn When TRUE a data frame containing the dimVarInd variables is retuned
 #' @param IncProgress A function to report progress (incProgress in Shiny).
-#' @param verbose verbose 
-#' @param ... Further parameters sent to protectTable, protectLinkedTables or createArgusInput.
+#' @param verbose Parameter sent to protectTable, protect_linked_tables or runArgusBatchFile. 
+#' @param ... Further parameters sent to protectTable, protect_linked_tables or createArgusInput.
 #'
 #' @details One or two tables are identified automatically and subjected to cell suppression methods in package sdcTable.
 #'          The tables can alternatively be specified manually by groupVarInd, ind1 and ind2 (see \code{\link{FindTableGroup}}).
@@ -31,7 +31,7 @@
 #' @return Output is a list of three elements.
 #'
 #'         \strong{table1} consists of the following elements:
-#'         \item{secondary}{Output from \code{\link{protectTable}} or first element of output from \code{\link{protectLinkedTables}} 
+#'         \item{secondary}{Output from \code{\link{protectTable}} or first element of output from \code{\link{protect_linked_tables}} 
 #'         or output from \code{\link{runArgusBatchFile}}.}
 #'         \item{primary}{Output from \code{\link{primarySuppression}}.}
 #'         \item{problem}{Output from \code{\link{makeProblem}}.}
@@ -41,14 +41,14 @@
 #'         \strong{table2} consists of elements of the same type as table1 in cases of two linked tables. Otherwise  table2 is NULL.
 #'
 #'         \strong{common} consists of the following elements:
-#'         \item{commonCells}{Input to protectLinkedTables.}
+#'         \item{commonCells}{Input to protect_linked_tables.}
 #'         \item{groupVarInd}{List defining the hierarchical variable groups}
 #'         \item{info}{A table summarizing the tables using variable names}
 #'         \item{nLevels}{The number of levels of each variable (only when groupVarInd input is NULL)}
 #'         \item{dimData}{Data frame containing the dimVarInd variables when dimDataReturn=TRUE. Otherwise NULL.}
 #'
 #' @export
-#' @importFrom sdcTable makeProblem primarySuppression protectTable protectLinkedTables createArgusInput runArgusBatchFile
+#' @importFrom sdcTable makeProblem primarySuppression protectTable protect_linked_tables createArgusInput runArgusBatchFile
 #' @importFrom SSBtools FindTableGroup FindDimLists FindCommonCells FactorLevCorr MakeMicro
 #'
 #' @seealso \code{\link{ProtectTable}}, 
@@ -61,12 +61,12 @@
 #' \dontrun{
 #' z2 <- EasyData("z2")
 #' a <- ProtectTable1(z2, c(1, 3, 4), 5)
-#' head(as.data.frame(getInfo(a[[1]][[1]], type = "finalData"))  # The table (not two linked))
+#' head(as.data.frame(sdcTable::getInfo(a[[1]][[1]], type = "finalData"))) # The table (not linked)
 #' 
 #' z3 <- EasyData("z3")
 #' b <- ProtectTable1(z3, 1:6, 7)
-#' head(as.data.frame(getInfo(b[[1]][[1]], type = "finalData")))  # First table
-#' head(as.data.frame(getInfo(b[[2]][[1]], type = "finalData")))  # Second table
+#' head(as.data.frame(sdcTable::getInfo(b[[1]][[1]], type = "finalData"))) # First table
+#' head(as.data.frame(sdcTable::getInfo(b[[2]][[1]], type = "finalData"))) # Second table
 #' }
 ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, protectZeros = TRUE, 
                           maxN = 3, method = "SIMPLEHEURISTIC", findLinked = TRUE, total = "Total", addName = FALSE, 
@@ -153,7 +153,6 @@ ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, pro
   }  
   
   
-  
   if (linked) {
     if(tauArgus) stop("tauArgus with linked tables is not implemented")
     dimList2 <- dimLists[ind2]
@@ -162,8 +161,7 @@ ProtectTable1 <- function(data, dimVarInd = 1:NCOL(data), freqVarInd = NULL, pro
     primary2 <- primarySupp(problem2, type = "freq", maxN = maxN, allowZeros = allowZeros)
     commonCells <- FindCommonCells(dimList1, dimList2)
     IncProgress()
-    secondary <- protectLinkedTables(objectA = primary1, objectB = primary2, 
-                                     commonCells = commonCells, method = methodLinked, verbose = verbose,  ...)
+    secondary <- protect_linked_tables(x = primary1, y = primary2, common_cells = commonCells, method = methodLinked, verbose = verbose, ...)
     if(get0("doPrintDimLists",ifnotfound = FALSE)){
       print(dimList2)
       print(commonCells)

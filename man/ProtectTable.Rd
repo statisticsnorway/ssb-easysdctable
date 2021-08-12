@@ -3,6 +3,7 @@
 \encoding{UTF8}
 \name{ProtectTable}
 \alias{ProtectTable}
+\alias{ProtectTableData}
 \title{Easy interface to sdcTable: Table suppression according to a frequency rule.}
 \usage{
 ProtectTable(
@@ -11,7 +12,7 @@ ProtectTable(
   freqVar = NULL,
   protectZeros = TRUE,
   maxN = 3,
-  method = "SimpleSingle",
+  method = "Gauss",
   findLinked = TRUE,
   total = "Total",
   addName = FALSE,
@@ -44,6 +45,8 @@ ProtectTable(
   verbose = FALSE,
   ...
 )
+
+ProtectTableData(data, ...)
 }
 \arguments{
 \item{data}{data frame}
@@ -56,13 +59,13 @@ ProtectTable(
 
 \item{maxN}{All cells having counts <= maxN are set as primary suppressed.}
 
-\item{method}{Parameter \code{method} in \code{\link{protectTable}}, \code{\link{protectLinkedTables}}
+\item{method}{Parameter \code{method} in \code{\link{protectTable}}, \code{\link{protect_linked_tables}}
 or wrapper methods via \code{\link{PTwrap}}.
-\code{Gauss} is an additional method that is not available in sdcTable.
+\code{Gauss} (default) is an additional method that is not available in sdcTable.
 \itemize{
 \item \strong{\code{"SIMPLEHEURISTIC"}:} This method is default in protectable.
 \item \strong{\code{"OPT"}, \code{"HITAS"}, \code{"HYPERCUBE"}:} Other methods in protectable. \code{"HYPERCUBE"} is not possible in cases with two linked tables.
-\item \strong{\code{"SimpleSingle"} (default):}  \code{"SIMPLEHEURISTIC"} with \code{detectSingletons=TRUE} when \code{protectZeros=FALSE} and
+\item \strong{\code{"SimpleSingle"}:}  \code{"SIMPLEHEURISTIC"} with \code{detectSingletons=TRUE} when \code{protectZeros=FALSE} and
 \code{"SIMPLEHEURISTIC"} with \code{threshold=1} (can be overridden by input) when \code{protectZeros=TRUE}.
 \item \strong{\code{"Simple"}:} \code{"SIMPLEHEURISTIC"} with \code{detectSingletons=FALSE}.
 \item \strong{\code{"Gauss"}:} \code{\link{GaussSuppression}} is called with parameters \code{x}, \code{candidates}, \code{primary} and \code{singleton} automatically generated.
@@ -72,7 +75,7 @@ Other parameters (\code{singletonMethod}, \code{printInc}) can be specified.
 Alternatively this parameter can be a named list specifying parameters for running tau-argus (see details).
 See \code{\link{PTwrap}} for other (experimental) wrapper methods (see details).}
 
-\item{findLinked}{When TRUE, the function may find two linked tables and run protectLinkedTables.}
+\item{findLinked}{When TRUE, the function may find two linked tables and run protect_linked_tables.}
 
 \item{total}{String used to name totals.}
 
@@ -144,10 +147,10 @@ created by unstacking (in cases with sever input freqvar variables).}
 
 \item{IncProgress}{A function to report progress (incProgress in Shiny). Set equal to NULL to turn it off.}
 
-\item{verbose}{verbose}
+\item{verbose}{Parameter sent to \code{\link{protectTable}}, \code{\link{protect_linked_tables}} or \code{\link{runArgusBatchFile}}.}
 
-\item{...}{Further parameters sent to \code{\link{protectTable}} (possibly via \code{\link{protectLinkedTables}})
-such as verbose (print output while calculating) and timeLimit.
+\item{...}{Further parameters sent to \code{\link{protectTable}} (possibly via \code{\link{protect_linked_tables}})
+such as solve_attackerprobs and timeLimit.
 Parameters to  \code{\link{GaussSuppression}}, \code{\link{createArgusInput}} and \code{\link{PTwrap}} is also possible (see details).}
 }
 \value{
@@ -156,6 +159,8 @@ When singleOutput=TRUE output is a list of two elements.
 \item \strong{\code{info}:} Information as a single column character matrix. This is information about the extra
 dimVar variables created when stacking, information about the identified (linked)
 table(s) and summary output from sdcTable.
+With \code{method="Gauss"}, a sdcTable function is run with \code{maxN=0} to create a template for the real output.
+Some of the summary info is therefore misleading in this case.
 \item \strong{\code{data}:} A data frame where variables are named according to outFreq,
 outSdcStatus and outSuppressed.
 When singleOutput=FALSE output element data is replaced by three elements and these are named
@@ -163,13 +168,13 @@ according to outFreq, outSdcStatus and outSuppressed.
 }
 }
 \description{
-protectTable() or protectLinkedTables() in package 'sdcTable' is run with a data set as the only required input.
-One (stacked) or several (unstacked) input variables can hold cell counts.
-Output is on a form similar to input.
+\code{\link{GaussSuppression}}, \code{\link{protectTable}} or  \code{\link{protect_linked_tables}}
+is run with a data set as the only required input. One (stacked) or several (unstacked) input variables can hold cell counts.
+\code{ProtectTableData} is a tidy wrapper function, which returns a single data frame instead of a list (\code{info} omitted).
 }
 \details{
 One or two tables are identified automatically and subjected to cell suppression
-by \code{\link{protectTable}} (single table) or \code{\link{protectLinkedTables}} (two linked tables).
+by \code{\link{protectTable}} (single table) or \code{\link{protect_linked_tables}} (two linked tables).
 The tables can alternatively be specified manually by groupVarInd, ind1 and ind2.
 The output will be on a form similiar to input depending on whether freqVar is a single variable or not.
 The status of the cells are
@@ -208,11 +213,12 @@ ProtectTable makes a call to the function \code{\link{ProtectTable1}}.
  # ==== Example 1 , 8 regions ====
  z1 <- EasyData("z1")        
  ProtectTable(z1,1:2, 3)
- ProtectTable(z1,1:2, 3, method="Gauss")$data
+ ProtectTableData(z1,1:2, 3)
  ProtectTable(z1, c("region","hovedint"), "ant") # Input by name 
  # --- Unstacked input data ---
  z1w = EasyData("z1w") 
  ProtectTable(z1w, 1, 2:5)
+ ProtectTableData(z1w, 1, 2:5)
  ProtectTable(z1w, 1, 2:5, varName="hovedint") 
  ProtectTable(z1w, 1, 2:5, method="HITAS")
  ProtectTable(z1w, 1, 2:5, totalFirst = TRUE, method ="Simple")
@@ -222,26 +228,26 @@ ProtectTable makes a call to the function \code{\link{ProtectTable1}}.
  ProtectTable(z2,c(1,3,4), 5) # With region-variable kostragr
  # --- Unstacked input data ---
  z2w <- EasyData("z2w") 
- ProtectTable(z2w, 1:2, 4:7, method ="Simple") # With region-variable fylke
- ProtectTable(z2w, 1:3, 4:7, method = "SIMPLEHEURISTIC") # Two linked tables
+ ProtectTable(z2w, 1:2, 4:7) # With region-variable fylke
+ ProtectTable(z2w, 1:3, 4:7) # Two linked tables
  
  \dontrun{
  # ==== Example 3 , 36 regions ====
  z3 <- EasyData("z3")   
- ProtectTable(z3, c(1,4,5), 7)                             # Three dimensions. No subtotals    
- ProtectTable(z3, 1:6, 7, method = "SIMPLEHEURISTIC")      # Two linked tables  
+ ProtectTable(z3, c(1,4,5), 7)                               # Three dimensions. No subtotals    
+ ProtectTable(z3, 1:6, 7)                                    # Two linked tables  
  # --- Unstacked input data with coded column names 
  z3w <- EasyData("z3w")
- ProtectTable(z3w,1:3,4:15, varName="g12", method ="Simple") # coding not used when single varName
+ ProtectTable(z3w,1:3,4:15, varName="g12")                   # coding not used when single varName
  ProtectTable(z3w,1:3,4:15, varName=c("hovedint","mnd"))     # Two variables found automatically 
  ProtectTable(z3w,1:3,4:15, varName=c("hovedint","mnd"),
-               method ="Simple", removeTotal=FALSE)          # Keep "Total" in variable names 
+               removeTotal=FALSE)                            # Keep "Total" in variable names 
  # --- Unstacked input data with three level column name coding
  z3wb <- EasyData("z3wb")  
  ProtectTable(z3wb,1:3,4:15,varName=c("hovedint","mnd","mnd2")) # Two variables found automatically
  ProtectTable(z3wb,1:3,4:15,varName=c("hovedint","mnd","mnd2"), 
-               method ="Simple", split="_")  # Three variables when splitting
- ProtectTable(z3wb,1:3,4:15,varName=c("hovedint","mnd","mnd2"), method = "SIMPLEHEURISTIC",
+             split="_")                                         # Three variables when splitting
+ ProtectTable(z3wb,1:3,4:15,varName=c("hovedint","mnd","mnd2"),
                split="_",namesAsInput=FALSE,orderAsInput=FALSE) # Alternative ouput format
                
  # ====  Examples Tau-Argus ====              
@@ -258,15 +264,16 @@ ProtectTable makes a call to the function \code{\link{ProtectTable1}}.
  ProtectTable(z3,c(1:2,4,5),7,maxN=-1,
    method=list(path=pathArgus, exe=exeArgus, method="OPT",
          primSuppRules=list(list(type="freq", n=4, rg=20))))
-               }
+         
                
 # ==== Examples with parameter dimList  ====
 z2 <- EasyData("z2")
 dList <- FindDimLists(z2[-5])
-ProtectTable(z2[, c(1,4,5)], 1:2, 3, method = "Simple", dimList = dList[c(1,3)])
-ProtectTable(z2[, c(1,4,5)], 1:2, 3, method = "SIMPLEHEURISTIC", dimList = dList[2])
-ProtectTable(z2[, c(1,4,5)], 1:2, 3, method = "Simple", 
-             dimList = DimList2Hrc(dList[c(2,3)]))              
+ProtectTable(z2[, c(1,4,5)], 1:2, 3, dimList = dList[c(1,3)])
+ProtectTable(z2[, c(1,4,5)], 1:2, 3, dimList = dList[2])
+ProtectTable(z2[, c(1,4,5)], 1:2, 3, dimList = DimList2Hrc(dList[c(2,3)]))
+}
+              
 }
 \seealso{
 See also the vignettes.

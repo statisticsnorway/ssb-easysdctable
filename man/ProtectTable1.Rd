@@ -38,10 +38,10 @@ ProtectTable1(
 
 \item{maxN}{All cells having counts <= maxN are set as primary suppressed.}
 
-\item{method}{Parameter "method" in protectTable or protectLinkedTables.
+\item{method}{Parameter "method" in protectTable or protect_linked_tables.
 Alternatively a list defining parameters for running tau-argus (see \code{\link{ProtectTable}}).}
 
-\item{findLinked}{When TRUE, the function may find two linked tables and run protectLinkedTables.}
+\item{findLinked}{When TRUE, the function may find two linked tables and run protect_linked_tables.}
 
 \item{total}{String used to name totals.}
 
@@ -63,15 +63,15 @@ Alternatively a list defining parameters for running tau-argus (see \code{\link{
 
 \item{IncProgress}{A function to report progress (incProgress in Shiny).}
 
-\item{verbose}{verbose}
+\item{verbose}{Parameter sent to protectTable, protect_linked_tables or runArgusBatchFile.}
 
-\item{...}{Further parameters sent to protectTable, protectLinkedTables or createArgusInput.}
+\item{...}{Further parameters sent to protectTable, protect_linked_tables or createArgusInput.}
 }
 \value{
 Output is a list of three elements.
 
         \strong{table1} consists of the following elements:
-        \item{secondary}{Output from \code{\link{protectTable}} or first element of output from \code{\link{protectLinkedTables}} 
+        \item{secondary}{Output from \code{\link{protectTable}} or first element of output from \code{\link{protect_linked_tables}} 
         or output from \code{\link{runArgusBatchFile}}.}
         \item{primary}{Output from \code{\link{primarySuppression}}.}
         \item{problem}{Output from \code{\link{makeProblem}}.}
@@ -81,14 +81,14 @@ Output is a list of three elements.
         \strong{table2} consists of elements of the same type as table1 in cases of two linked tables. Otherwise  table2 is NULL.
 
         \strong{common} consists of the following elements:
-        \item{commonCells}{Input to protectLinkedTables.}
+        \item{commonCells}{Input to protect_linked_tables.}
         \item{groupVarInd}{List defining the hierarchical variable groups}
         \item{info}{A table summarizing the tables using variable names}
         \item{nLevels}{The number of levels of each variable (only when groupVarInd input is NULL)}
         \item{dimData}{Data frame containing the dimVarInd variables when dimDataReturn=TRUE. Otherwise NULL.}
 }
 \description{
-protectTable or protectLinkedTables is run with a data set at the only required input.
+protectTable or protect_linked_tables is run with a data set at the only required input.
 }
 \details{
 One or two tables are identified automatically and subjected to cell suppression methods in package sdcTable.
@@ -98,12 +98,12 @@ One or two tables are identified automatically and subjected to cell suppression
 \dontrun{
 z2 <- EasyData("z2")
 a <- ProtectTable1(z2, c(1, 3, 4), 5)
-head(as.data.frame(getInfo(a[[1]][[1]], type = "finalData"))  # The table (not two linked))
+head(as.data.frame(sdcTable::getInfo(a[[1]][[1]], type = "finalData"))) # The table (not linked)
 
 z3 <- EasyData("z3")
 b <- ProtectTable1(z3, 1:6, 7)
-head(as.data.frame(getInfo(b[[1]][[1]], type = "finalData")))  # First table
-head(as.data.frame(getInfo(b[[2]][[1]], type = "finalData")))  # Second table
+head(as.data.frame(sdcTable::getInfo(b[[1]][[1]], type = "finalData"))) # First table
+head(as.data.frame(sdcTable::getInfo(b[[2]][[1]], type = "finalData"))) # Second table
 }
 }
 \seealso{
