@@ -1,8 +1,8 @@
 #'  Easy interface to sdcTable: Table suppression according to a frequency rule. 
 #'
-#'  protectTable() or protect_linked_tables() in package 'sdcTable' is run with a data set as the only required input.
-#'  One (stacked) or several (unstacked) input variables can hold cell counts.
-#'  Output is on a form similar to input.
+#'  \code{\link{GaussSuppression}}, \code{\link{protectTable}} or  \code{\link{protect_linked_tables}} 
+#'  is run with a data set as the only required input. One (stacked) or several (unstacked) input variables can hold cell counts.
+#'  `ProtectTableData` is a tidy wrapper function, which returns a single data frame instead of a list (`info` omitted). 
 #'
 #' @encoding UTF8
 #' 
@@ -130,10 +130,12 @@
 #'  # ==== Example 1 , 8 regions ====
 #'  z1 <- EasyData("z1")        
 #'  ProtectTable(z1,1:2, 3)
+#'  ProtectTableData(z1,1:2, 3)
 #'  ProtectTable(z1, c("region","hovedint"), "ant") # Input by name 
 #'  # --- Unstacked input data ---
 #'  z1w = EasyData("z1w") 
 #'  ProtectTable(z1w, 1, 2:5)
+#'  ProtectTableData(z1w, 1, 2:5)
 #'  ProtectTable(z1w, 1, 2:5, varName="hovedint") 
 #'  ProtectTable(z1w, 1, 2:5, method="HITAS")
 #'  ProtectTable(z1w, 1, 2:5, totalFirst = TRUE, method ="Simple")
@@ -179,7 +181,7 @@
 #'  ProtectTable(z3,c(1:2,4,5),7,maxN=-1,
 #'    method=list(path=pathArgus, exe=exeArgus, method="OPT",
 #'          primSuppRules=list(list(type="freq", n=4, rg=20))))
-#'                }
+#'          
 #'                
 #' # ==== Examples with parameter dimList  ====
 #' z2 <- EasyData("z2")
@@ -187,6 +189,7 @@
 #' ProtectTable(z2[, c(1,4,5)], 1:2, 3, dimList = dList[c(1,3)])
 #' ProtectTable(z2[, c(1,4,5)], 1:2, 3, dimList = dList[2])
 #' ProtectTable(z2[, c(1,4,5)], 1:2, 3, dimList = DimList2Hrc(dList[c(2,3)]))
+#' }
 #'               
 ProtectTable  <-  function(data,
                          dimVar=1:NCOL(data),
@@ -749,6 +752,13 @@ ProtectTable  <-  function(data,
       if(get0("doReturnExtraFinalData",ifnotfound = FALSE))
         output <- c(output,extraFinalData) 
       return(output)
+}
+
+
+#' @rdname ProtectTable
+#' @export
+ProtectTableData <- function(data, ...) {
+  ProtectTable(data, ..., singleOutput = TRUE)$data
 }
 
 

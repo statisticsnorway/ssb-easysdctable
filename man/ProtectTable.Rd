@@ -3,6 +3,7 @@
 \encoding{UTF8}
 \name{ProtectTable}
 \alias{ProtectTable}
+\alias{ProtectTableData}
 \title{Easy interface to sdcTable: Table suppression according to a frequency rule.}
 \usage{
 ProtectTable(
@@ -44,6 +45,8 @@ ProtectTable(
   verbose = FALSE,
   ...
 )
+
+ProtectTableData(data, ...)
 }
 \arguments{
 \item{data}{data frame}
@@ -163,9 +166,9 @@ according to outFreq, outSdcStatus and outSuppressed.
 }
 }
 \description{
-protectTable() or protect_linked_tables() in package 'sdcTable' is run with a data set as the only required input.
-One (stacked) or several (unstacked) input variables can hold cell counts.
-Output is on a form similar to input.
+\code{\link{GaussSuppression}}, \code{\link{protectTable}} or  \code{\link{protect_linked_tables}}
+is run with a data set as the only required input. One (stacked) or several (unstacked) input variables can hold cell counts.
+\code{ProtectTableData} is a tidy wrapper function, which returns a single data frame instead of a list (\code{info} omitted).
 }
 \details{
 One or two tables are identified automatically and subjected to cell suppression
@@ -208,10 +211,12 @@ ProtectTable makes a call to the function \code{\link{ProtectTable1}}.
  # ==== Example 1 , 8 regions ====
  z1 <- EasyData("z1")        
  ProtectTable(z1,1:2, 3)
+ ProtectTableData(z1,1:2, 3)
  ProtectTable(z1, c("region","hovedint"), "ant") # Input by name 
  # --- Unstacked input data ---
  z1w = EasyData("z1w") 
  ProtectTable(z1w, 1, 2:5)
+ ProtectTableData(z1w, 1, 2:5)
  ProtectTable(z1w, 1, 2:5, varName="hovedint") 
  ProtectTable(z1w, 1, 2:5, method="HITAS")
  ProtectTable(z1w, 1, 2:5, totalFirst = TRUE, method ="Simple")
@@ -257,7 +262,7 @@ ProtectTable makes a call to the function \code{\link{ProtectTable1}}.
  ProtectTable(z3,c(1:2,4,5),7,maxN=-1,
    method=list(path=pathArgus, exe=exeArgus, method="OPT",
          primSuppRules=list(list(type="freq", n=4, rg=20))))
-               }
+         
                
 # ==== Examples with parameter dimList  ====
 z2 <- EasyData("z2")
@@ -265,6 +270,7 @@ dList <- FindDimLists(z2[-5])
 ProtectTable(z2[, c(1,4,5)], 1:2, 3, dimList = dList[c(1,3)])
 ProtectTable(z2[, c(1,4,5)], 1:2, 3, dimList = dList[2])
 ProtectTable(z2[, c(1,4,5)], 1:2, 3, dimList = DimList2Hrc(dList[c(2,3)]))
+}
               
 }
 \seealso{
