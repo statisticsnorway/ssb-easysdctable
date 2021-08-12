@@ -159,6 +159,8 @@ When singleOutput=TRUE output is a list of two elements.
 \item \strong{\code{info}:} Information as a single column character matrix. This is information about the extra
 dimVar variables created when stacking, information about the identified (linked)
 table(s) and summary output from sdcTable.
+With \code{method="Gauss"}, a sdcTable function is run with \code{maxN=0} to create a template for the real output.
+Some of the summary info is therefore misleading in this case.
 \item \strong{\code{data}:} A data frame where variables are named according to outFreq,
 outSdcStatus and outSuppressed.
 When singleOutput=FALSE output element data is replaced by three elements and these are named
