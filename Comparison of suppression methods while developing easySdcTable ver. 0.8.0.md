@@ -46,7 +46,8 @@ Data | linked | protectZeros | maxN |  Gauss | SIMPLEHEURISTIC | SimpleSingle | 
 ---
 
 
-### Number of suppressed cells (number of revealed cells in parenthesis)
+### Number of suppressed cells with the number of revealed cells in parenthesis 
+#### (all revealed suppressed cells, revealed primary suppressed cells)
 
 
 Data | linked | protectZeros | maxN |  Gauss | SIMPLEHEURISTIC | SimpleSingle | SIMPLEHEURISTIC _FALSE | SimpleSingle _FALSE |
@@ -59,19 +60,19 @@ Data | linked | protectZeros | maxN |  Gauss | SIMPLEHEURISTIC | SimpleSingle | 
 **z2** | **yes** | **FALSE** | **10** | 44 | 47 | 47 | 47 | 47 |  
 **z2** | **yes** | **TRUE** | **2** | 25 | 32 | 79 | 32 | 79 |  
 **z2** | **yes** | **TRUE** | **10** | 47 | 51 | 79 | 51 | 79 |  
-**z3** | **no** | **FALSE** | **2** | 308 | *Error* | *Error* | 278 (2) | *Error* |  
-**z3** | **no** | **FALSE** | **10** | 452 | *Error* | *Error* | 450 (1) | *Error* |  
+**z3** | **no** | **FALSE** | **2** | 308 | *Error* | *Error* | 278 (2, 2) | *Error* |  
+**z3** | **no** | **FALSE** | **10** | 452 | *Error* | *Error* | 450 (1, 1) | *Error* |  
 **z3** | **no** | **TRUE** | **2** | 350 | *Error* | 593 | 336 | 593 |  
 **z3** | **no** | **TRUE** | **10** | 553 | 554 | 631 | 554 | 631 |  
-**z3** | **yes** | **FALSE** | **2** | 397 | 340 (21) | *Error* | 340 (21) | *Error* |  
-**z3** | **yes** | **FALSE** | **10** | 502 | 494 (5) | *Error* | 494 (5) | *Error* |  
-**z3** | **yes** | **TRUE** | **2** | 397 | 383 (4) | 701 | 383 (4) | 701 |  
-**z3** | **yes** | **TRUE** | **10** | 603 | 603 (1) | 736 | 603 (1) | 736 |  
-**sosialFiktiv** | **no** | **FALSE** | **2** | 2057 | *Error* | *Error* | 1973 (27) | *Error* |  
-**sosialFiktiv** | **no** | **FALSE** | **10** | 3805 | *Error* | *Error* | 3795 (5) | *Error* |  
+**z3** | **yes** | **FALSE** | **2** | 397 | 340 (21, 13) | *Error* | 340 (21, 13) | *Error* |  
+**z3** | **yes** | **FALSE** | **10** | 502 | 494 (5, 5) | *Error* | 494 (5, 5) | *Error* |  
+**z3** | **yes** | **TRUE** | **2** | 397 | 383 (4, 4) | 701 | 383 (4, 4) | 701 |  
+**z3** | **yes** | **TRUE** | **10** | 603 | 603 (1, 1) | 736 | 603 (1, 1) | 736 |  
+**sosialFiktiv** | **no** | **FALSE** | **2** | 2057 | *Error* | *Error* | 1973 (27, 18) | *Error* |  
+**sosialFiktiv** | **no** | **FALSE** | **10** | 3805 | *Error* | *Error* | 3795 (5, 5) | *Error* |  
 **sosialFiktiv** | **no** | **TRUE** | **2** | 2241 | *Error* | *Error* | 2238 | 6460 |  
 **sosialFiktiv** | **no** | **TRUE** | **10** | 4289 | 4313 | 6783 | 4307 | 6783 |  
-**sosialFiktiv** | **yes** | **FALSE** | **2** | 2168 | 1995 (53) | *Error* | 1995 (53) | *Error* |  
-**sosialFiktiv** | **yes** | **FALSE** | **10** | 3825 | 3818 (8) | *Error* | 3818 (8) | *Error* |  
-**sosialFiktiv** | **yes** | **TRUE** | **2** | 2268 | 2275 (18) | 6768 | 2275 (18) | 6768 |  
-**sosialFiktiv** | **yes** | **TRUE** | **10** | 4309 | 4330 (2) | 7085 | 4330 (2) | 7085 |   
+**sosialFiktiv** | **yes** | **FALSE** | **2** | 2168 | 1995 (53, 26) | *Error* | 1995 (53, 26) | *Error* |  
+**sosialFiktiv** | **yes** | **FALSE** | **10** | 3825 | 3818 (8, 8) | *Error* | 3818 (8, 8) | *Error* |  
+**sosialFiktiv** | **yes** | **TRUE** | **2** | 2268 | 2275 (18, 8) | 6768 | 2275 (18, 8) | 6768 |  
+**sosialFiktiv** | **yes** | **TRUE** | **10** | 4309 | 4330 (2, 2) | 7085 | 4330 (2, 2) | 7085 |   
