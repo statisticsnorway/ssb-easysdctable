@@ -119,9 +119,10 @@
 #'         
 #' @export
 #' @importFrom sdcTable summary getInfo
-#' @importFrom SSBtools AutoSplit Stack SortRows Unstack GaussSuppression
+#' @importFrom SSBtools AutoSplit Stack SortRows Unstack GaussSuppression Extend0
 #' @importFrom utils capture.output flush.console
 #' @importFrom methods hasArg
+#' @importFrom Matrix colSums
 #' 
 #' @note ProtectTable makes a call to the function \code{\link{ProtectTable1}}.
 #' 
@@ -535,6 +536,15 @@ ProtectTable  <-  function(data,
         
         if (!protectZeros) 
           primary[zzz == 0] <- FALSE
+        
+        # Avoid warning in GaussSuppression: warning("Suppressed cells with empty input will not be protected. Extend input data with zeros?")
+        if(min(colSums(xxx[, primary, drop = FALSE])) == 0){
+          colnames_xxx <- colnames(xxx)
+          xxx <- CrossTable2ModelMatrix(Extend0(data[, (names(data) %in% names(dimLists))], hierarchical = FALSE), ptA, dimLists)
+          colnames(xxx) <- colnames_xxx
+          rownames(xxx) <- NULL
+          yyy <- rbind(yyy, matrix(0, nrow(xxx) - nrow(yyy), ncol = 1))
+        }
         
         if (protectZeros) {
           singleton <- (yyy == 0)[, 1, drop = TRUE]
