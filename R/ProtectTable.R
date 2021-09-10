@@ -427,8 +427,8 @@ ProtectTable  <-  function(data,
           stop("Output from linked tables: Something is wrong!")
         
         b <- merge(t1, t2, all = TRUE, by = seq_len(dim(t1)[2] - 2), suffixes = c("", ".y"))
-        ######## MERK
-        if (sum(abs(b$Freq - b$Freq.y), na.rm = TRUE) > 0) 
+        
+        if (max(abs(b$Freq - b$Freq.y), na.rm = TRUE) > (.Machine$double.eps)^(5/8)*max(abs(b$Freq + b$Freq.y), na.rm = TRUE))  
           stop("Output from protect_linked_tables: Something is wrong!")
         
         if (sum(abs(as.integer(b$sdcStatus == "s") - as.integer(b$sdcStatus.y == 
