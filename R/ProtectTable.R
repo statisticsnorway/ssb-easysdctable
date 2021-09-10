@@ -515,6 +515,20 @@ ProtectTable  <-  function(data,
         
         candidates <- GetCandidates(...)
         
+        primary <- (zzz <= maxN)[, 1, drop = TRUE]
+        
+        if (!protectZeros) 
+          primary[zzz == 0] <- FALSE
+        
+        # Avoid warning in GaussSuppression: warning("Suppressed cells with empty input will not be protected. Extend input data with zeros?")
+        if(min(colSums(xxx[, primary, drop = FALSE])) == 0){
+          colnames_xxx <- colnames(xxx)
+          xxx <- CrossTable2ModelMatrix(Extend0(data[, (names(data) %in% names(dimLists))], hierarchical = FALSE), ptA, dimLists)
+          colnames(xxx) <- colnames_xxx
+          rownames(xxx) <- NULL
+          yyy <- rbind(yyy, matrix(0, nrow(xxx) - nrow(yyy), ncol = 1))
+        }
+        
         if(is.null(candidates)){
           
           tie <- as.matrix(Matrix::crossprod(xxx, xxx %*% zzz))
@@ -532,19 +546,6 @@ ProtectTable  <-  function(data,
           candidatesManually <- TRUE
         }
         
-        primary <- (zzz <= maxN)[, 1, drop = TRUE]
-        
-        if (!protectZeros) 
-          primary[zzz == 0] <- FALSE
-        
-        # Avoid warning in GaussSuppression: warning("Suppressed cells with empty input will not be protected. Extend input data with zeros?")
-        if(min(colSums(xxx[, primary, drop = FALSE])) == 0){
-          colnames_xxx <- colnames(xxx)
-          xxx <- CrossTable2ModelMatrix(Extend0(data[, (names(data) %in% names(dimLists))], hierarchical = FALSE), ptA, dimLists)
-          colnames(xxx) <- colnames_xxx
-          rownames(xxx) <- NULL
-          yyy <- rbind(yyy, matrix(0, nrow(xxx) - nrow(yyy), ncol = 1))
-        }
         
         if (protectZeros) {
           singleton <- (yyy == 0)[, 1, drop = TRUE]
