@@ -1,3 +1,9 @@
+## easySdcTable	0.9.0
+
+* Method "Gauss" improved when zeros omitted in input data.
+  - A potential pitfall when doing secondary suppression by Gaussian elimination is cases with `protectZeros = TRUE` and where zeros are omitted in input data. The underlying function, GaussSuppression, produce a warning in such cases (introduced in  SSBtools version 1.2.2) with text: *"Suppressed cells with empty input will not be protected. Extend input data with zeros?"*.  Cases where this warning occur is now avoided within ProtectTable. Internally data are automatically extended when needed.  
+
+
 ## easySdcTable	0.8.0
 
 * Method "Gauss" made default. 
