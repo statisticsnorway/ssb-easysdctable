@@ -45,6 +45,18 @@ test_that("Gauss works", {
 })
 
 
+test_that("Empty input protected", {
+  z1_ <- EasyData("z1")
+  z1_$ant[1] <- 0
+  a <- ProtectTableData(z1_, 1:2, 3, IncProgress = NULL,  printInc=FALSE)
+  b <- ProtectTableData(z1_[-1, ], 1:2, 3, IncProgress = NULL,  printInc=FALSE)
+  a <- SSBtools::SortRows(a)
+  b <- SSBtools::SortRows(b)
+  expect_identical(a$sdcStatus, b$sdcStatus)
+})
+
+
+
 Gauss6 <- function(...) {
   m <- NULL
   singletonMethod <- c("none", "subSum", "anySum", "subSumAny", "subSpace", "subSumSpace")
