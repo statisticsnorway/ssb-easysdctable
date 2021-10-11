@@ -64,10 +64,12 @@ or wrapper methods via \code{\link{PTwrap}}.
 \code{Gauss} (default) is an additional method that is not available in sdcTable.
 \itemize{
 \item \strong{\code{"SIMPLEHEURISTIC"}:} This method is default in protectable.
+\item \strong{\code{"SIMPLEHEURISTIC_OLD"}:} As \code{"SIMPLEHEURISTIC"} in sdcTable versions prior to 0.32.
 \item \strong{\code{"OPT"}, \code{"HITAS"}, \code{"HYPERCUBE"}:} Other methods in protectable. \code{"HYPERCUBE"} is not possible in cases with two linked tables.
-\item \strong{\code{"SimpleSingle"}:}  \code{"SIMPLEHEURISTIC"} with \code{detectSingletons=TRUE} when \code{protectZeros=FALSE} and
-\code{"SIMPLEHEURISTIC"} with \code{threshold=1} (can be overridden by input) when \code{protectZeros=TRUE}.
-\item \strong{\code{"Simple"}:} \code{"SIMPLEHEURISTIC"} with \code{detectSingletons=FALSE}.
+\item \strong{\code{"SimpleSingle"}:}  \code{"SIMPLEHEURISTIC_OLD"} with \code{detectSingletons=TRUE} when \code{protectZeros=FALSE} and
+\code{"SIMPLEHEURISTIC_OLD"} with \code{threshold=1} (can be overridden by input) when \code{protectZeros=TRUE}.
+\item \strong{\code{"SIMPLEHEURISTICSingle"}:} As \code{"SimpleSingle"} with \code{"SIMPLEHEURISTIC"} instead of \code{"SIMPLEHEURISTIC_OLD"}.
+\item \strong{\code{"Simple"}:} \code{"SIMPLEHEURISTIC_OLD"} with \code{detectSingletons=FALSE}.
 \item \strong{\code{"Gauss"}:} \code{\link{GaussSuppression}} is called with parameters \code{x}, \code{candidates}, \code{primary} and \code{singleton} automatically generated.
 Other parameters (\code{singletonMethod}, \code{printInc}) can be specified.
 }

@@ -50,13 +50,17 @@ PTwrap = function(..., maxN=3, method="SimpleSingle", exeArgus="C:/Tau/TauArgus.
                   pathArgus=getwd(), solverArgus= "FREE", methodArgus="OPT", rgArgus=0 ){
   
   if(method=="Simple") return(
-    ProtectTable(..., maxN=maxN, method="SIMPLEHEURISTIC", detectSingletons=FALSE))
+    ProtectTable(..., maxN=maxN, method="SIMPLEHEURISTIC_OLD", detectSingletons=FALSE))  
   
   if(method=="SimpleSingle") return(
     ProtectTableSimpleSingle(..., maxN=maxN))
+  
+  
+  if(method=="SIMPLEHEURISTICSingle") return(
+    ProtectTableSimpleSingle(..., method="SIMPLEHEURISTIC", maxN=maxN))
 
   if(method=="SimpleSingleOld") return(
-    ProtectTable(..., maxN=maxN, method="SIMPLEHEURISTIC", detectSingletons=TRUE))
+    ProtectTable(..., maxN=maxN, method="SIMPLEHEURISTIC_OLD", detectSingletons=TRUE))
   
   if(method=="TauArgus" & rgArgus==0) return(
     ProtectTable(..., maxN=maxN, 
@@ -83,7 +87,7 @@ PTwrap = function(..., maxN=3, method="SimpleSingle", exeArgus="C:/Tau/TauArgus.
   
   
   
-ProtectTableSimpleSingle <- function(..., protectZeros = TRUE, threshold = NULL, detectSingletons = NULL, maxN = maxN, method = "SIMPLEHEURISTIC") {
+ProtectTableSimpleSingle <- function(..., protectZeros = TRUE, threshold = NULL, detectSingletons = NULL, maxN = maxN, method = "SIMPLEHEURISTIC_OLD") {
   if (protectZeros) {
     if (is.null(threshold)) {
       threshold <- 1

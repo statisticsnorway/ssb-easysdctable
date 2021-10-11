@@ -15,10 +15,12 @@
 #'        or wrapper methods via \code{\link{PTwrap}}. 
 #'        `Gauss` (default) is an additional method that is not available in sdcTable.
 #' * **`"SIMPLEHEURISTIC"`:** This method is default in protectable.
+#' * **`"SIMPLEHEURISTIC_OLD"`:** As `"SIMPLEHEURISTIC"` in sdcTable versions prior to 0.32.
 #' * **`"OPT"`, `"HITAS"`, `"HYPERCUBE"`:** Other methods in protectable. `"HYPERCUBE"` is not possible in cases with two linked tables.
-#' * **`"SimpleSingle"`:**  `"SIMPLEHEURISTIC"` with `detectSingletons=TRUE` when `protectZeros=FALSE` and
-#'                            `"SIMPLEHEURISTIC"` with `threshold=1` (can be overridden by input) when `protectZeros=TRUE`. 
-#' * **`"Simple"`:** `"SIMPLEHEURISTIC"` with `detectSingletons=FALSE`.  
+#' * **`"SimpleSingle"`:**  `"SIMPLEHEURISTIC_OLD"` with `detectSingletons=TRUE` when `protectZeros=FALSE` and
+#'                            `"SIMPLEHEURISTIC_OLD"` with `threshold=1` (can be overridden by input) when `protectZeros=TRUE`. 
+#' * **`"SIMPLEHEURISTICSingle"`:** As `"SimpleSingle"` with `"SIMPLEHEURISTIC"` instead of `"SIMPLEHEURISTIC_OLD"`.                          
+#' * **`"Simple"`:** `"SIMPLEHEURISTIC_OLD"` with `detectSingletons=FALSE`.  
 #' * **`"Gauss"`:** \code{\link{GaussSuppression}} is called with parameters `x`, `candidates`, `primary` and `singleton` automatically generated.
 #'                Other parameters (`singletonMethod`, `printInc`) can be specified. 
 #' 
@@ -269,7 +271,7 @@ ProtectTable  <-  function(data,
   IncProgress()
   tauArgus <- is.list(method)
   if(!tauArgus) 
-    if(method %in% c("Simple","SimpleSingle","TauArgus","TauArgusOPT","TauArgusMOD","TauArgusGH")){
+    if(method %in% c("Simple","SimpleSingle", "SIMPLEHEURISTICSingle", "TauArgus","TauArgusOPT","TauArgusMOD","TauArgusGH")){
       sysCall <- sys.call()
       sysCall[[1]] <- as.name("PTwrap")
       parentFrame = parent.frame()
