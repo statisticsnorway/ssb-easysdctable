@@ -262,7 +262,7 @@ ProtectTable makes a call to the function \code{\link{ProtectTable1}}.
   ProtectTable(z1,1:2,3,maxN=-1,
    method=list(path=pathArgus, exe=exeArgus, method="OPT",
          primSuppRules= list(list(type="freq", n=4, rg=20))))
- z3w <- EasyData("z3")
+ z3 <- EasyData("z3")
  ProtectTable(z3,c(1:2,4,5),7,maxN=-1,
    method=list(path=pathArgus, exe=exeArgus, method="OPT",
          primSuppRules=list(list(type="freq", n=4, rg=20))))
