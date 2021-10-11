@@ -1,3 +1,13 @@
+## easySdcTable	1.0.0
+
+* Wrapper methos "SimpleSingle"" and "Simple"" re-defined to use "SIMPLEHEURISTIC_OLD"
+  - Possible after introduction of "SIMPLEHEURISTIC_OLD"" in sdcTable 0.32.1
+  - Ensures same behavior as sdcTable versions prior to 0.32. 
+  - Thus, "SimpleSingle"" and "Simple"" behave as earlier (see problems in 0.8.0 news below).  
+* New wrapper method "SIMPLEHEURISTICSingle"
+  - As "SimpleSingle" with "SIMPLEHEURISTIC" instead of "SIMPLEHEURISTIC_OLD"
+
+
 ## easySdcTable	0.9.0
 
 * Method "Gauss" improved when zeros omitted in input data.
