@@ -145,6 +145,8 @@ PTguiGen <- function(language="Norwegian", exeArgus=NULL, pathArgus="", maxNchoi
     "info",
     "method",
     "SIMPLEHEURISTIC",
+    "SIMPLEHEURISTICSingle",
+    "Simple",
     "SimpleSingle", 
     "HITAS",
     "OPT",
@@ -187,8 +189,8 @@ PTguiGen <- function(language="Norwegian", exeArgus=NULL, pathArgus="", maxNchoi
     mt["freq"] <- "Uprikket" 
     mt["info"] <- "Info" 
     mt["method"] <- "Metode"
-    mt["SIMPLEHEURISTIC"] <- "SIMPLE - Rask og (for) enkel"
-    mt["SimpleSingle"] <- "SIMPLE med threshold/detectSingletons"
+    mt["Simple"] <- "Simple - Rask og (for) enkel"
+    mt["SimpleSingle"] <- "SimpleSingle -  Simple med threshold/detectSingletons"
     mt["HITAS"] <- "HITAS - Vanlig metode" 
     mt["OPT"] <-  "OPT - Optimal, men tidkrevende"
     mt["HYPERCUBE"] = "HYPERCUBE - ikke for koblet"
@@ -225,7 +227,7 @@ PTguiGen <- function(language="Norwegian", exeArgus=NULL, pathArgus="", maxNchoi
     mt["info"] <- "Info" 
     mt["method"] <- "Method" 
     #mt["SIMPLEHEURISTIC"] <- ""
-    mt["SimpleSingle"] <- "with threshold/detectSingletons"
+    #mt["SimpleSingle"] <- "with threshold/detectSingletons"
     #mt["HITAS"] <- "" 
     #mt["OPT"] <-  ""
     mt["HYPERCUBE"] = "HYPERCUBE (not linked)"
@@ -288,12 +290,14 @@ PTguiGen <- function(language="Norwegian", exeArgus=NULL, pathArgus="", maxNchoi
         titlePanel(mt["title"]),
         tags$hr(),
         radioButtons('method',mt["method"],
-                     c(s(mt["SIMPLEHEURISTIC"]), 
+                     c(s(mt["Gauss"]),
                        s(mt["SimpleSingle"]),
+                       s(mt["Simple"]),
+                       s(mt["SIMPLEHEURISTIC"]), 
+                       s(mt["SIMPLEHEURISTICSingle"]),
                        s(mt["HITAS"]), 
                        s(mt["OPT"]), 
                        s(mt["HYPERCUBE"]),
-                       s(mt["Gauss"]),
                        tau
                      ), 
                      'Gauss'),

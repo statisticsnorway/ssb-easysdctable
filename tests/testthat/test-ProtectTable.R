@@ -33,6 +33,17 @@ test_that("SimpleSingle works", {
   expect_true(sum(w[w$b == 1 & is.na(w$suppressed), "freq", drop = TRUE] - 1) > 0)
 })
 
+test_that("SIMPLEHEURISTICSingle works", {
+  PTxyzTest(z, 1:2, "y0", protectZeros = TRUE, method = "SIMPLEHEURISTICSingle")
+  w <- ProtectTable(z, 1:2, "y0", protectZeros = TRUE, IncProgress = NULL, method = "SIMPLEHEURISTICSingle")$data
+  expect_true(sum(w[w$b == 3 & is.na(w$suppressed), "freq", drop = TRUE]) > 0)
+  
+  PTxyzTest(z, 1:2, "y1", protectZeros = FALSE, method = "SIMPLEHEURISTICSingle")
+  w <- ProtectTable(z, 1:2, "y1", protectZeros = FALSE, IncProgress = NULL, method = "SIMPLEHEURISTICSingle")$data
+  expect_true(sum(w[w$b == 1 & is.na(w$suppressed), "freq", drop = TRUE] - 1) > 0)
+})
+
+
 test_that("Gauss works", {
   PTxyzTest(EasyData("z1"), c("region","hovedint") ,"ant", method = "Gauss", printInc=FALSE)
   PTxyzTest(EasyData("z3") ,1:6,7, method = "Gauss", printInc=FALSE) 
