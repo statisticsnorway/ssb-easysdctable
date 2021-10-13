@@ -523,6 +523,7 @@ ProtectTable  <-  function(data,
           primary[zzz == 0] <- FALSE
         
         # Avoid warning in GaussSuppression: warning("Suppressed cells with empty input will not be protected. Extend input data with zeros?")
+        if(any(primary))
         if(min(colSums(xxx[, primary, drop = FALSE])) == 0){
           colnames_xxx <- colnames(xxx)
           xxx <- CrossTable2ModelMatrix(Extend0(data[, (names(data) %in% names(dimLists))], hierarchical = FALSE), ptA, dimLists)
