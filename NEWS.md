@@ -1,3 +1,8 @@
+## easySdcTable	1.0.1
+
+* Update of the vignette "The problem of singletons and zeros"
+  - For all the examples to still be relevant, `"SIMPLEHEURISTIC_OLD"` is used instead of `"SIMPLEHEURISTIC"`.
+  
 ## easySdcTable	1.0.0
 
 * Wrapper methos "SimpleSingle" and "Simple" re-defined to use "SIMPLEHEURISTIC_OLD"

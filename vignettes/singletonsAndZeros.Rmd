@@ -48,10 +48,10 @@ P(data0b)
 ```
 ## The singleton problem
 
-In the first run of the first dataset, we use `protectZeros = FALSE`. This means that 0s are not suppressed. All 0s are shown and none of them are secondary suppressed. We use the usual method, `"SIMPLEHEURISTIC"`.  
+In the first run of the first dataset, we use `protectZeros = FALSE`. This means that 0s are not suppressed. All 0s are shown and none of them are secondary suppressed. We use the (previously) usual method, `"SIMPLEHEURISTIC_OLD"`.  
 
 ```{r comment=NA, tidy = TRUE, results = "hide", message = FALSE}
-s1a = ProtectTable(data1a, 1, 2:6, protectZeros = FALSE,  method = "SIMPLEHEURISTIC", suppression=".")$suppressed
+s1a = ProtectTable(data1a, 1, 2:6, protectZeros = FALSE,  method = "SIMPLEHEURISTIC_OLD", suppression=".")$suppressed
 ```
 ```{r comment=NA, echo=FALSE}
 P(s1a)
@@ -60,7 +60,7 @@ P(s1a)
 Here it is easy to reveal that both the suppressed numbers in the first row must be 1 since the sum should be 9 and neither number can be 0. This is called the singleton problem. In the underlying function of sdcTable there is a parameter, `detectSingletons` (default is `FALSE`), which is intended to handle this problem. Such parameters in sdcTable can also be used as input to ProtectTable.
 
 ```{r comment=NA, tidy = TRUE, results = "hide", message = FALSE}
-s1aSingle = ProtectTable(data1a, 1, 2:6, protectZeros = FALSE,  method = "SIMPLEHEURISTIC", detectSingletons=TRUE,
+s1aSingle = ProtectTable(data1a, 1, 2:6, protectZeros = FALSE,  method = "SIMPLEHEURISTIC_OLD", detectSingletons=TRUE,
                          suppression=".")$suppressed
 ```
 ```{r comment=NA, echo=FALSE}
@@ -70,7 +70,7 @@ P(s1aSingle)
 Now it is sufficiently suppressed so that the values can no longer be revealed. In the next dataset it will be different.
 
 ```{r comment=NA, tidy = TRUE, results = "hide", message = FALSE}
-s1bSingle = ProtectTable(data1b, 1, 2:6, protectZeros = FALSE,  method = "SIMPLEHEURISTIC", detectSingletons=TRUE,
+s1bSingle = ProtectTable(data1b, 1, 2:6, protectZeros = FALSE,  method = "SIMPLEHEURISTIC_OLD", detectSingletons=TRUE,
                          suppression=".")$suppressed
 ```
 ```{r comment=NA, echo=FALSE}
@@ -87,7 +87,7 @@ The new parameter, `threshold`, is a number that can be specified. The parameter
 
 
 ```{r comment=NA, tidy = TRUE, results = "hide", message = FALSE}
-s1bThreshold4 = ProtectTable(data1b, 1, 2:6, protectZeros = FALSE,  method = "SIMPLEHEURISTIC", threshold=4,
+s1bThreshold4 = ProtectTable(data1b, 1, 2:6, protectZeros = FALSE,  method = "SIMPLEHEURISTIC_OLD", threshold=4,
                          suppression=".")$suppressed
 ```
 ```{r comment=NA, echo=FALSE}
@@ -104,7 +104,7 @@ In an imagined example where 4 is secondary suppressed to protect 2, extra cells
 Now we consider data0a  use `protectZeros = TRUE`. This means that 0s are primary suppressed.
 
 ```{r comment=NA, tidy = TRUE, results = "hide", message = FALSE}
-s0a = ProtectTable(data0a, 1, 2:6, protectZeros = TRUE,  method = "SIMPLEHEURISTIC", suppression=".", solve_attackerprobs = FALSE)$suppressed
+s0a = ProtectTable(data0a, 1, 2:6, protectZeros = TRUE,  method = "SIMPLEHEURISTIC_OLD", suppression=".", solve_attackerprobs = FALSE)$suppressed
 ```
 ```{r comment=NA, echo=FALSE}
 P(s0a)
@@ -117,7 +117,7 @@ In the next data set (data0b) there are three 0's and the problem is the same.
 
 
 ```{r comment=NA, tidy = TRUE, results = "hide", message = FALSE}
-s0b = ProtectTable(data0b, 1, 2:6, protectZeros = TRUE,  method = "SIMPLEHEURISTIC", suppression=".", solve_attackerprobs = FALSE)$suppressed
+s0b = ProtectTable(data0b, 1, 2:6, protectZeros = TRUE,  method = "SIMPLEHEURISTIC_OLD", suppression=".", solve_attackerprobs = FALSE)$suppressed
 ```
 ```{r comment=NA, echo=FALSE}
 P(s0b)
@@ -131,7 +131,7 @@ The threshold parameter solves the above problem (data0a). It is sufficient to s
 
 
 ```{r comment=NA, tidy = TRUE, results = "hide", message = FALSE}
-s0aThreshold1 = ProtectTable(data0a, 1, 2:6, protectZeros = TRUE,  method = "SIMPLEHEURISTIC", threshold = 1, suppression=".", solve_attackerprobs = FALSE)$suppressed
+s0aThreshold1 = ProtectTable(data0a, 1, 2:6, protectZeros = TRUE,  method = "SIMPLEHEURISTIC_OLD", threshold = 1, suppression=".", solve_attackerprobs = FALSE)$suppressed
 ```
 ```{r comment=NA, echo=FALSE}
 P(s0aThreshold1)
@@ -140,7 +140,7 @@ P(s0aThreshold1)
 When there are three (as below, data0b) or more zeros, the problem is also solved. It is suppressed extra to avoid disclosure.
 
 ```{r comment=NA, tidy = TRUE, results = "hide", message = FALSE}
-s0bThreshold1 = ProtectTable(data0b, 1, 2:6, protectZeros = TRUE,  method = "SIMPLEHEURISTIC", threshold = 1, suppression=".", solve_attackerprobs = FALSE)$suppressed
+s0bThreshold1 = ProtectTable(data0b, 1, 2:6, protectZeros = TRUE,  method = "SIMPLEHEURISTIC_OLD", threshold = 1, suppression=".", solve_attackerprobs = FALSE)$suppressed
 ```
 ```{r comment=NA, echo=FALSE}
 P(s0bThreshold1)
@@ -170,7 +170,9 @@ Note that parameters `detectSingletons` and `threshold` increase the computing t
 
 Method `"Gauss"` made default (See NEWS).
 
-For the examples to still be relevant, `solve_attackerprobs=FALSE`, is included in the zero problem examples. In the solution after `threshold=1`, more cells than earlier (more than needed) are suppressed. 
+For all the examples to still be relevant, `"SIMPLEHEURISTIC_OLD"` is used instead of `"SIMPLEHEURISTIC"`. 
+In the zero problem examples, `solve_attackerprobs=FALSE` is included. 
+In the solution after `threshold=1`, more cells than earlier (more than needed) are suppressed. 
  
 Methodology to handle the problem of singletons and zeros are also included in "Gauss" . Below is output:
 
