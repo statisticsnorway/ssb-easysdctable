@@ -71,7 +71,7 @@
 #' @param IncProgress A function to report progress (incProgress in Shiny). Set equal to NULL to turn it off.
 #' @param verbose Parameter sent to \code{\link{protectTable}}, \code{\link{protect_linked_tables}} or \code{\link{runArgusBatchFile}}.  
 #' @param ...  Further parameters sent to \code{\link{protectTable}} (possibly via \code{\link{protect_linked_tables}})
-#'        such as solve_attackerprobs and timeLimit. 
+#'        such as timeLimit. 
 #'        Parameters to  \code{\link{GaussSuppression}}, \code{\link{createArgusInput}} and \code{\link{PTwrap}} is also possible (see details).
 #' 
 #' @details One or two tables are identified automatically and subjected to cell suppression 

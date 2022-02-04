@@ -152,7 +152,7 @@ created by unstacking (in cases with sever input freqvar variables).}
 \item{verbose}{Parameter sent to \code{\link{protectTable}}, \code{\link{protect_linked_tables}} or \code{\link{runArgusBatchFile}}.}
 
 \item{...}{Further parameters sent to \code{\link{protectTable}} (possibly via \code{\link{protect_linked_tables}})
-such as solve_attackerprobs and timeLimit.
+such as timeLimit.
 Parameters to  \code{\link{GaussSuppression}}, \code{\link{createArgusInput}} and \code{\link{PTwrap}} is also possible (see details).}
 }
 \value{
