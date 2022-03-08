@@ -1,0 +1,150 @@
+
+---
+title: "Comparison of methods within 'easySdcTable'"
+date: "`r Sys.Date()`"
+author: "Øyvind Langsrud"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Comparison of methods}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+
+
+## Introduction
+
+This rmarkdown document tests the function `ProtectTable` in package `easySdcTable`. Thereby, some of the functionality in `sdcTable` is tested. 
+
+Computing time as `milliseconds` are reported.
+
+In practice the is done by redefining the function `ProtectTable` to be a functions that tests the functionality.
+
+The total number of suppressed cells (`n_suppressed`) and the number of primary suppressed cells (`n_primary`) are counted.
+
+A method based on the functionality in package `RegSDC` is used to reveal suppressed cells, if possible.  
+The total number of revealed suppressed cells (`n_revealed`) and the number of revealed primary suppressed (`n_revealed_prim`) cells are counted.
+
+In addition, if some zeroes are suppressed when zeros are not to be protected, this is also reported (`n_zeros_suppressed`).
+
+All code to generate output is included in the document.  
+
+
+```{r comment=NA, tidy = TRUE, results = "hide", message = FALSE}
+library(easySdcTable)
+library(RegSDC)
+z3 <- EasyData("z3") 
+```
+
+
+
+```{r comment=NA}
+ProtectTable <- function(..., maxN = 3, protectZeros = TRUE) {
+  capture.output({a <- try(PTxyz(..., maxN = maxN, protectZeros = protectZeros, systemTime = TRUE))})
+  if (class(a)[1] == "try-error") {
+    return(invisible(as.character(a)))
+  }
+  k <- cbind(a$z, t(a$x) %*% cbind(a$y, 
+       RegSDC::SuppressDec(a$x, a$z, a$y, rmse = pi/3, nRep = 3)))[which(is.na(a$z)), ]
+  k <- as.matrix(k)
+  k[, 3:5] <- RoundWhole(k[, 3:5])
+  ind_revealed <- which(apply(k[, -(1:2)], 1, max) - apply(k[, -(1:2)], 1, min) == 0)
+  revealed <- k[ind_revealed, , drop = FALSE]
+  out <- c(milliseconds = 1000 * as.numeric(a$system_time[1]), 
+    n_suppressed = sum(is.na(a$z)), 
+    n_primary = sum(k[ ,2] <= maxN & k[ ,2] != protectZeros*(maxN+1)),
+    n_revealed = length(ind_revealed), 
+    n_revealed_prim = sum(revealed[ ,2] <= maxN & revealed[ ,2] != protectZeros*(maxN+1)))
+  if (!protectZeros & any(k[ ,2] == 0))
+    out["n_zeros_suppressed"] = sum(k[ ,2] == 0)
+  return(out)
+}
+```
+
+
+```{r comment=NA, tidy = TRUE}
+for(i in 1:3) cat(capture.output(sessionInfo())[i],"\n")
+
+unlist(sessionInfo()$otherPkgs$easySdcTable[c("Package", "Version", "Date")])
+
+unlist(sessionInfo()$loadedOnly$sdcTable[c("Package", "Version", "Date")])
+
+```
+
+
+# Single table, 1200 cells
+
+## Single table
+
+```{r comment=NA, tidy = TRUE, message = FALSE}
+ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method = "Gauss", singletonMethod = "none")
+ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method = "SIMPLEHEURISTIC")
+ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method = "SIMPLEHEURISTIC_OLD")
+```
+
+## Single table, with singleton method
+
+```{r comment=NA, tidy = TRUE, message = FALSE}
+ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method = "Gauss")
+ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC", detectSingletons = TRUE)
+ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC_OLD", detectSingletons = TRUE)
+ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC", threshold = 3)
+ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC_OLD", threshold = 3)
+```
+
+
+## Single table, zeros protected
+
+```{r comment=NA, tidy = TRUE, message = FALSE}
+ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = TRUE, method = "Gauss", singletonMethod = "none")
+ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = TRUE, method = "SIMPLEHEURISTIC")
+ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = TRUE, method = "SIMPLEHEURISTIC_OLD")
+```
+
+## Single table, zeros protected, with singleton method
+
+```{r comment=NA, tidy = TRUE, message = FALSE}
+ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = TRUE, method = "Gauss")
+ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = TRUE, method ="SIMPLEHEURISTIC", threshold = 1)
+ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = TRUE, method ="SIMPLEHEURISTIC_OLD", threshold = 1)
+```
+
+# Linked tables, 1350 cells
+
+## Linked tables
+
+```{r comment=NA, tidy = TRUE, message = FALSE}
+ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method = "Gauss", singletonMethod = "none")
+ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method = "SIMPLEHEURISTIC")
+ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method = "SIMPLEHEURISTIC_OLD")
+```
+
+## Linked tables, with singleton method
+
+```{r comment=NA, tidy = TRUE, message = FALSE}
+ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method = "Gauss")
+ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC", detectSingletons = TRUE)
+ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC_OLD", detectSingletons = TRUE)
+ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC",  threshold = 3)
+ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC_OLD",  threshold = 3)
+```
+
+
+## Linked tables, zeros protected
+
+```{r comment=NA, tidy = TRUE, message = FALSE}
+ProtectTable(z3, 1:6, 7, protectZeros = TRUE, method = "Gauss", singletonMethod = "none")
+ProtectTable(z3, 1:6, 7, protectZeros = TRUE, method = "SIMPLEHEURISTIC")
+ProtectTable(z3, 1:6, 7, protectZeros = TRUE, method = "SIMPLEHEURISTIC_OLD")
+```
+
+## Linked tables, zeros protected, with singleton method
+
+```{r comment=NA, tidy = TRUE, message = FALSE}
+ProtectTable(z3, 1:6, 7, protectZeros = TRUE, method = "Gauss")
+ProtectTable(z3, 1:6, 7, protectZeros = TRUE, method ="SIMPLEHEURISTIC", threshold = 1)
+ProtectTable(z3, 1:6, 7, protectZeros = TRUE, method ="SIMPLEHEURISTIC_OLD", threshold = 1)
+```
+
+
+
