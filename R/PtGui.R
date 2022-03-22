@@ -454,7 +454,7 @@ PTguiGen <- function(language="Norwegian", exeArgus=NULL, pathArgus="", maxNchoi
         re$b = try(withProgress(eval(callPT), #singleOutput=FALSE),
                                 value=0.2, message= "Computing . . . please wait")) # mt[""] not working here
         #list2env(list(bb=re$b),envir=guienvir)
-        if(class(re$b)=="try-error")
+        if(inherits(re$b, "try-error"))
           re$b = list(data=data.frame(ERROR=re$b[[1]]))
         
         #App..#

@@ -1,3 +1,8 @@
+## easySdcTable	1.0.3
+
+* Minor updates of vignettes 
+  - Note a comment about "Gauss" and zeros omitted in input in "Introduction to 'easySdcTable'"
+
 ## easySdcTable	1.0.1
 
 * Update of the vignette "The problem of singletons and zeros"
