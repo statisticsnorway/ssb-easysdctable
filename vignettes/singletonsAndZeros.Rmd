@@ -16,7 +16,7 @@ P <- function(df, caption = NULL){
   if(is.null(caption)){
     caption = deparse(substitute(df))
   }
-  kable(df, "html", row.names = FALSE, caption = c("\n", caption), align = "r")
+  kable(df, "html", row.names = FALSE, caption = caption, align = "r")
 }
 ```
 
