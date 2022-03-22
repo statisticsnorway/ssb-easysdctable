@@ -30,6 +30,21 @@ Before demonstrating ProtectTable() a few words about other possibilities.
 Method `"Gauss"` has been made default (See NEWS).
 This is an additional method that is not available in sdcTable.
 
+#### News in easySdcTable version 0.9.0
+
+Method "Gauss" improved when zeros omitted in input data.
+
+* A potential pitfall when doing secondary suppression by Gaussian elimination is cases with `protectZeros = TRUE` and where zeros are omitted in input data. The underlying function, GaussSuppression, produce a warning in such cases (introduced in  SSBtools version 1.2.2) with text: *"Suppressed cells with empty input will not be protected. Extend input data with zeros?"*.  Cases where this warning occur is now avoided within ProtectTable. Internally data are automatically extended when needed.  
+
+
+#### Another comment about "Gauss" and zeros omitted in input 
+
+When hierarchies are supplied as input (parameter `dimList`) and when there exist input codes in the hierarchies that are totally missing in the data, 
+it is still possible to create a situation with warning: *"Suppressed cells with empty input will not be protected. Extend input data with zeros?"*.
+This behavior will not be changed. Ignore the warning if such codes represent structural zeros. 
+If not, extend data with zero frequencies (see parameter freqVar) so that these code are represented in data. 
+
+
 
 ## Graphical user interface and $\tau$-ARGUS
 
