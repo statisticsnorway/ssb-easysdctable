@@ -29,6 +29,10 @@ In addition, if some zeroes are suppressed when zeros are not to be protected, t
 
 All code to generate output is included in the document.  
 
+Method `"Gauss"` is default in `ProtectTable` and is implemented independently of `sdcTable`.
+Method `"GAUSS"` is the `sdcTable` implementation introduced in version 0.32.3.
+
+
 
 ```{r comment=NA, tidy = TRUE, results = "hide", message = FALSE}
 library(easySdcTable)
@@ -78,6 +82,7 @@ unlist(sessionInfo()$loadedOnly$sdcTable[c("Package", "Version", "Date")])
 
 ```{r comment=NA, tidy = TRUE, message = FALSE}
 ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method = "Gauss", singletonMethod = "none")
+ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method = "GAUSS", singletonMethod = "none")
 ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method = "SIMPLEHEURISTIC")
 ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method = "SIMPLEHEURISTIC_OLD")
 ```
@@ -86,6 +91,7 @@ ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method = "SIMPLEHEURISTIC
 
 ```{r comment=NA, tidy = TRUE, message = FALSE}
 ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method = "Gauss")
+ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method = "GAUSS")
 ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC", detectSingletons = TRUE)
 ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC_OLD", detectSingletons = TRUE)
 ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC", threshold = 3)
@@ -97,6 +103,7 @@ ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC_
 
 ```{r comment=NA, tidy = TRUE, message = FALSE}
 ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = TRUE, method = "Gauss", singletonMethod = "none")
+ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = TRUE, method = "GAUSS", singletonMethod = "none")
 ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = TRUE, method = "SIMPLEHEURISTIC")
 ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = TRUE, method = "SIMPLEHEURISTIC_OLD")
 ```
@@ -105,6 +112,7 @@ ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = TRUE, method = "SIMPLEHEURISTIC_
 
 ```{r comment=NA, tidy = TRUE, message = FALSE}
 ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = TRUE, method = "Gauss")
+ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = TRUE, method = "GAUSS")
 ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = TRUE, method ="SIMPLEHEURISTIC", threshold = 1)
 ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = TRUE, method ="SIMPLEHEURISTIC_OLD", threshold = 1)
 ```
@@ -115,6 +123,7 @@ ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = TRUE, method ="SIMPLEHEURISTIC_O
 
 ```{r comment=NA, tidy = TRUE, message = FALSE}
 ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method = "Gauss", singletonMethod = "none")
+ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method = "GAUSS", singletonMethod = "none")
 ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method = "SIMPLEHEURISTIC")
 ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method = "SIMPLEHEURISTIC_OLD")
 ```
@@ -123,6 +132,7 @@ ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method = "SIMPLEHEURISTIC_OLD")
 
 ```{r comment=NA, tidy = TRUE, message = FALSE}
 ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method = "Gauss")
+ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method = "GAUSS")
 ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC", detectSingletons = TRUE)
 ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC_OLD", detectSingletons = TRUE)
 ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC",  threshold = 3)
@@ -134,6 +144,7 @@ ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC_OLD",  t
 
 ```{r comment=NA, tidy = TRUE, message = FALSE}
 ProtectTable(z3, 1:6, 7, protectZeros = TRUE, method = "Gauss", singletonMethod = "none")
+ProtectTable(z3, 1:6, 7, protectZeros = TRUE, method = "GAUSS", singletonMethod = "none")
 ProtectTable(z3, 1:6, 7, protectZeros = TRUE, method = "SIMPLEHEURISTIC")
 ProtectTable(z3, 1:6, 7, protectZeros = TRUE, method = "SIMPLEHEURISTIC_OLD")
 ```
@@ -142,6 +153,7 @@ ProtectTable(z3, 1:6, 7, protectZeros = TRUE, method = "SIMPLEHEURISTIC_OLD")
 
 ```{r comment=NA, tidy = TRUE, message = FALSE}
 ProtectTable(z3, 1:6, 7, protectZeros = TRUE, method = "Gauss")
+ProtectTable(z3, 1:6, 7, protectZeros = TRUE, method = "GAUSS")
 ProtectTable(z3, 1:6, 7, protectZeros = TRUE, method ="SIMPLEHEURISTIC", threshold = 1)
 ProtectTable(z3, 1:6, 7, protectZeros = TRUE, method ="SIMPLEHEURISTIC_OLD", threshold = 1)
 ```
