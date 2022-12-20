@@ -125,6 +125,7 @@
 #' @importFrom utils capture.output flush.console
 #' @importFrom methods hasArg
 #' @importFrom Matrix colSums
+#' @importFrom stats aggregate
 #' 
 #' @note ProtectTable makes a call to the function \code{\link{ProtectTable1}}.
 #' 
@@ -496,6 +497,29 @@ ProtectTable  <-  function(data,
         #  Code copied from PTxyz
         ptA <- finalData[, !(names(finalData) %in% c("Freq", "sdcStatus", "supp6547524")), drop = FALSE]
         
+        
+        if (is.null(freqVarInd)) {
+          GetPrintInc <- function(printInc = TRUE, ...) {
+            printInc
+          }
+          printInc <- GetPrintInc(...)
+          if (printInc) {
+            cat("[preAggregate ", dim(data)[1], "*", dim(data)[2], "->", sep = "")
+            flush.console()
+          }
+          
+          # These four lines is about aggregate. Other lines is about printing. 
+          dVar <- names(dimLists)
+          freqVar_ <- "f_Re_qVa_r"
+          data <- aggregate(list(f_Re_qVa_r = data[[dVar[1]]]), data[, dVar, drop = FALSE], length)
+          freqVarInd <- ncol(data)
+          
+          if (printInc) {
+            cat(dim(data)[1], "*", dim(data)[2], "]\n", sep = "")
+            flush.console()
+          }
+        }
+        
         #xxx <- CrossTable2ModelMatrix(data[, c(freqVarInd, dimVarInd), drop = FALSE], ptA, dimLists)
         #xxx <- CrossTable2ModelMatrix(data[, dimVarInd, drop = FALSE], ptA, dimLists)
         xxx <- CrossTable2ModelMatrix(data, ptA, dimLists)
@@ -503,11 +527,7 @@ ProtectTable  <-  function(data,
         rownames(xxx) <- apply(data[, names(data) %in% names(ptA), drop = FALSE], 1, paste, collapse = "_")
         colnames(xxx) <- apply(ptA, 1, paste, collapse = ":")
         
-        if(is.null(freqVarInd)){
-          yyy <- matrix(1, nrow=NROW(data), ncol=1)
-        } else {
-          yyy <- as.matrix(data[, freqVarInd, drop = FALSE])
-        }
+        yyy <- as.matrix(data[, freqVarInd, drop = FALSE])
         
         zzz <- as.matrix(Matrix::crossprod(xxx, yyy))
         
