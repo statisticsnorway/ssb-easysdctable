@@ -1,4 +1,4 @@
-## easySdcTable	1.0.5
+## easySdcTable	1.0.7
 
 * Improvements when microdata input (`freqVar = NULL`)  combined with "Gauss" 
   - Data is pre-aggregated prior to the Gauss algorithm. Efficiency is improved.  

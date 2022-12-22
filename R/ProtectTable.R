@@ -134,6 +134,8 @@
 #'
 #'
 #' @examples
+#' \dontrun{
+#' 
 #'  # ==== Example 1 , 8 regions ====
 #'  z1 <- EasyData("z1")        
 #'  ProtectTable(z1,1:2, 3)
@@ -155,7 +157,6 @@
 #'  ProtectTable(z2w, 1:2, 4:7) # With region-variable fylke
 #'  ProtectTable(z2w, 1:3, 4:7) # Two linked tables
 #'  
-#'  \dontrun{
 #'  # ==== Example 3 , 36 regions ====
 #'  z3 <- EasyData("z3")   
 #'  ProtectTable(z3, c(1,4,5), 7)                               # Three dimensions. No subtotals    

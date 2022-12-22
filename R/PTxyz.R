@@ -20,6 +20,7 @@
 #' @author Øyvind Langsrud
 #'
 #' @examples
+#' \dontrun{
 #' 
 #' # Same examples as in ProtectTable 
 #' a1 <- PTxyz(EasyData("z1"), c("region","hovedint") ,"ant")
@@ -55,7 +56,6 @@
 #'   cbind(a$z, t(a$x) %*% cbind(a$y, yDec))
 #' }
 #' 
-#' \dontrun{
 #' if (require(RegSDC)) {
 #'   # An example involving two linked tables.  
 #'   # It is demonstrated that the SIMPLEHEURISTIC approach to suppression is not safe.  
