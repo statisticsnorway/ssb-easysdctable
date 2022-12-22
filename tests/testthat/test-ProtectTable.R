@@ -89,3 +89,19 @@ test_that("Gauss ok singleton methods", {
   m0 <- Gauss6(z, 1:2, "y0")
   m1 <- Gauss6(z, 1:2, "y1", protectZeros = FALSE)
 })
+
+
+test_that("When micro data combined with Gauss", {
+  z2 <- EasyData("z2")
+  z2[z2$ant > 16, "ant"] <- 0
+  z2 <- z2[z2$ant != 0, ]
+  z2[z2$ant > 10, "ant"] <- 1
+  z2micro <- SSBtools::MakeMicro(z2, "ant")
+  a <- ProtectTableData(z2, c("kostragr", "hovedint", "region", "fylke"), "ant", protectZeros = FALSE, IncProgress = NULL, printInc = FALSE)
+  b <- ProtectTableData(z2micro, c("kostragr", "hovedint", "region", "fylke"), protectZeros = FALSE, IncProgress = NULL, printInc = FALSE)
+  expect_identical(a, b)
+  a <- ProtectTableData(z2, c("kostragr", "hovedint", "region", "fylke"), "ant", protectZeros = TRUE, IncProgress = NULL, printInc = FALSE)
+  b <- ProtectTableData(z2micro, c("kostragr", "hovedint", "region", "fylke"), protectZeros = TRUE, IncProgress = NULL, printInc = FALSE)
+  expect_identical(a, b)
+})
+
