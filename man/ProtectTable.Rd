@@ -61,11 +61,12 @@ ProtectTableData(data, ...)
 
 \item{method}{Parameter \code{method} in \code{\link{protectTable}}, \code{\link{protect_linked_tables}}
 or wrapper methods via \code{\link{PTwrap}}.
-\code{Gauss} (default) is an additional method that is not available in sdcTable.
+\code{Gauss} (default) is implemented independently of \code{sdcTable}. There is also a similar variant implemented in sdcTable as \code{GAUSS}.
+But this implementation is not as optimal and \code{Gauss} is recommended instead.
 \itemize{
 \item \strong{\code{"SIMPLEHEURISTIC"}:} This method is default in protectable.
 \item \strong{\code{"SIMPLEHEURISTIC_OLD"}:} As \code{"SIMPLEHEURISTIC"} in sdcTable versions prior to 0.32.
-\item \strong{\code{"OPT"}, \code{"HITAS"}, \code{"HYPERCUBE"}:} Other methods in protectable. \code{"HYPERCUBE"} is not possible in cases with two linked tables.
+\item \strong{\code{"OPT"}, \code{"HITAS"}, \code{"HYPERCUBE"}, \code{"GAUSS"}:} Other methods in protectable. \code{"HYPERCUBE"} is not possible in cases with two linked tables.
 \item \strong{\code{"SimpleSingle"}:}  \code{"SIMPLEHEURISTIC_OLD"} with \code{detectSingletons=TRUE} when \code{protectZeros=FALSE} and
 \code{"SIMPLEHEURISTIC_OLD"} with \code{threshold=1} (can be overridden by input) when \code{protectZeros=TRUE}.
 \item \strong{\code{"SIMPLEHEURISTICSingle"}:} As \code{"SimpleSingle"} with \code{"SIMPLEHEURISTIC"} instead of \code{"SIMPLEHEURISTIC_OLD"}.
@@ -212,6 +213,8 @@ input to  tau-argus.
 ProtectTable makes a call to the function \code{\link{ProtectTable1}}.
 }
 \examples{
+\dontrun{
+
  # ==== Example 1 , 8 regions ====
  z1 <- EasyData("z1")        
  ProtectTable(z1,1:2, 3)
@@ -233,7 +236,6 @@ ProtectTable makes a call to the function \code{\link{ProtectTable1}}.
  ProtectTable(z2w, 1:2, 4:7) # With region-variable fylke
  ProtectTable(z2w, 1:3, 4:7) # Two linked tables
  
- \dontrun{
  # ==== Example 3 , 36 regions ====
  z3 <- EasyData("z3")   
  ProtectTable(z3, c(1,4,5), 7)                               # Three dimensions. No subtotals    

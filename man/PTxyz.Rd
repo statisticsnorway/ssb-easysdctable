@@ -28,6 +28,7 @@ Assuming correct suppression, suppressed values become decimal numbers (not whol
 Within this r package this function will be used for testing
 }
 \examples{
+\dontrun{
 
 # Same examples as in ProtectTable 
 a1 <- PTxyz(EasyData("z1"), c("region","hovedint") ,"ant")
@@ -63,7 +64,6 @@ if (require(RegSDC)) { # RegSDCdata and SuppressDec
   cbind(a$z, t(a$x) \%*\% cbind(a$y, yDec))
 }
 
-\dontrun{
 if (require(RegSDC)) {
   # An example involving two linked tables.  
   # It is demonstrated that the SIMPLEHEURISTIC approach to suppression is not safe.  
