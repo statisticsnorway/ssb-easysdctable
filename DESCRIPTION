@@ -1,6 +1,6 @@
 Package: easySdcTable
 Type: Package
-Title: Easy Interface to the Statistical Disclosure Control Package 'sdcTable' Extended with the 'GaussSuppression' Method
+Title: Easy Interface to the Statistical Disclosure Control Package 'sdcTable' Extended with Own Implementation of 'GaussSuppression'
 Version: 1.0.4
 Date: 2022-12-20
 Authors@R: person("Øyvind", "Langsrud", role = c("aut", "cre"), email = "oyl@ssb.no")

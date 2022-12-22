@@ -13,10 +13,11 @@
 #' @param maxN All cells having counts <= maxN are set as primary suppressed.
 #' @param method Parameter `method` in \code{\link{protectTable}}, \code{\link{protect_linked_tables}}
 #'        or wrapper methods via \code{\link{PTwrap}}. 
-#'        `Gauss` (default) is an additional method that is not available in sdcTable.
+#'        `Gauss` (default) is implemented independently of `sdcTable`. There is also a similar variant implemented in sdcTable as `GAUSS`. 
+#'        But this implementation is not as optimal and `Gauss` is recommended instead.
 #' * **`"SIMPLEHEURISTIC"`:** This method is default in protectable.
 #' * **`"SIMPLEHEURISTIC_OLD"`:** As `"SIMPLEHEURISTIC"` in sdcTable versions prior to 0.32.
-#' * **`"OPT"`, `"HITAS"`, `"HYPERCUBE"`:** Other methods in protectable. `"HYPERCUBE"` is not possible in cases with two linked tables.
+#' * **`"OPT"`, `"HITAS"`, `"HYPERCUBE"`, `"GAUSS"`:** Other methods in protectable. `"HYPERCUBE"` is not possible in cases with two linked tables.
 #' * **`"SimpleSingle"`:**  `"SIMPLEHEURISTIC_OLD"` with `detectSingletons=TRUE` when `protectZeros=FALSE` and
 #'                            `"SIMPLEHEURISTIC_OLD"` with `threshold=1` (can be overridden by input) when `protectZeros=TRUE`. 
 #' * **`"SIMPLEHEURISTICSingle"`:** As `"SimpleSingle"` with `"SIMPLEHEURISTIC"` instead of `"SIMPLEHEURISTIC_OLD"`.                          
