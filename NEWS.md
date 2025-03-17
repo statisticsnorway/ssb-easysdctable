@@ -1,3 +1,19 @@
+## easySdcTable	1.1.0
+
+* Notes added in vignettes
+  - Maintenance notice and suggested alternative
+    * This package will be maintained to work, but will not be developed further. It is limited to handling problems with two linked frequency tables. For more advanced frequency
+       table problems and for magnitude tables, the 
+       [GaussSuppression package](https://cran.r-project.org/package=GaussSuppression) is recommended. Also, note that it is important to use easySdcTable’s own method `"Gauss"`
+       (default), not sdcTable’s `"GAUSS"`.  See [comparisons at the GitHub Repository](https://github.com/statisticsnorway/ssb-easysdctable/tree/master/comparison).
+  - The singletons/zeros vignette
+    * The terminology in this vignette is somewhat misleading. According to 
+    [Langsrud (2024)](https://doi.org/10.1007/978-3-031-69651-0_6), "ones and zeros" should have been used instead of "singletons and zeros."
+* New pkgdown website for the package, with logo  
+  - This package now has a documentation site at [https://statisticsnorway.github.io/ssb-easysdctable/](https://statisticsnorway.github.io/ssb-easysdctable/).
+* Some technical changes in documentation to comply with standards.    
+
+
 ## easySdcTable	1.0.7
 
 * Improvements when microdata input (`freqVar = NULL`)  combined with "Gauss" 
