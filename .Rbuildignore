@@ -6,3 +6,7 @@ SECURITY.md
 .bat
 .pdf
 Comparison
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.github$
