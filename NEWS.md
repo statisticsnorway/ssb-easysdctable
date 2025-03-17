@@ -1,4 +1,4 @@
-## easySdcTable	1.1.0
+## easySdcTable	1.1.1
 
 * Notes added in vignettes
   - Maintenance notice and suggested alternative
