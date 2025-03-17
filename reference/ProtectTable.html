@@ -43,7 +43,7 @@ ProtectTableData is a tidy wrapper function, which returns a single data frame i
     </div>
 
     <div class="ref-description section level2">
-    <p><code><a href="https://statisticsnorway.github.io/ssb-ssbtools/reference/GaussSuppression.html" class="external-link">GaussSuppression</a></code>, <code>protectTable</code> or  <code>protect_linked_tables</code>
+    <p><code><a href="https://statisticsnorway.github.io/ssb-ssbtools/reference/GaussSuppression.html" class="external-link">GaussSuppression</a></code>, <code><a href="https://rdrr.io/pkg/sdcTable/man/protectTable.html" class="external-link">protectTable</a></code> or  <code><a href="https://rdrr.io/pkg/sdcTable/man/protect_linked_tables.html" class="external-link">protect_linked_tables</a></code>
 is run with a data set as the only required input. One (stacked) or several (unstacked) input variables can hold cell counts.
 <code>ProtectTableData</code> is a tidy wrapper function, which returns a single data frame instead of a list (<code>info</code> omitted).</p>
     </div>
@@ -110,7 +110,7 @@ is run with a data set as the only required input. One (stacked) or several (uns
 
 
 <dt id="arg-protectzeros">protectZeros<a class="anchor" aria-label="anchor" href="#arg-protectzeros"></a></dt>
-<dd><p>When TRUE empty cells (count=0) is considered sensitive (i.e. same as allowZeros in  <code>primarySuppression</code>).</p></dd>
+<dd><p>When TRUE empty cells (count=0) is considered sensitive (i.e. same as allowZeros in  <code><a href="https://rdrr.io/pkg/sdcTable/man/primarySuppression.html" class="external-link">primarySuppression</a></code>).</p></dd>
 
 
 <dt id="arg-maxn">maxN<a class="anchor" aria-label="anchor" href="#arg-maxn"></a></dt>
@@ -118,7 +118,7 @@ is run with a data set as the only required input. One (stacked) or several (uns
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
-<dd><p>Parameter <code>method</code> in <code>protectTable</code>, <code>protect_linked_tables</code>
+<dd><p>Parameter <code>method</code> in <code><a href="https://rdrr.io/pkg/sdcTable/man/protectTable.html" class="external-link">protectTable</a></code>, <code><a href="https://rdrr.io/pkg/sdcTable/man/protect_linked_tables.html" class="external-link">protect_linked_tables</a></code>
 or wrapper methods via <code><a href="PTwrap.html">PTwrap</a></code>.
 <code>Gauss</code> (default) is implemented independently of <code>sdcTable</code>. There is also a similar variant implemented in sdcTable as <code>GAUSS</code>.
 But this implementation is not as optimal and <code>Gauss</code> is recommended instead.</p><ul><li><p><strong><code>"SIMPLEHEURISTIC"</code>:</strong> This method is default in protectable.</p></li>
@@ -265,13 +265,13 @@ created by unstacking (in cases with sever input freqvar variables).</p></dd>
 
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
-<dd><p>Parameter sent to <code>protectTable</code>, <code>protect_linked_tables</code> or <code>runArgusBatchFile</code>.</p></dd>
+<dd><p>Parameter sent to <code><a href="https://rdrr.io/pkg/sdcTable/man/protectTable.html" class="external-link">protectTable</a></code>, <code><a href="https://rdrr.io/pkg/sdcTable/man/protect_linked_tables.html" class="external-link">protect_linked_tables</a></code> or <code><a href="https://rdrr.io/pkg/sdcTable/man/runArgusBatchFile.html" class="external-link">runArgusBatchFile</a></code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Further parameters sent to <code>protectTable</code> (possibly via <code>protect_linked_tables</code>)
+<dd><p>Further parameters sent to <code><a href="https://rdrr.io/pkg/sdcTable/man/protectTable.html" class="external-link">protectTable</a></code> (possibly via <code><a href="https://rdrr.io/pkg/sdcTable/man/protect_linked_tables.html" class="external-link">protect_linked_tables</a></code>)
 such as timeLimit.
-Parameters to  <code><a href="https://statisticsnorway.github.io/ssb-ssbtools/reference/GaussSuppression.html" class="external-link">GaussSuppression</a></code>, <code>createArgusInput</code> and <code><a href="PTwrap.html">PTwrap</a></code> is also possible (see details).</p></dd>
+Parameters to  <code><a href="https://statisticsnorway.github.io/ssb-ssbtools/reference/GaussSuppression.html" class="external-link">GaussSuppression</a></code>, <code><a href="https://rdrr.io/pkg/sdcTable/man/createArgusInput.html" class="external-link">createArgusInput</a></code> and <code><a href="PTwrap.html">PTwrap</a></code> is also possible (see details).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -289,15 +289,15 @@ according to outFreq, outSdcStatus and outSuppressed.</p></li>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>One or two tables are identified automatically and subjected to cell suppression
-by <code>protectTable</code> (single table) or <code>protect_linked_tables</code> (two linked tables).
+by <code><a href="https://rdrr.io/pkg/sdcTable/man/protectTable.html" class="external-link">protectTable</a></code> (single table) or <code><a href="https://rdrr.io/pkg/sdcTable/man/protect_linked_tables.html" class="external-link">protect_linked_tables</a></code> (two linked tables).
 The tables can alternatively be specified manually by groupVarInd, ind1 and ind2.
 The output will be on a form similiar to input depending on whether freqVar is a single variable or not.
 The status of the cells are
 coded as  "u" (primary suppressed), "x" (secondary suppression), and "s" (can be published).
 This is taken directly from the output from sdcTable. In cases with two linked tables "u" or "x"
 for common cells are based on output from the first table.</p><ul><li><p><strong>To run tau-argus</strong> specify <code>method</code> as a named list containing the
-parameter <code>exe</code> for <code>runArgusBatchFile</code> and other parameters for
-<code>createArgusInput</code>.</p><ul><li><p>One may specify:
+parameter <code>exe</code> for <code><a href="https://rdrr.io/pkg/sdcTable/man/runArgusBatchFile.html" class="external-link">runArgusBatchFile</a></code> and other parameters for
+<code><a href="https://rdrr.io/pkg/sdcTable/man/createArgusInput.html" class="external-link">createArgusInput</a></code>.</p><ul><li><p>One may specify:
 <code>method = list(exe="C:/Tau/TauArgus.exe", typ="tabular", path= getwd(),</code>
 <code>solver= "FREE", method= "OPT")</code>
 However these values of "exe", "path" and "solver" and "method" are set by default so in this case

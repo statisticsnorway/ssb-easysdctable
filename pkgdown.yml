@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   easySdcTableVignette: easySdcTableVignette.html
   singletonsAndZeros: singletonsAndZeros.html
-last_built: 2025-03-17T07:51Z
+last_built: 2025-03-17T08:59Z
 urls:
   reference: https://statisticsnorway.github.io/ssb-easysdctable/reference
   article: https://statisticsnorway.github.io/ssb-easysdctable/articles
