@@ -30,6 +30,16 @@ This document discuss background for changes made in easySdcTable after paramete
 library(easySdcTable)
 ```
 
+
+### Note added in version 1.1.0
+
+The terminology in this vignette is somewhat misleading. According to Langsrud (2024), "ones and zeros" should have been used instead of "singletons and zeros."
+
+Langsrud, Ø. (2024): 
+Secondary Cell Suppression by Gaussian Elimination: An Algorithm Suitable for Handling Issues with Zeros and Singletons,
+*Published in the Springer LNCS proceedings of the conference Privacy in Statistical Databases.*
+
+
 ## Example datasets
 
 Below are four two-way example datasets. The data is organized here in wide format so that the frequencies are in several columns. It is thus one row variable and one column variable. The dataset, data1b, comes from [Kristian Lønø](https://github.com/krlono). He used this to point out a problem that has led to changes in the latest version of r-package sdcTable. The details are below in this document. The other datasets are modified variants.
