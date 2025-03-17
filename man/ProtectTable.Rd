@@ -55,11 +55,11 @@ ProtectTableData(data, ...)
 
 \item{freqVar}{Variable(s) holding counts or NULL in the case of micro data (name or number).}
 
-\item{protectZeros}{When TRUE empty cells (count=0) is considered sensitive (i.e. same as allowZeros in  \code{\link{primarySuppression}}).}
+\item{protectZeros}{When TRUE empty cells (count=0) is considered sensitive (i.e. same as allowZeros in  \code{\link[sdcTable]{primarySuppression}}).}
 
 \item{maxN}{All cells having counts <= maxN are set as primary suppressed.}
 
-\item{method}{Parameter \code{method} in \code{\link{protectTable}}, \code{\link{protect_linked_tables}}
+\item{method}{Parameter \code{method} in \code{\link[sdcTable]{protectTable}}, \code{\link[sdcTable]{protect_linked_tables}}
 or wrapper methods via \code{\link{PTwrap}}.
 \code{Gauss} (default) is implemented independently of \code{sdcTable}. There is also a similar variant implemented in sdcTable as \code{GAUSS}.
 But this implementation is not as optimal and \code{Gauss} is recommended instead.
@@ -71,7 +71,7 @@ But this implementation is not as optimal and \code{Gauss} is recommended instea
 \code{"SIMPLEHEURISTIC_OLD"} with \code{threshold=1} (can be overridden by input) when \code{protectZeros=TRUE}.
 \item \strong{\code{"SIMPLEHEURISTICSingle"}:} As \code{"SimpleSingle"} with \code{"SIMPLEHEURISTIC"} instead of \code{"SIMPLEHEURISTIC_OLD"}.
 \item \strong{\code{"Simple"}:} \code{"SIMPLEHEURISTIC_OLD"} with \code{detectSingletons=FALSE}.
-\item \strong{\code{"Gauss"}:} \code{\link{GaussSuppression}} is called with parameters \code{x}, \code{candidates}, \code{primary} and \code{singleton} automatically generated.
+\item \strong{\code{"Gauss"}:} \code{\link[SSBtools]{GaussSuppression}} is called with parameters \code{x}, \code{candidates}, \code{primary} and \code{singleton} automatically generated.
 Other parameters (\code{singletonMethod}, \code{printInc}) can be specified.
 }
 
@@ -88,35 +88,35 @@ See \code{\link{PTwrap}} for other (experimental) wrapper methods (see details).
 
 \item{removeZeros}{When TRUE, rows with zero count will be removed from the data within the algorithm.}
 
-\item{dimList}{By default, hierarchies will be automatically found from data (see \code{\link{FindDimLists}}).
+\item{dimList}{By default, hierarchies will be automatically found from data (see \code{\link[SSBtools]{FindDimLists}}).
 With non-NULL dimList, these will be changed.
 In practice this is done by the function \code{\link{ReplaceDimList}}.}
 
 \item{groupVarInd}{Possible manual specification of list defining the hierarchical
 variable groups. When NULL (default) this information will be found automatically
-by \code{\link{FindTableGroup}}.}
+by \code{\link[SSBtools]{FindTableGroup}}.}
 
 \item{ind1}{Coding of table 1 as indices referring to elements of groupVarInd. This information
 will be found automatically
-by \code{\link{FindTableGroup}} when groupVarInd=NULL.}
+by \code{\link[SSBtools]{FindTableGroup}} when groupVarInd=NULL.}
 
 \item{ind2}{Coding of table 2 as indices referring to elements of groupVarInd (as ind1 above).}
 
-\item{rowData}{Input to \code{\link{Stack}} used to generate extra dimVar variables when stacking in cases with several
-freqvar variables. When NULL rowData will be created automatically by \code{\link{AutoSplit}} using varNames (see below)
+\item{rowData}{Input to \code{\link[SSBtools]{Stack}} used to generate extra dimVar variables when stacking in cases with several
+freqvar variables. When NULL rowData will be created automatically by \code{\link[SSBtools]{AutoSplit}} using varNames (see below)
 and the the freqvar names as input.}
 
 \item{varNames}{The names of the extra dimVar variable(s) made when stacking in cases with several
-freqvar variables. When length(varNames)>1 several variables may be found by \code{\link{AutoSplit}}.}
+freqvar variables. When length(varNames)>1 several variables may be found by \code{\link[SSBtools]{AutoSplit}}.}
 
-\item{split}{Parameter to \code{\link{AutoSplit}} - see varNames and rowData above.
+\item{split}{Parameter to \code{\link[SSBtools]{AutoSplit}} - see varNames and rowData above.
 When NULL (default), automatic splitting without needing a split string.}
 
-\item{border}{Parameter to \code{\link{AutoSplit}} - see varNames and rowData above.}
+\item{border}{Parameter to \code{\link[SSBtools]{AutoSplit}} - see varNames and rowData above.}
 
-\item{revBorder}{Parameter to \code{\link{AutoSplit}} - see varNames and rowData above..}
+\item{revBorder}{Parameter to \code{\link[SSBtools]{AutoSplit}} - see varNames and rowData above..}
 
-\item{freqName}{Input to \code{\link{Stack}}. The name of the new freqvar variable obtained when stacking in cases with several
+\item{freqName}{Input to \code{\link[SSBtools]{Stack}}. The name of the new freqvar variable obtained when stacking in cases with several
 input freqvar variables.}
 
 \item{totalFirst}{Parameter controlling how output is sorted.}
@@ -150,11 +150,11 @@ created by unstacking (in cases with sever input freqvar variables).}
 
 \item{IncProgress}{A function to report progress (incProgress in Shiny). Set equal to NULL to turn it off.}
 
-\item{verbose}{Parameter sent to \code{\link{protectTable}}, \code{\link{protect_linked_tables}} or \code{\link{runArgusBatchFile}}.}
+\item{verbose}{Parameter sent to \code{\link[sdcTable]{protectTable}}, \code{\link[sdcTable]{protect_linked_tables}} or \code{\link[sdcTable]{runArgusBatchFile}}.}
 
-\item{...}{Further parameters sent to \code{\link{protectTable}} (possibly via \code{\link{protect_linked_tables}})
+\item{...}{Further parameters sent to \code{\link[sdcTable]{protectTable}} (possibly via \code{\link[sdcTable]{protect_linked_tables}})
 such as timeLimit.
-Parameters to  \code{\link{GaussSuppression}}, \code{\link{createArgusInput}} and \code{\link{PTwrap}} is also possible (see details).}
+Parameters to  \code{\link[SSBtools]{GaussSuppression}}, \code{\link[sdcTable]{createArgusInput}} and \code{\link{PTwrap}} is also possible (see details).}
 }
 \value{
 When singleOutput=TRUE output is a list of two elements.
@@ -171,13 +171,13 @@ according to outFreq, outSdcStatus and outSuppressed.
 }
 }
 \description{
-\code{\link{GaussSuppression}}, \code{\link{protectTable}} or  \code{\link{protect_linked_tables}}
+\code{\link[SSBtools]{GaussSuppression}}, \code{\link[sdcTable]{protectTable}} or  \code{\link[sdcTable]{protect_linked_tables}}
 is run with a data set as the only required input. One (stacked) or several (unstacked) input variables can hold cell counts.
 \code{ProtectTableData} is a tidy wrapper function, which returns a single data frame instead of a list (\code{info} omitted).
 }
 \details{
 One or two tables are identified automatically and subjected to cell suppression
-by \code{\link{protectTable}} (single table) or \code{\link{protect_linked_tables}} (two linked tables).
+by \code{\link[sdcTable]{protectTable}} (single table) or \code{\link[sdcTable]{protect_linked_tables}} (two linked tables).
 The tables can alternatively be specified manually by groupVarInd, ind1 and ind2.
 The output will be on a form similiar to input depending on whether freqVar is a single variable or not.
 The status of the cells are
@@ -186,8 +186,8 @@ This is taken directly from the output from sdcTable. In cases with two linked t
 for common cells are based on output from the first table.
 \itemize{
 \item \strong{To run tau-argus} specify \code{method} as a named list containing the
-parameter \code{exe} for \code{\link{runArgusBatchFile}} and other parameters for
-\code{\link{createArgusInput}}.
+parameter \code{exe} for \code{\link[sdcTable]{runArgusBatchFile}} and other parameters for
+\code{\link[sdcTable]{createArgusInput}}.
 \itemize{
 \item One may specify:
 \code{method = list(exe="C:/Tau/TauArgus.exe", typ="tabular", path= getwd(),}

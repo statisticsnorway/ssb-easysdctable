@@ -1,6 +1,6 @@
 #'  Easy interface to sdcTable: Table suppression according to a frequency rule. 
 #'
-#'  \code{\link{GaussSuppression}}, \code{\link{protectTable}} or  \code{\link{protect_linked_tables}} 
+#'  \code{\link[SSBtools]{GaussSuppression}}, \code{\link[sdcTable]{protectTable}} or  \code{\link[sdcTable]{protect_linked_tables}} 
 #'  is run with a data set as the only required input. One (stacked) or several (unstacked) input variables can hold cell counts.
 #'  `ProtectTableData` is a tidy wrapper function, which returns a single data frame instead of a list (`info` omitted). 
 #'
@@ -9,9 +9,9 @@
 #' @param data data frame
 #' @param dimVar The main dimensional variables and additional aggregating variables (name or number).
 #' @param freqVar Variable(s) holding counts or NULL in the case of micro data (name or number).
-#' @param protectZeros When TRUE empty cells (count=0) is considered sensitive (i.e. same as allowZeros in  \code{\link{primarySuppression}}).
+#' @param protectZeros When TRUE empty cells (count=0) is considered sensitive (i.e. same as allowZeros in  \code{\link[sdcTable]{primarySuppression}}).
 #' @param maxN All cells having counts <= maxN are set as primary suppressed.
-#' @param method Parameter `method` in \code{\link{protectTable}}, \code{\link{protect_linked_tables}}
+#' @param method Parameter `method` in \code{\link[sdcTable]{protectTable}}, \code{\link[sdcTable]{protect_linked_tables}}
 #'        or wrapper methods via \code{\link{PTwrap}}. 
 #'        `Gauss` (default) is implemented independently of `sdcTable`. There is also a similar variant implemented in sdcTable as `GAUSS`. 
 #'        But this implementation is not as optimal and `Gauss` is recommended instead.
@@ -22,7 +22,7 @@
 #'                            `"SIMPLEHEURISTIC_OLD"` with `threshold=1` (can be overridden by input) when `protectZeros=TRUE`. 
 #' * **`"SIMPLEHEURISTICSingle"`:** As `"SimpleSingle"` with `"SIMPLEHEURISTIC"` instead of `"SIMPLEHEURISTIC_OLD"`.                          
 #' * **`"Simple"`:** `"SIMPLEHEURISTIC_OLD"` with `detectSingletons=FALSE`.  
-#' * **`"Gauss"`:** \code{\link{GaussSuppression}} is called with parameters `x`, `candidates`, `primary` and `singleton` automatically generated.
+#' * **`"Gauss"`:** \code{\link[SSBtools]{GaussSuppression}} is called with parameters `x`, `candidates`, `primary` and `singleton` automatically generated.
 #'                Other parameters (`singletonMethod`, `printInc`) can be specified. 
 #' 
 #' Alternatively this parameter can be a named list specifying parameters for running tau-argus (see details).                     
@@ -32,26 +32,26 @@
 #' @param addName When TRUE the variable name is added to the level names, except for variables with most levels.
 #' @param sep A character string to separate when addName apply and when creating variable names.
 #' @param removeZeros When TRUE, rows with zero count will be removed from the data within the algorithm.
-#' @param dimList By default, hierarchies will be automatically found from data (see \code{\link{FindDimLists}}). 
+#' @param dimList By default, hierarchies will be automatically found from data (see \code{\link[SSBtools]{FindDimLists}}). 
 #'   With non-NULL dimList, these will be changed. 
 #'   In practice this is done by the function \code{\link{ReplaceDimList}}. 
 #' @param groupVarInd Possible manual specification of list defining the hierarchical 
 #'         variable groups. When NULL (default) this information will be found automatically 
-#'         by \code{\link{FindTableGroup}}.
+#'         by \code{\link[SSBtools]{FindTableGroup}}.
 #' @param ind1  Coding of table 1 as indices referring to elements of groupVarInd. This information 
 #'         will be found automatically 
-#'         by \code{\link{FindTableGroup}} when groupVarInd=NULL. 
+#'         by \code{\link[SSBtools]{FindTableGroup}} when groupVarInd=NULL. 
 #' @param ind2  Coding of table 2 as indices referring to elements of groupVarInd (as ind1 above).
-#' @param rowData Input to \code{\link{Stack}} used to generate extra dimVar variables when stacking in cases with several 
-#'        freqvar variables. When NULL rowData will be created automatically by \code{\link{AutoSplit}} using varNames (see below)
+#' @param rowData Input to \code{\link[SSBtools]{Stack}} used to generate extra dimVar variables when stacking in cases with several 
+#'        freqvar variables. When NULL rowData will be created automatically by \code{\link[SSBtools]{AutoSplit}} using varNames (see below)
 #'        and the the freqvar names as input.
 #' @param varNames The names of the extra dimVar variable(s) made when stacking in cases with several 
-#'        freqvar variables. When length(varNames)>1 several variables may be found by \code{\link{AutoSplit}}. 
-#' @param split Parameter to \code{\link{AutoSplit}} - see varNames and rowData above.  
+#'        freqvar variables. When length(varNames)>1 several variables may be found by \code{\link[SSBtools]{AutoSplit}}. 
+#' @param split Parameter to \code{\link[SSBtools]{AutoSplit}} - see varNames and rowData above.  
 #'        When NULL (default), automatic splitting without needing a split string.
-#' @param border Parameter to \code{\link{AutoSplit}} - see varNames and rowData above.
-#' @param revBorder Parameter to \code{\link{AutoSplit}} - see varNames and rowData above..
-#' @param freqName Input to \code{\link{Stack}}. The name of the new freqvar variable obtained when stacking in cases with several 
+#' @param border Parameter to \code{\link[SSBtools]{AutoSplit}} - see varNames and rowData above.
+#' @param revBorder Parameter to \code{\link[SSBtools]{AutoSplit}} - see varNames and rowData above..
+#' @param freqName Input to \code{\link[SSBtools]{Stack}}. The name of the new freqvar variable obtained when stacking in cases with several 
 #'        input freqvar variables.
 #' @param totalFirst Parameter controlling how output is sorted.
 #' @param numericOrder Parameter controlling how output is sorted. 
@@ -70,13 +70,13 @@
 #' @param outSuppressed String used to name output variable(s)
 #' @param infoAsFrame When TRUE output element info is a data frame (useful in Shiny).
 #' @param IncProgress A function to report progress (incProgress in Shiny). Set equal to NULL to turn it off.
-#' @param verbose Parameter sent to \code{\link{protectTable}}, \code{\link{protect_linked_tables}} or \code{\link{runArgusBatchFile}}.  
-#' @param ...  Further parameters sent to \code{\link{protectTable}} (possibly via \code{\link{protect_linked_tables}})
+#' @param verbose Parameter sent to \code{\link[sdcTable]{protectTable}}, \code{\link[sdcTable]{protect_linked_tables}} or \code{\link[sdcTable]{runArgusBatchFile}}.  
+#' @param ...  Further parameters sent to \code{\link[sdcTable]{protectTable}} (possibly via \code{\link[sdcTable]{protect_linked_tables}})
 #'        such as timeLimit. 
-#'        Parameters to  \code{\link{GaussSuppression}}, \code{\link{createArgusInput}} and \code{\link{PTwrap}} is also possible (see details).
+#'        Parameters to  \code{\link[SSBtools]{GaussSuppression}}, \code{\link[sdcTable]{createArgusInput}} and \code{\link{PTwrap}} is also possible (see details).
 #' 
 #' @details One or two tables are identified automatically and subjected to cell suppression 
-#'          by \code{\link{protectTable}} (single table) or \code{\link{protect_linked_tables}} (two linked tables).
+#'          by \code{\link[sdcTable]{protectTable}} (single table) or \code{\link[sdcTable]{protect_linked_tables}} (two linked tables).
 #'          The tables can alternatively be specified manually by groupVarInd, ind1 and ind2.
 #'          The output will be on a form similiar to input depending on whether freqVar is a single variable or not.
 #'          The status of the cells are 
@@ -85,8 +85,8 @@
 #'          for common cells are based on output from the first table.
 #'          
 #'  * **To run tau-argus** specify `method` as a named list containing the
-#'          parameter `exe` for \code{\link{runArgusBatchFile}} and other parameters for 
-#'          \code{\link{createArgusInput}}.  
+#'          parameter `exe` for \code{\link[sdcTable]{runArgusBatchFile}} and other parameters for 
+#'          \code{\link[sdcTable]{createArgusInput}}.  
 #'    * One may specify:  
 #'          \code{method = list(exe="C:/Tau/TauArgus.exe", typ="tabular", path= getwd(),} 
 #'          \code{solver= "FREE", method= "OPT")}

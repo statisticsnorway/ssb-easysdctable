@@ -10,7 +10,7 @@
 #' @importFrom utils data
 #' @importFrom SSBtools Hrc2DimList SSBtoolsData
 #' 
-#' @note The function returns the same datasets as \code{\link{SSBtoolsData}}.
+#' @note The function returns the same datasets as \code{\link[SSBtools]{SSBtoolsData}}.
 #'
 #' @examples
 #'  z  <- EasyData("sosialFiktiv")

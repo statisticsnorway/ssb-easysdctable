@@ -8,11 +8,11 @@
 #' @param ...    Parameters to ProtectTable 
 #' @param maxN   Parameter to ProtectTable
 #' @param method Parameter to ProtectTable or a wrapper method (see details) 
-#' @param exeArgus    Parameter to \code{\link{runArgusBatchFile}}
-#' @param pathArgus   Parameter to \code{\link{createArgusInput}}
-#' @param solverArgus Parameter "solver" to \code{\link{createArgusInput}}
-#' @param methodArgus Parameter "method" to \code{\link{createArgusInput}}
-#' @param rgArgus Parameter "rg" in "primSuppRules" in \code{\link{createArgusInput}}
+#' @param exeArgus    Parameter to \code{\link[sdcTable]{runArgusBatchFile}}
+#' @param pathArgus   Parameter to \code{\link[sdcTable]{createArgusInput}}
+#' @param solverArgus Parameter "solver" to \code{\link[sdcTable]{createArgusInput}}
+#' @param methodArgus Parameter "method" to \code{\link[sdcTable]{createArgusInput}}
+#' @param rgArgus Parameter "rg" in "primSuppRules" in \code{\link[sdcTable]{createArgusInput}}
 #' 
 #' @details The wrapper methods are:
 #' 

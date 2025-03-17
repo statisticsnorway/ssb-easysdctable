@@ -26,15 +26,15 @@
 #' @param ... Further parameters sent to protectTable, protect_linked_tables or createArgusInput.
 #'
 #' @details One or two tables are identified automatically and subjected to cell suppression methods in package sdcTable.
-#'          The tables can alternatively be specified manually by groupVarInd, ind1 and ind2 (see \code{\link{FindTableGroup}}).
+#'          The tables can alternatively be specified manually by groupVarInd, ind1 and ind2 (see \code{\link[SSBtools]{FindTableGroup}}).
 #'
 #' @return Output is a list of three elements.
 #'
 #'         \strong{table1} consists of the following elements:
-#'         \item{secondary}{Output from \code{\link{protectTable}} or first element of output from \code{\link{protect_linked_tables}} 
-#'         or output from \code{\link{runArgusBatchFile}}.}
-#'         \item{primary}{Output from \code{\link{primarySuppression}}.}
-#'         \item{problem}{Output from \code{\link{makeProblem}}.}
+#'         \item{secondary}{Output from \code{\link[sdcTable]{protectTable}} or first element of output from \code{\link[sdcTable]{protect_linked_tables}} 
+#'         or output from \code{\link[sdcTable]{runArgusBatchFile}}.}
+#'         \item{primary}{Output from \code{\link[sdcTable]{primarySuppression}}.}
+#'         \item{problem}{Output from \code{\link[sdcTable]{makeProblem}}.}
 #'         \item{dimList}{Generated input to makeProblem.}
 #'         \item{ind}{Indices referring to elements of groupVarInd in the output element common.}
 #'
@@ -52,8 +52,8 @@
 #' @importFrom SSBtools FindTableGroup FindDimLists FindCommonCells FactorLevCorr MakeMicro
 #'
 #' @seealso \code{\link{ProtectTable}}, 
-#'         \code{\link{HierarchicalGroups}}, \code{\link{FactorLevCorr}},
-#'         \code{\link{FindDimLists}}, \code{\link{FindCommonCells}}
+#'         \code{\link[SSBtools]{HierarchicalGroups}}, \code{\link[SSBtools]{FactorLevCorr}},
+#'         \code{\link[SSBtools]{FindDimLists}}, \code{\link[SSBtools]{FindCommonCells}}
 #'         
 #' @noMd         
 #'
