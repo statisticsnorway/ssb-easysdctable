@@ -23,15 +23,15 @@ PTwrap(
 
 \item{method}{Parameter to ProtectTable or a wrapper method (see details)}
 
-\item{exeArgus}{Parameter to \code{\link{runArgusBatchFile}}}
+\item{exeArgus}{Parameter to \code{\link[sdcTable]{runArgusBatchFile}}}
 
-\item{pathArgus}{Parameter to \code{\link{createArgusInput}}}
+\item{pathArgus}{Parameter to \code{\link[sdcTable]{createArgusInput}}}
 
-\item{solverArgus}{Parameter "solver" to \code{\link{createArgusInput}}}
+\item{solverArgus}{Parameter "solver" to \code{\link[sdcTable]{createArgusInput}}}
 
-\item{methodArgus}{Parameter "method" to \code{\link{createArgusInput}}}
+\item{methodArgus}{Parameter "method" to \code{\link[sdcTable]{createArgusInput}}}
 
-\item{rgArgus}{Parameter "rg" in "primSuppRules" in \code{\link{createArgusInput}}}
+\item{rgArgus}{Parameter "rg" in "primSuppRules" in \code{\link[sdcTable]{createArgusInput}}}
 }
 \value{
 See \code{\link{ProtectTable}}
