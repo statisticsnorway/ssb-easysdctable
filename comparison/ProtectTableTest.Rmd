@@ -36,6 +36,7 @@ Method `"GAUSS"` is the `sdcTable` implementation introduced in version 0.32.3.
 
 ```{r comment=NA, tidy = TRUE, results = "hide", message = FALSE}
 library(easySdcTable)
+library(Matrix)
 library(RegSDC)
 z3 <- EasyData("z3") 
 ```
