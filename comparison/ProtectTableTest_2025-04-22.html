@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Øyvind Langsrud" />
+
+<meta name="date" content="2025-04-22" />
+
+<title>Comparison of methods within ‘easySdcTable’</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Comparison of methods within
+‘easySdcTable’</h1>
+<h4 class="author">Øyvind Langsrud</h4>
+<h4 class="date">2025-04-22</h4>
+
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>This rmarkdown document tests the function <code>ProtectTable</code>
+in package <code>easySdcTable</code>. Thereby, some of the functionality
+in <code>sdcTable</code> is tested.</p>
+<p>Computing time as <code>milliseconds</code> are reported.</p>
+<p>In practice the is done by redefining the function
+<code>ProtectTable</code> to be a functions that tests the
+functionality.</p>
+<p>The total number of suppressed cells (<code>n_suppressed</code>) and
+the number of primary suppressed cells (<code>n_primary</code>) are
+counted.</p>
+<p>A method based on the functionality in package <code>RegSDC</code> is
+used to reveal suppressed cells, if possible.<br />
+The total number of revealed suppressed cells (<code>n_revealed</code>)
+and the number of revealed primary suppressed
+(<code>n_revealed_prim</code>) cells are counted.</p>
+<p>In addition, if some zeroes are suppressed when zeros are not to be
+protected, this is also reported (<code>n_zeros_suppressed</code>).</p>
+<p>All code to generate output is included in the document.</p>
+<p>Method <code>&quot;Gauss&quot;</code> is default in <code>ProtectTable</code>
+and is implemented independently of <code>sdcTable</code>. Method
+<code>&quot;GAUSS&quot;</code> is the <code>sdcTable</code> implementation
+introduced in version 0.32.3.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(easySdcTable)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(Matrix)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(RegSDC)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a>z3 <span class="ot">&lt;-</span> <span class="fu">EasyData</span>(<span class="st">&quot;z3&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a>ProtectTable <span class="ot">&lt;-</span> <span class="cf">function</span>(..., <span class="at">maxN =</span> <span class="dv">3</span>, <span class="at">protectZeros =</span> <span class="cn">TRUE</span>) {</span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a>  <span class="fu">capture.output</span>({a <span class="ot">&lt;-</span> <span class="fu">try</span>(<span class="fu">PTxyz</span>(..., <span class="at">maxN =</span> maxN, <span class="at">protectZeros =</span> protectZeros, <span class="at">systemTime =</span> <span class="cn">TRUE</span>))})</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">class</span>(a)[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">&quot;try-error&quot;</span>) {</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>    <span class="fu">return</span>(<span class="fu">invisible</span>(<span class="fu">as.character</span>(a)))</span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  }</span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="fu">cbind</span>(a<span class="sc">$</span>z, <span class="fu">t</span>(a<span class="sc">$</span>x) <span class="sc">%*%</span> <span class="fu">cbind</span>(a<span class="sc">$</span>y, </span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>       RegSDC<span class="sc">::</span><span class="fu">SuppressDec</span>(a<span class="sc">$</span>x, a<span class="sc">$</span>z, a<span class="sc">$</span>y, <span class="at">rmse =</span> pi<span class="sc">/</span><span class="dv">3</span>, <span class="at">nRep =</span> <span class="dv">3</span>)))[<span class="fu">which</span>(<span class="fu">is.na</span>(a<span class="sc">$</span>z)), ]</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  k <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(k)</span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  k[, <span class="dv">3</span><span class="sc">:</span><span class="dv">5</span>] <span class="ot">&lt;-</span> <span class="fu">RoundWhole</span>(k[, <span class="dv">3</span><span class="sc">:</span><span class="dv">5</span>])</span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  ind_revealed <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">apply</span>(k[, <span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)], <span class="dv">1</span>, max) <span class="sc">-</span> <span class="fu">apply</span>(k[, <span class="sc">-</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)], <span class="dv">1</span>, min) <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  revealed <span class="ot">&lt;-</span> k[ind_revealed, , drop <span class="ot">=</span> <span class="cn">FALSE</span>]</span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>  out <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="at">milliseconds =</span> <span class="dv">1000</span> <span class="sc">*</span> <span class="fu">as.numeric</span>(a<span class="sc">$</span>system_time[<span class="dv">1</span>]), </span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a>    <span class="at">n_suppressed =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(a<span class="sc">$</span>z)), </span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>    <span class="at">n_primary =</span> <span class="fu">sum</span>(k[ ,<span class="dv">2</span>] <span class="sc">&lt;=</span> maxN <span class="sc">&amp;</span> k[ ,<span class="dv">2</span>] <span class="sc">!=</span> protectZeros<span class="sc">*</span>(maxN<span class="sc">+</span><span class="dv">1</span>)),</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>    <span class="at">n_revealed =</span> <span class="fu">length</span>(ind_revealed), </span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>    <span class="at">n_revealed_prim =</span> <span class="fu">sum</span>(revealed[ ,<span class="dv">2</span>] <span class="sc">&lt;=</span> maxN <span class="sc">&amp;</span> revealed[ ,<span class="dv">2</span>] <span class="sc">!=</span> protectZeros<span class="sc">*</span>(maxN<span class="sc">+</span><span class="dv">1</span>)))</span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span>protectZeros <span class="sc">&amp;</span> <span class="fu">any</span>(k[ ,<span class="dv">2</span>] <span class="sc">==</span> <span class="dv">0</span>))</span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>    out[<span class="st">&quot;n_zeros_suppressed&quot;</span>] <span class="ot">=</span> <span class="fu">sum</span>(k[ ,<span class="dv">2</span>] <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>  <span class="fu">return</span>(out)</span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>}</span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>fatal_error_message <span class="ot">&lt;-</span> <span class="st">&quot;The commented-out line of code above yields: R Session Aborted. R encountered a fatal error.&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) <span class="fu">cat</span>(<span class="fu">capture.output</span>(<span class="fu">sessionInfo</span>())[i], <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>)</span></code></pre></div>
+<pre><code>R version 4.5.0 (2025-04-11 ucrt) 
+Platform: x86_64-w64-mingw32/x64 
+Running under: Windows 11 x64 (build 22631) </code></pre>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">sessionInfo</span>()<span class="sc">$</span>otherPkgs<span class="sc">$</span>easySdcTable[<span class="fu">c</span>(<span class="st">&quot;Package&quot;</span>, <span class="st">&quot;Version&quot;</span>, <span class="st">&quot;Date&quot;</span>)])</span></code></pre></div>
+<pre><code>       Package        Version           Date 
+&quot;easySdcTable&quot;        &quot;1.1.1&quot;   &quot;2025-03-17&quot; </code></pre>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">unlist</span>(<span class="fu">sessionInfo</span>()<span class="sc">$</span>loadedOnly<span class="sc">$</span>sdcTable[<span class="fu">c</span>(<span class="st">&quot;Package&quot;</span>, <span class="st">&quot;Version&quot;</span>, <span class="st">&quot;Date&quot;</span>)])</span></code></pre></div>
+<pre><code>     Package      Version         Date 
+  &quot;sdcTable&quot;     &quot;0.32.7&quot; &quot;2025-03-11&quot; </code></pre>
+</div>
+<div id="single-table-1200-cells" class="section level1">
+<h1>Single table, 1200 cells</h1>
+<div id="single-table" class="section level2">
+<h2>Single table</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">&quot;Gauss&quot;</span>, <span class="at">singletonMethod =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+            620             478             333               0               0 </code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">&quot;GAUSS&quot;</span>, <span class="at">singletonMethod =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+           3140             485             333               0               0 </code></pre>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">&quot;SIMPLEHEURISTIC&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+            360             506             333               0               0 </code></pre>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">&quot;SIMPLEHEURISTIC_OLD&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+            330             497             333               0               0 </code></pre>
+</div>
+<div id="single-table-with-singleton-method" class="section level2">
+<h2>Single table, with singleton method</h2>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">&quot;Gauss&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+            520             515             333               0               0 </code></pre>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">&quot;GAUSS&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+           3150             518             333               0               0 </code></pre>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" tabindex="-1"></a><span class="co"># ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method</span></span>
+<span id="cb21-2"><a href="#cb21-2" tabindex="-1"></a><span class="co"># =&#39;SIMPLEHEURISTIC&#39;, detectSingletons = TRUE)</span></span>
+<span id="cb21-3"><a href="#cb21-3" tabindex="-1"></a><span class="fu">print</span>(fatal_error_message)</span></code></pre></div>
+<pre><code>[1] &quot;The commented-out line of code above yields: R Session Aborted. R encountered a fatal error.&quot;</code></pre>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">&quot;SIMPLEHEURISTIC_OLD&quot;</span>,</span>
+<span id="cb23-2"><a href="#cb23-2" tabindex="-1"></a>    <span class="at">detectSingletons =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+            470             558             333               2               2 </code></pre>
+<div class="sourceCode" id="cb25"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">&quot;SIMPLEHEURISTIC&quot;</span>,</span>
+<span id="cb25-2"><a href="#cb25-2" tabindex="-1"></a>    <span class="at">threshold =</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>      milliseconds       n_suppressed          n_primary         n_revealed 
+               410               1034                333                  0 
+   n_revealed_prim n_zeros_suppressed 
+                 0                131 </code></pre>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">&quot;SIMPLEHEURISTIC_OLD&quot;</span>,</span>
+<span id="cb27-2"><a href="#cb27-2" tabindex="-1"></a>    <span class="at">threshold =</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+            550             505             333               0               0 </code></pre>
+</div>
+<div id="single-table-zeros-protected" class="section level2">
+<h2>Single table, zeros protected</h2>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">TRUE</span>, <span class="at">method =</span> <span class="st">&quot;Gauss&quot;</span>, <span class="at">singletonMethod =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+            670             626             482               0               0 </code></pre>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">TRUE</span>, <span class="at">method =</span> <span class="st">&quot;GAUSS&quot;</span>, <span class="at">singletonMethod =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+           3020             626             482               0               0 </code></pre>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">TRUE</span>, <span class="at">method =</span> <span class="st">&quot;SIMPLEHEURISTIC&quot;</span>)</span></code></pre></div>
+<pre><code>Error : no solution possible after 20 runs</code></pre>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">TRUE</span>, <span class="at">method =</span> <span class="st">&quot;SIMPLEHEURISTIC_OLD&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+            340             637             482               0               0 </code></pre>
+</div>
+<div id="single-table-zeros-protected-with-singleton-method" class="section level2">
+<h2>Single table, zeros protected, with singleton method</h2>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">TRUE</span>, <span class="at">method =</span> <span class="st">&quot;Gauss&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+            460             626             482               0               0 </code></pre>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">TRUE</span>, <span class="at">method =</span> <span class="st">&quot;GAUSS&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+           3190             630             482               0               0 </code></pre>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">TRUE</span>, <span class="at">method =</span> <span class="st">&quot;SIMPLEHEURISTIC&quot;</span>,</span>
+<span id="cb41-2"><a href="#cb41-2" tabindex="-1"></a>    <span class="at">threshold =</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+            440            1021             482               0               0 </code></pre>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>), <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">TRUE</span>, <span class="at">method =</span> <span class="st">&quot;SIMPLEHEURISTIC_OLD&quot;</span>,</span>
+<span id="cb43-2"><a href="#cb43-2" tabindex="-1"></a>    <span class="at">threshold =</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+            530             638             482               0               0 </code></pre>
+</div>
+</div>
+<div id="linked-tables-1350-cells" class="section level1">
+<h1>Linked tables, 1350 cells</h1>
+<div id="linked-tables" class="section level2">
+<h2>Linked tables</h2>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">&quot;Gauss&quot;</span>, <span class="at">singletonMethod =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+            960             521             350               0               0 </code></pre>
+<div class="sourceCode" id="cb47"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">&quot;GAUSS&quot;</span>, <span class="at">singletonMethod =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<pre><code>Error in protect_linked_tables(x = primary1, y = primary2, common_cells = commonCells,  : 
+  method %in% methods_ok is not TRUE</code></pre>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">&quot;SIMPLEHEURISTIC&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+           4560             557             350              27              18 </code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">&quot;SIMPLEHEURISTIC_OLD&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+           2430             557             350              27              18 </code></pre>
+</div>
+<div id="linked-tables-with-singleton-method" class="section level2">
+<h2>Linked tables, with singleton method</h2>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">&quot;Gauss&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+           1080             619             350               0               0 </code></pre>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">&quot;GAUSS&quot;</span>)</span></code></pre></div>
+<pre><code>Error in protect_linked_tables(x = primary1, y = primary2, common_cells = commonCells,  : 
+  method %in% methods_ok is not TRUE</code></pre>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" tabindex="-1"></a><span class="co"># ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method =&#39;SIMPLEHEURISTIC&#39;,</span></span>
+<span id="cb57-2"><a href="#cb57-2" tabindex="-1"></a><span class="co"># detectSingletons = TRUE)</span></span>
+<span id="cb57-3"><a href="#cb57-3" tabindex="-1"></a><span class="fu">print</span>(fatal_error_message)</span></code></pre></div>
+<pre><code>[1] &quot;The commented-out line of code above yields: R Session Aborted. R encountered a fatal error.&quot;</code></pre>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" tabindex="-1"></a><span class="co"># ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method =&#39;SIMPLEHEURISTIC_OLD&#39;,</span></span>
+<span id="cb59-2"><a href="#cb59-2" tabindex="-1"></a><span class="co"># detectSingletons = TRUE)</span></span>
+<span id="cb59-3"><a href="#cb59-3" tabindex="-1"></a><span class="fu">print</span>(fatal_error_message)</span></code></pre></div>
+<pre><code>[1] &quot;The commented-out line of code above yields: R Session Aborted. R encountered a fatal error.&quot;</code></pre>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">&quot;SIMPLEHEURISTIC&quot;</span>, <span class="at">threshold =</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>      milliseconds       n_suppressed          n_primary         n_revealed 
+              2780               1177                350                  0 
+   n_revealed_prim n_zeros_suppressed 
+                 0                137 </code></pre>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">FALSE</span>, <span class="at">method =</span> <span class="st">&quot;SIMPLEHEURISTIC_OLD&quot;</span>, <span class="at">threshold =</span> <span class="dv">3</span>)</span></code></pre></div>
+<pre><code>      milliseconds       n_suppressed          n_primary         n_revealed 
+              2410               1177                350                  0 
+   n_revealed_prim n_zeros_suppressed 
+                 0                137 </code></pre>
+</div>
+<div id="linked-tables-zeros-protected" class="section level2">
+<h2>Linked tables, zeros protected</h2>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">TRUE</span>, <span class="at">method =</span> <span class="st">&quot;Gauss&quot;</span>, <span class="at">singletonMethod =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+            780             683             503               0               0 </code></pre>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">TRUE</span>, <span class="at">method =</span> <span class="st">&quot;GAUSS&quot;</span>, <span class="at">singletonMethod =</span> <span class="st">&quot;none&quot;</span>)</span></code></pre></div>
+<pre><code>Error in protect_linked_tables(x = primary1, y = primary2, common_cells = commonCells,  : 
+  method %in% methods_ok is not TRUE</code></pre>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">TRUE</span>, <span class="at">method =</span> <span class="st">&quot;SIMPLEHEURISTIC&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+           5000             707             503              10               6 </code></pre>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">TRUE</span>, <span class="at">method =</span> <span class="st">&quot;SIMPLEHEURISTIC_OLD&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+           2440             707             503              10               6 </code></pre>
+</div>
+<div id="linked-tables-zeros-protected-with-singleton-method" class="section level2">
+<h2>Linked tables, zeros protected, with singleton method</h2>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">TRUE</span>, <span class="at">method =</span> <span class="st">&quot;Gauss&quot;</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+            940             684             503               0               0 </code></pre>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">TRUE</span>, <span class="at">method =</span> <span class="st">&quot;GAUSS&quot;</span>)</span></code></pre></div>
+<pre><code>Error in protect_linked_tables(x = primary1, y = primary2, common_cells = commonCells,  : 
+  method %in% methods_ok is not TRUE</code></pre>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">TRUE</span>, <span class="at">method =</span> <span class="st">&quot;SIMPLEHEURISTIC&quot;</span>, <span class="at">threshold =</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+           2940            1163             503               0               0 </code></pre>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" tabindex="-1"></a><span class="fu">ProtectTable</span>(z3, <span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>, <span class="dv">7</span>, <span class="at">protectZeros =</span> <span class="cn">TRUE</span>, <span class="at">method =</span> <span class="st">&quot;SIMPLEHEURISTIC_OLD&quot;</span>, <span class="at">threshold =</span> <span class="dv">1</span>)</span></code></pre></div>
+<pre><code>   milliseconds    n_suppressed       n_primary      n_revealed n_revealed_prim 
+           2500            1163             503               0               0 </code></pre>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
