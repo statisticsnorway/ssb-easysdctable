@@ -64,6 +64,9 @@ ProtectTable <- function(..., maxN = 3, protectZeros = TRUE) {
     out["n_zeros_suppressed"] = sum(k[ ,2] == 0)
   return(out)
 }
+
+fatal_error_message <- "The commented-out line of code above yields: R Session Aborted. R encountered a fatal error."
+
 ```
 
 
@@ -93,7 +96,8 @@ ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method = "SIMPLEHEURISTIC
 ```{r comment=NA, tidy = TRUE, message = FALSE}
 ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method = "Gauss")
 ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method = "GAUSS")
-ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC", detectSingletons = TRUE)
+# ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC", detectSingletons = TRUE)
+print(fatal_error_message)
 ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC_OLD", detectSingletons = TRUE)
 ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC", threshold = 3)
 ProtectTable(z3, c(1:2, 4:6), 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC_OLD", threshold = 3)
@@ -134,8 +138,10 @@ ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method = "SIMPLEHEURISTIC_OLD")
 ```{r comment=NA, tidy = TRUE, message = FALSE}
 ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method = "Gauss")
 ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method = "GAUSS")
-ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC", detectSingletons = TRUE)
-ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC_OLD", detectSingletons = TRUE)
+# ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC", detectSingletons = TRUE)
+print(fatal_error_message)
+# ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC_OLD", detectSingletons = TRUE)
+print(fatal_error_message)
 ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC",  threshold = 3)
 ProtectTable(z3, 1:6, 7, protectZeros = FALSE, method ="SIMPLEHEURISTIC_OLD",  threshold = 3)
 ```
