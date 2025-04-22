@@ -65,7 +65,8 @@ ProtectTable <- function(..., maxN = 3, protectZeros = TRUE) {
   return(out)
 }
 
-fatal_error_message <- "The commented-out line of code above yields: R Session Aborted. R encountered a fatal error."
+fatal_error_message <- 
+  "The commented-out line of code above yields: R Session Aborted. R encountered a fatal error."
 
 ```
 
