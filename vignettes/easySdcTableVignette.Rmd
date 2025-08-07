@@ -124,16 +124,16 @@ print(ex2w$suppressed, row.names=FALSE)
 ```
 
 
-#### Using named input and the HITAS method
+#### Using named input and the SIMPLEHEURISTIC_OLD method
 
-Now we specify the variables using names instead of numbers. Furthermore we use the "HITAS" method. The default method is "SIMPLEHEURISTIC" and other possibilities are "OPT" and "HYPERCUBE". The latter is not possible in cases with two linked tables.
+Now we specify the variables using names instead of numbers. Furthermore we use the "SIMPLEHEURISTIC_OLD" method. 
 
 ```{r comment=NA, results='hide', tidy = TRUE, message = FALSE}
-ex2wHITAS <- ProtectTable(z2w,dimVar = c("region"),freqVar = c("annet", "arbeid", "soshjelp", "trygd"), method="HITAS")  
+ex2wOLD <- ProtectTable(z2w,dimVar = c("region"),freqVar = c("annet", "arbeid", "soshjelp", "trygd"), method="SIMPLEHEURISTIC_OLD")  
 ```
 
 ```{r comment=NA, tidy = TRUE}
-print(ex2wHITAS$suppressed, row.names=FALSE)
+print(ex2wOLD$suppressed, row.names=FALSE)
 ```
 
 #### More advanced use of ProtectTable

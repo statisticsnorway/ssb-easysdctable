@@ -1,3 +1,7 @@
+## easySdcTable	1.1.2
+* Vignette update to resolve CRAN check issues:
+  - Replaced the "HITAS" example with "SIMPLEHEURISTIC_OLD" due to execution hang during vignette building on CRAN.
+
 ## easySdcTable	1.1.1
 
 * Notes added in vignettes
