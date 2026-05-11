@@ -1,0 +1,333 @@
+# The problem of singletons and zeros in 'easySdcTable'
+
+## Introduction
+
+This document discuss background for changes made in easySdcTable after
+parameter `threshold` was introduced as a new possibility in sdcTable.
+
+``` r
+
+library(easySdcTable)
+```
+
+### Note added in version 1.1.1
+
+The terminology in this vignette is somewhat misleading. According to
+Langsrud (2024), “ones and zeros” should have been used instead of
+“singletons and zeros.”
+
+Langsrud, Ø. (2024): Secondary Cell Suppression by Gaussian Elimination:
+An Algorithm Suitable for Handling Issues with Zeros and Singletons,
+*Published in the Springer LNCS proceedings of the conference Privacy in
+Statistical Databases.*
+
+## Example datasets
+
+Below are four two-way example datasets. The data is organized here in
+wide format so that the frequencies are in several columns. It is thus
+one row variable and one column variable. The dataset, data1b, comes
+from [Kristian Lønø](https://github.com/krlono). He used this to point
+out a problem that has led to changes in the latest version of r-package
+sdcTable. The details are below in this document. The other datasets are
+modified variants.
+
+``` r
+
+data1a = data.frame(row = c("r1","r2"), A=c(0,2), B=c(1,0), H=c(7,0), M=c(1,2), W=c(0,8))
+data1b = data.frame(row = c("r1","r2"), A=c(1,1), B=c(1,0), H=c(7,0), M=c(1,2), W=c(0,8))
+data0a = data.frame(row = c("r1","r2"), A=c(5,5), B=c(0,9), H=c(7,9), M=c(0,5), W=c(9,8))
+data0b = data.frame(row = c("r1","r2"), A=c(0,0), B=c(0,9), H=c(7,9), M=c(0,2), W=c(9,8))
+```
+
+| row |   A |   B |   H |   M |   W |
+|----:|----:|----:|----:|----:|----:|
+|  r1 |   0 |   1 |   7 |   1 |   0 |
+|  r2 |   2 |   0 |   0 |   2 |   8 |
+
+data1a {.table}
+
+| row |   A |   B |   H |   M |   W |
+|----:|----:|----:|----:|----:|----:|
+|  r1 |   1 |   1 |   7 |   1 |   0 |
+|  r2 |   1 |   0 |   0 |   2 |   8 |
+
+data1b {.table}
+
+| row |   A |   B |   H |   M |   W |
+|----:|----:|----:|----:|----:|----:|
+|  r1 |   5 |   0 |   7 |   0 |   9 |
+|  r2 |   5 |   9 |   9 |   5 |   8 |
+
+data0a {.table}
+
+| row |   A |   B |   H |   M |   W |
+|----:|----:|----:|----:|----:|----:|
+|  r1 |   0 |   0 |   7 |   0 |   9 |
+|  r2 |   0 |   9 |   9 |   2 |   8 |
+
+data0b {.table}
+
+## The singleton problem
+
+In the first run of the first dataset, we use `protectZeros = FALSE`.
+This means that 0s are not suppressed. All 0s are shown and none of them
+are secondary suppressed. We use the (previously) usual method,
+`"SIMPLEHEURISTIC_OLD"`.
+
+``` r
+
+s1a = ProtectTable(data1a, 1, 2:6, protectZeros = FALSE,  method = "SIMPLEHEURISTIC_OLD", suppression=".")$suppressed
+```
+
+|   row |   A |   B |   H |   M |   W | Total |
+|------:|----:|----:|----:|----:|----:|------:|
+|    r1 |   0 |   . |   7 |   . |   0 |     9 |
+|    r2 |   . |   0 |   0 |   . |   8 |    12 |
+| Total |   . |   . |   7 |   . |   8 |    21 |
+
+s1a {.table}
+
+Here it is easy to reveal that both the suppressed numbers in the first
+row must be 1 since the sum should be 9 and neither number can be 0.
+This is called the singleton problem. In the underlying function of
+sdcTable there is a parameter, `detectSingletons` (default is `FALSE`),
+which is intended to handle this problem. Such parameters in sdcTable
+can also be used as input to ProtectTable.
+
+``` r
+
+s1aSingle = ProtectTable(data1a, 1, 2:6, protectZeros = FALSE,  method = "SIMPLEHEURISTIC_OLD", detectSingletons=TRUE,
+                         suppression=".")$suppressed
+```
+
+|   row |   A |   B |   H |   M |   W | Total |
+|------:|----:|----:|----:|----:|----:|------:|
+|    r1 |   0 |   . |   . |   . |   0 |     9 |
+|    r2 |   . |   0 |   0 |   . |   8 |    12 |
+| Total |   . |   . |   . |   . |   8 |    21 |
+
+s1aSingle {.table}
+
+Now it is sufficiently suppressed so that the values can no longer be
+revealed. In the next dataset it will be different.
+
+``` r
+
+s1bSingle = ProtectTable(data1b, 1, 2:6, protectZeros = FALSE,  method = "SIMPLEHEURISTIC_OLD", detectSingletons=TRUE,
+                         suppression=".")$suppressed
+```
+
+|   row |   A |   B |   H |   M |   W | Total |
+|------:|----:|----:|----:|----:|----:|------:|
+|    r1 |   . |   . |   7 |   . |   0 |    10 |
+|    r2 |   . |   0 |   0 |   . |   . |    11 |
+| Total |   . |   . |   7 |   . |   . |    21 |
+
+s1bSingle {.table}
+
+We can reveal that the suppressed numbers in the first row must be 1.
+This problem has led to changes in the latest version of sdcTable. A new
+parameter, `threshold`, is introduced.
+
+## Solving the singleton problem by using `threshold`
+
+The new parameter, `threshold`, is a number that can be specified. The
+parameter means that the sum of the suppressed cells is required to be
+at least threshold. This means that `threshold = 3` will solve problems
+in a similar way to `detectSingletons = TRUE`. In the case of data1b,
+then the problem is not solved since the sum is already 3. But the
+problem can be solved by setting `threshold = 4`.
+
+``` r
+
+s1bThreshold4 = ProtectTable(data1b, 1, 2:6, protectZeros = FALSE,  method = "SIMPLEHEURISTIC_OLD", threshold=4,
+                         suppression=".")$suppressed
+```
+
+|   row |   A |   B |   H |   M |   W | Total |
+|------:|----:|----:|----:|----:|----:|------:|
+|    r1 |   . |   . |   . |   . |   0 |    10 |
+|    r2 |   . |   0 |   0 |   . |   . |    11 |
+| Total |   . |   . |   . |   . |   . |    21 |
+
+s1bThreshold4 {.table}
+
+Now it has been suppressed sufficiently. But a problem is that one
+cannot know, without examining the data, what threshold is needed. It is
+not difficult to create example data where `threshold = 4` is not
+enough. One could imagine a very large value of `threshold`. The
+threshold parameter affects not only 1s but also other suppressed
+numbers. Above, not only were the 7s in the first row removed, but also
+the 8s in the second row. It might not be required. It is possible to
+know that there must be 1 and 2 in the row, but not complete disclosure.
+
+In an imagined example where 4 is secondary suppressed to protect 2,
+extra cells will be suppressed if `threshold = 7`. So, the parameter
+threshold does not solve the singleton problem in an optimal way. But as
+shown below, this looks better in the case where zeros are suppressed.
+
+## The problem of zeros
+
+Now we consider data0a use `protectZeros = TRUE`. This means that 0s are
+primary suppressed.
+
+``` r
+
+s0a = ProtectTable(data0a, 1, 2:6, protectZeros = TRUE,  method = "SIMPLEHEURISTIC_OLD", suppression=".")$suppressed
+```
+
+|   row |   A |   B |   H |   M |   W | Total |
+|------:|----:|----:|----:|----:|----:|------:|
+|    r1 |   5 |   . |   7 |   . |   9 |    21 |
+|    r2 |   5 |   . |   9 |   . |   8 |    36 |
+| Total |  10 |   9 |  16 |   5 |  17 |    57 |
+
+s0a {.table}
+
+Here it is easy to reveal that both the suppressed numbers in the first
+row must be 0 since the sum of the numbers shown is already 21. This
+problem is similar to the problem with 1s, but it is not called the
+singleton problem. It doesn’t help using `detectSingletons = TRUE`. The
+answer will be the same.
+
+In the next data set (data0b) there are three 0’s and the problem is the
+same.
+
+``` r
+
+s0b = ProtectTable(data0b, 1, 2:6, protectZeros = TRUE,  method = "SIMPLEHEURISTIC_OLD", suppression=".")$suppressed
+```
+
+|   row |   A |   B |   H |   M |   W | Total |
+|------:|----:|----:|----:|----:|----:|------:|
+|    r1 |   . |   . |   7 |   . |   9 |    16 |
+|    r2 |   . |   . |   9 |   . |   8 |    28 |
+| Total |   . |   9 |  16 |   . |  17 |    44 |
+
+s0b {.table}
+
+## Solving the problem of zeros by using `threshold=1`
+
+The threshold parameter solves the above problem (data0a). It is
+sufficient to set `threshold = 1` to prevent only 0s being suppressed.
+
+``` r
+
+s0aThreshold1 = ProtectTable(data0a, 1, 2:6, protectZeros = TRUE,  method = "SIMPLEHEURISTIC_OLD", threshold = 1, suppression=".")$suppressed
+```
+
+|   row |   A |   B |   H |   M |   W | Total |
+|------:|----:|----:|----:|----:|----:|------:|
+|    r1 |   . |   . |   7 |   . |   9 |    21 |
+|    r2 |   . |   . |   9 |   . |   8 |    36 |
+| Total |  10 |   9 |  16 |   5 |  17 |    57 |
+
+s0aThreshold1 {.table}
+
+When there are three (as below, data0b) or more zeros, the problem is
+also solved. It is suppressed extra to avoid disclosure.
+
+``` r
+
+s0bThreshold1 = ProtectTable(data0b, 1, 2:6, protectZeros = TRUE,  method = "SIMPLEHEURISTIC_OLD", threshold = 1, suppression=".")$suppressed
+```
+
+|   row |   A |   B |   H |   M |   W | Total |
+|------:|----:|----:|----:|----:|----:|------:|
+|    r1 |   . |   . |   . |   . |   9 |    16 |
+|    r2 |   . |   . |   . |   . |   8 |    28 |
+| Total |   . |   9 |  16 |   . |  17 |    44 |
+
+s0bThreshold1 {.table}
+
+## Discussion and new default
+
+The new parameter threshold is not an optimal solution to the singleton
+problem (1s). Users must consider what value to use. What is great is
+that the threshold parameter solves problems with 0’s, ie when
+`protectZeros = TRUE`.
+
+Note also that the threshold parameter can be used to increase the
+degree of protection in general, even without 0s or 1s.
+
+In easySdcTable, `protectZeros = TRUE` is the default. It is not in
+sdcTable. The parameter is also renamed. The method `"SIMPLEHEURISTIC"`
+which is default in sdcTable, has also been default easySdcTable. This
+is now changed to `"SimpleSingle"` whos new definition is:
+
+- When `protectZeros=FALSE`: `"SIMPLEHEURISTIC"` with
+  `detectSingletons=TRUE`.
+- when `protectZeros=TRUE`: `"SIMPLEHEURISTIC"` with `threshold=1` (can
+  be overridden by input).
+
+The problem of zeros is solved. Otherwise, the data is protected the old
+way using `detectSingletons`. In addition, it is possible to manually
+set the parameter `threshold` to provide better protection. If this is
+done, the parameter `detectSingletons` will not be used.
+
+Note that parameters `detectSingletons` and `threshold` increase the
+computing time.
+
+## Note after easySdcTable version 0.8.0
+
+Method `"Gauss"` made default (See NEWS).
+
+For all the examples to still be relevant, `"SIMPLEHEURISTIC_OLD"` is
+used instead of `"SIMPLEHEURISTIC"`. In the solution after
+`threshold=1`, more cells than earlier (more than needed) are
+suppressed.
+
+Methodology to handle the problem of singletons and zeros are also
+included in “Gauss” . Below is output:
+
+``` r
+
+s1aGauss = ProtectTable(data1a, 1, 2:6, protectZeros = FALSE, suppression=".")$suppressed
+```
+
+|   row |   A |   B |   H |   M |   W | Total |
+|------:|----:|----:|----:|----:|----:|------:|
+|    r1 |   0 |   . |   . |   . |   0 |     9 |
+|    r2 |   . |   0 |   0 |   . |   8 |    12 |
+| Total |   . |   . |   . |   . |   8 |    21 |
+
+s1aGauss {.table}
+
+``` r
+
+s1bGauss = ProtectTable(data1b, 1, 2:6, protectZeros = FALSE, suppression=".")$suppressed
+```
+
+|   row |   A |   B |   H |   M |   W | Total |
+|------:|----:|----:|----:|----:|----:|------:|
+|    r1 |   . |   . |   . |   . |   0 |    10 |
+|    r2 |   . |   0 |   0 |   . |   8 |    11 |
+| Total |   . |   . |   . |   . |   8 |    21 |
+
+s1bGauss {.table}
+
+``` r
+
+s0aGauss = ProtectTable(data0a, 1, 2:6, protectZeros = TRUE,  suppression=".")$suppressed
+```
+
+|   row |   A |   B |   H |   M |   W | Total |
+|------:|----:|----:|----:|----:|----:|------:|
+|    r1 |   . |   . |   7 |   . |   9 |    21 |
+|    r2 |   . |   . |   9 |   . |   8 |    36 |
+| Total |  10 |   9 |  16 |   5 |  17 |    57 |
+
+s0aGauss {.table}
+
+``` r
+
+s0bGauss = ProtectTable(data0b, 1, 2:6, protectZeros = TRUE,  suppression=".")$suppressed
+```
+
+|   row |   A |   B |   H |   M |   W | Total |
+|------:|----:|----:|----:|----:|----:|------:|
+|    r1 |   . |   . |   7 |   . |   . |    16 |
+|    r2 |   . |   . |   9 |   . |   . |    28 |
+| Total |   . |   9 |  16 |   . |  17 |    44 |
+
+s0bGauss {.table}
