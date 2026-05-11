@@ -78,6 +78,15 @@ unlist(sessionInfo()$otherPkgs$easySdcTable[c("Package", "Version", "Date")])
 
 unlist(sessionInfo()$loadedOnly$sdcTable[c("Package", "Version", "Date")])
 
+unlist(sessionInfo()$loadedOnly$sdcHierarchies[c("Package", "Version", "Date")])
+
+unlist(sessionInfo()$otherPkgs$RegSDC[c("Package", "Version", "Date")])
+
+unlist(sessionInfo()$otherPkgs$Matrix[c("Package", "Version", "Date")])
+
+unlist(sessionInfo()$otherPkgs$SSBtools[c("Package", "Version", "Date")])
+
+
 ```
 
 
