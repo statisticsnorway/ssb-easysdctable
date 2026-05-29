@@ -71,7 +71,7 @@ fatal_error_message <-
 ```
 
 
-```{r comment=NA, tidy = TRUE}
+```{r comment=NA, tidy = TRUE, echo = FALSE}
 for(i in 1:3) cat(capture.output(sessionInfo())[i],"\n")
 
 unlist(sessionInfo()$otherPkgs$easySdcTable[c("Package", "Version", "Date")])
